@@ -1,0 +1,15 @@
+<resources>
+
+    <!--Splash Screen-->
+    <string name="app_name">Grassias</string>
+    <string name="app_name_txt">GRASSIAS</string>
+    <string name="splash_sub_title">A word used instead of \'gracias\' (thank you) in appreciation for being passed marijuana.</string>
+
+
+    <!--Login Screen-->
+    <string name="username">Username</string>
+    <string name="password">Password</string>
+    <string name="get_started">Get Started</string>
+    <string name="create_account">Create Account</string>
+    <string name="skip_for_now">Skip for now</string>
+</resources>
