@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/baseColor"
-    tools:context="com.ilsa.grassis.LoginActivity">
+    tools:context="com.ilsa.grassis.activites.LoginActivity">
 
     <ImageView
         android:id="@+id/imageView2"
@@ -42,13 +42,13 @@
                         android:layout_height="wrap_content"
                         app:srcCompat="@mipmap/flower" />
 
-                    <TextView
+                    <com.ilsa.grassis.library.BoldTextView
                         android:id="@+id/login_txt_title"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_marginTop="20dp"
                         android:gravity="center"
-                        android:letterSpacing=".3"
+                        android:letterSpacing=".2"
                         android:text="@string/app_name_txt"
                         android:textColor="@color/white"
                         android:textSize="@dimen/splash_title" />
@@ -61,8 +61,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
             android:layout_weight="1"
             android:orientation="vertical">
 
@@ -81,18 +81,22 @@
                     android:paddingRight="20dp">
 
                     <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
+                        android:layout_width="64px"
+                        android:layout_height="64px"
+                        android:layout_gravity="center"
                         app:srcCompat="@mipmap/login_username_icon" />
 
-                    <EditText
+                    <com.ilsa.grassis.library.CustomEditText
+                        android:id="@+id/login_et_user_name"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_marginLeft="10dp"
                         android:layout_marginRight="10dp"
                         android:background="@android:color/transparent"
+                        android:gravity="center|left"
                         android:hint="@string/username"
                         android:maxLines="1"
+                        android:singleLine="true"
                         android:textColor="@color/white"
                         android:textColorHint="@color/white"
                         android:textSize="@dimen/login_input" />
@@ -114,18 +118,22 @@
                     android:paddingRight="20dp">
 
                     <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
+                        android:layout_width="64px"
+                        android:layout_height="64px"
+                        android:layout_gravity="center"
                         app:srcCompat="@mipmap/login_password_icon" />
 
-                    <EditText
+                    <com.ilsa.grassis.library.CustomEditText
+                        android:id="@+id/login_et_password"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_marginLeft="10dp"
                         android:layout_marginRight="10dp"
                         android:background="@android:color/transparent"
+                        android:gravity="center|left"
                         android:hint="@string/password"
                         android:maxLines="1"
+                        android:singleLine="true"
                         android:textColor="@color/white"
                         android:textColorHint="@color/white"
                         android:textSize="@dimen/login_input" />
@@ -139,7 +147,8 @@
                 android:layout_weight="1"
                 android:background="@drawable/round_edge_rectangle_base">
 
-                <TextView
+                <com.ilsa.grassis.library.RegularTextView
+                    android:id="@+id/login_txt_get_started"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginLeft="10dp"
@@ -161,18 +170,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_marginLeft="10dp"
-                        android:layout_marginRight="10dp"
-                        android:gravity="center"
-                        android:maxLines="1"
-                        android:text="@string/create_account"
-                        android:textColor="@color/white"
-                        android:textSize="@dimen/login_input" />
-
-                    <TextView
+                    <com.ilsa.grassis.library.RegularTextView
+                        android:id="@+id/login_txt_skip_now"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:layout_alignParentEnd="true"
@@ -182,6 +181,21 @@
                         android:gravity="center"
                         android:maxLines="1"
                         android:text="@string/skip_for_now"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/login_input" />
+
+                    <com.ilsa.grassis.library.RegularTextView
+                        android:id="@+id/login_txt_create_account"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentTop="true"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginStart="10dp"
+                        android:gravity="center"
+                        android:maxLines="1"
+                        android:text="@string/create_account"
                         android:textColor="@color/white"
                         android:textSize="@dimen/login_input" />
                 </RelativeLayout>

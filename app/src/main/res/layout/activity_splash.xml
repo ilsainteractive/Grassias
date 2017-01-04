@@ -10,7 +10,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.ilsa.grassis.SplashActivity">
+    tools:context="com.ilsa.grassis.activites.SplashActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -29,7 +29,7 @@
             android:layout_gravity="center"
             app:srcCompat="@mipmap/flower" />
 
-        <TextView
+        <com.ilsa.grassis.library.BoldTextView
             android:id="@+id/splash_txt_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
