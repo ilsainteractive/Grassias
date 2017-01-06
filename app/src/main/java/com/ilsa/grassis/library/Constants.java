@@ -6,8 +6,8 @@ package com.ilsa.grassis.library;
 
 public class Constants {
 
-    public static final int SHORT_DAILOG = 0;
-    public static final int LONG_DAILOG = 1;
+    public static final int SHORT_TIME = 0;
+    public static final int LONG_TIME = 1;
 
     public static final int SIGNUP_FIRST_NAME = 1;
     public static final int SIGNUP_LAST_NAME = 2;

@@ -198,19 +198,19 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
                     if (IsFieldValid(metLastName.getEditableText(), Constants.SIGNUP_LAST_NAME)) {
                         if (IsFieldValid(metPhoneNo.getEditableText(), Constants.SIGNUP_PHONE_VALIDATION)) {
                             if (IsFieldValid(metPassword.getEditableText(), Constants.SIGNUP_PASSWORD_VALIDATION)) {
-                                Dailogs.ShowToast(mContext, "Home service is not ready yet?", Constants.LONG_DAILOG);
+                                Dailogs.ShowToast(mContext, "Home service is not ready yet?", Constants.LONG_TIME);
                                 startActivity(new Intent(mContext, DispensaryActivity.class));
                             } else {
-                                Dailogs.ShowToast(mContext, getString(R.string.invalid_password), Constants.SHORT_DAILOG);
+                                Dailogs.ShowToast(mContext, getString(R.string.invalid_password), Constants.SHORT_TIME);
                             }
                         } else {
-                            Dailogs.ShowToast(mContext, getString(R.string.invalid_phone_no), Constants.SHORT_DAILOG);
+                            Dailogs.ShowToast(mContext, getString(R.string.invalid_phone_no), Constants.SHORT_TIME);
                         }
                     } else {
-                        Dailogs.ShowToast(mContext, getString(R.string.invalid_last_name), Constants.SHORT_DAILOG);
+                        Dailogs.ShowToast(mContext, getString(R.string.invalid_last_name), Constants.SHORT_TIME);
                     }
                 } else {
-                    Dailogs.ShowToast(mContext, getString(R.string.invalid_first_name), Constants.SHORT_DAILOG);
+                    Dailogs.ShowToast(mContext, getString(R.string.invalid_first_name), Constants.SHORT_TIME);
                 }
                 break;
         }

@@ -15,9 +15,9 @@ import com.ilsa.grassis.library.Constants;
 public class Dailogs {
 
     public static void ShowToast(Context context, String message, int type) {
-        if (Constants.LONG_DAILOG == type)
+        if (Constants.LONG_TIME == type)
             Toast.makeText(context, message, Toast.LENGTH_LONG).show();
-        else if (Constants.SHORT_DAILOG == type)
+        else if (Constants.SHORT_TIME == type)
             Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
     }
 

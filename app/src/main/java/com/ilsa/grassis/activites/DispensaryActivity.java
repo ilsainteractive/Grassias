@@ -55,7 +55,7 @@ public class DispensaryActivity extends AppCompatActivity implements OnMapReadyC
 
     private void getDispensaryList() {
         //Make Volley requet to get data from service?
-        Dailogs.ShowToast(mContext, "No web service available yet!", Constants.SHORT_DAILOG);
+        Dailogs.ShowToast(mContext, "No web service available yet!", Constants.SHORT_TIME);
     }
 
     private void AddListener() {
