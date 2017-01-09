@@ -7,11 +7,10 @@ import android.util.AttributeSet;
 import android.widget.EditText;
 
 /**
- * Created by Ilsa on 1/4/2017.
+ * Created by Ilsa on 1/9/2017.
  */
 
 public class CustomEditText extends EditText {
-
     public CustomEditText(Context context) {
         super(context);
         Typeface face = Typeface.createFromAsset(context.getAssets(), "fonts/SFUIText-Regular.otf");

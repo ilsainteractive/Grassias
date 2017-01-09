@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:local="http://schemas.android.com/tools"
+    android:id="@+id/toolbar_top"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:minHeight="?attr/actionBarSize"
+    local:theme="@style/AppActionBarTheme">
+
+
+    <com.ilsa.grassis.library.RegularTextView
+        android:id="@+id/toolbar_title_dump"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="Hi,"
+        android:textColor="@color/black" />
+
+    <com.ilsa.grassis.library.BoldSFTextView
+        android:id="@+id/toolbar_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingLeft="1dp"
+        android:layout_gravity="center"
+        android:text="Cheryl."
+        android:textColor="@color/black" />
+
+</android.support.v7.widget.Toolbar>

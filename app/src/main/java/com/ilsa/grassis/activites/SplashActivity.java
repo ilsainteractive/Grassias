@@ -1,11 +1,17 @@
 package com.ilsa.grassis.activites;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
+import android.widget.FrameLayout;
 
 import com.ilsa.grassis.R;
 import com.ilsa.grassis.library.BoldTextView;
@@ -15,6 +21,7 @@ import com.ilsa.grassis.utils.Helper;
 public class SplashActivity extends AppCompatActivity {
 
     private Context mContext;
+    private Activity mActivity;
     private int mTotalTime = 2000; // 2 seconds
     private int mTimeInterval = 1000; // 1 seconds
     private BoldTextView mTxtTitle;
@@ -26,6 +33,8 @@ public class SplashActivity extends AppCompatActivity {
         setContentView(R.layout.activity_splash);
 
         mContext = this;
+        mActivity = this;
+        //ActionBarConfigs();
         InitComponents();
 
         new CountDownTimer(mTotalTime, mTimeInterval) {
@@ -48,6 +57,26 @@ public class SplashActivity extends AppCompatActivity {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
             mTxtTitle.setLetterSpacing(.05f * getResources().getDisplayMetrics().density);
             mTxtSubTitle.setLetterSpacing(.02f * getResources().getDisplayMetrics().density);
+        }
+    }
+
+    private void ActionBarConfigs() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            Window window = mActivity.getWindow();
+            window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+            window.setStatusBarColor(mActivity.getResources().getColor(R.color.baseColor));
+        } else {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                Window w = mActivity.getWindow();
+                w.setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS, WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+                int statusBarHeight = Helper.getStatusBarHeight(mContext);
+                View view = new View(mContext);
+                view.setLayoutParams(new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+                view.getLayoutParams().height = statusBarHeight;
+                ((ViewGroup) w.getDecorView()).addView(view);
+                view.setBackgroundColor(mContext.getResources().getColor(R.color.baseColor));
+            }
         }
     }
 

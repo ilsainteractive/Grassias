@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_splash"
+    android:layout_width="match_parent"
+    android:layout_height="?attr/actionBarSize"
+    android:layout_weight="5"
+    android:background="@color/white"
+    android:orientation="horizontal"
+    tools:context="com.ilsa.grassis.activites.HomeActivity">
+
+    <ImageView
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:padding="15dp"
+        android:src="@mipmap/home_bttom_icon_home"
+        android:id="@+id/home_btn_home" />
+
+    <ImageView
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:padding="15dp"
+        android:src="@mipmap/home_bttom_icon_dispensory"
+        android:id="@+id/home_btn_dispensory" />
+
+    <ImageView
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:padding="5dp"
+        android:src="@mipmap/home_bttom_icon_qr"
+        android:id="@+id/home_btn_qr" />
+
+    <ImageView
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:padding="15dp"
+        android:src="@mipmap/home_bottom_icon_deals"
+        android:id="@+id/home_btn_deals" />
+
+    <ImageView
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:padding="15dp"
+        android:src="@mipmap/home_bottom_icon_profile"
+        android:id="@+id/home_btn_profile" />
+</LinearLayout>
+

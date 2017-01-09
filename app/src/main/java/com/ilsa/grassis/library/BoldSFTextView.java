@@ -10,24 +10,24 @@ import android.widget.TextView;
  * Created by Ilsa on 1/4/2017.
  */
 
-public class ThinTextView extends TextView {
+public class BoldSFTextView extends TextView {
 
 
-    public ThinTextView(Context context) {
+    public BoldSFTextView(Context context) {
         super(context);
-        Typeface face = Typeface.createFromAsset(context.getAssets(), "fonts/SFUIText-Light.otf");
+        Typeface face = Typeface.createFromAsset(context.getAssets(), "fonts/SFUIText-Heavy.otf");
         this.setTypeface(face);
     }
 
-    public ThinTextView(Context context, AttributeSet attrs) {
+    public BoldSFTextView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        Typeface face = Typeface.createFromAsset(context.getAssets(), "fonts/SFUIText-Light.otf");
+        Typeface face = Typeface.createFromAsset(context.getAssets(), "fonts/SFUIText-Heavy.otf");
         this.setTypeface(face);
     }
 
-    public ThinTextView(Context context, AttributeSet attrs, int defStyle) {
+    public BoldSFTextView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
-        Typeface face = Typeface.createFromAsset(context.getAssets(), "fonts/SFUIText-Light.otf");
+        Typeface face = Typeface.createFromAsset(context.getAssets(), "fonts/SFUIText-Heavy.otf");
         this.setTypeface(face);
     }
 
