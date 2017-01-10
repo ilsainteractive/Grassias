@@ -35,8 +35,14 @@ public class Helper {
         return (float) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_PX, px, resource.getDisplayMetrics());
     }
 
+
+
     public static float getFontSize(Resources resource, int size) {
         return size * resource.getDisplayMetrics().density;
+    }
+
+    public static float getFontSize(Resources resource, double size) {
+        return (float) size * resource.getDisplayMetrics().density;
     }
 
     public static int getStatusBarHeight(final Context context) {

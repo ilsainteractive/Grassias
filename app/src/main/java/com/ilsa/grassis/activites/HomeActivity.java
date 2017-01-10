@@ -2,6 +2,7 @@ package com.ilsa.grassis.activites;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -16,11 +17,15 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
 import com.ilsa.grassis.R;
 import com.ilsa.grassis.adapters.MenuGalleryAdapter;
 import com.ilsa.grassis.library.BoldSFTextView;
 import com.ilsa.grassis.library.RegularTextView;
+import com.ilsa.grassis.library.ThinTextView;
 import com.ilsa.grassis.utils.Helper;
 
 import java.util.ArrayList;
@@ -34,10 +39,15 @@ public class HomeActivity extends AppCompatActivity {
     private SearchView mSearchView;
 
     private BoldSFTextView mtxtToolbarTitle;
-
     private RegularTextView mtxtListTitleTop, mtxtToolbarTitleDump;
-    private RegularTextView mtxtListSubTitleTop;
-    private BoldSFTextView mtxtListTitleBottom;
+    private RegularTextView mtxtListSubTitleTop, mtxtListViewBottomSection2Title, mtxtListViewBottomSection2SubTitle;
+    private RegularTextView mtxtListViewBottomSection3Title, mtxtListViewBottomSection3SubTitle;
+    private BoldSFTextView mtxtListTitleBottom, mtxtLvBottomSection2Per;
+    private ThinTextView mtxtLvBottomSection2Off, mtxtLvBottomSection2Products;
+
+    private ImageView mImgCart, mImgDetail, mImgLvTopSection;
+
+    private LinearLayout mListViewTopSection, mListViewTopSectionText, mListViewBottomSectionPager, mListViewBottomSection2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,12 +64,69 @@ public class HomeActivity extends AppCompatActivity {
 
     private void InitComponents() {
 
+        mListViewTopSection = (LinearLayout) findViewById(R.id.home_lv_top_section);
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, Math.round(Helper.getFontSize(mContext.getResources(), 220)));
+        mListViewTopSection.setLayoutParams(params);
+        mImgLvTopSection = (ImageView) findViewById(R.id.home_lv_top_section_img);
+        RelativeLayout.LayoutParams topImgHieght = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, Math.round(Helper.getFontSize(mContext.getResources(), 190)));
+        mImgLvTopSection.setLayoutParams(topImgHieght);
+
+        mListViewTopSectionText = (LinearLayout) findViewById(R.id.home_lv_top_section_texts_layout);
+        RelativeLayout.LayoutParams paramsTexts = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, Math.round(Helper.getFontSize(mContext.getResources(), 190)));
+        mListViewTopSectionText.setLayoutParams(paramsTexts);
+
+        mtxtListTitleBottom = (BoldSFTextView) findViewById(R.id.home_lv_bottom_title);
+        LinearLayout.LayoutParams paramsBottomTitle = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, Math.round(Helper.getFontSize(mContext.getResources(), 100)));
+        mtxtListTitleBottom.setLayoutParams(paramsBottomTitle);
+
+        mListViewBottomSectionPager = (LinearLayout) findViewById(R.id.home_lv_bottom_pager);
+        LinearLayout.LayoutParams paramsBottomPager = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, Math.round(Helper.getFontSize(mContext.getResources(), 360)));
+        mListViewBottomSectionPager.setLayoutParams(paramsBottomPager);
+
+        mListViewBottomSection2 = (LinearLayout) findViewById(R.id.home_lv_bottom_section_2);
+        LinearLayout.LayoutParams paramsBottomsection2 = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, Math.round(Helper.getFontSize(mContext.getResources(), 120)));
+        mListViewBottomSection2.setLayoutParams(paramsBottomsection2);
+
+        mtxtListViewBottomSection2Title = (RegularTextView) findViewById(R.id.home_lv_bottom_section_2_subTitle);
+        mtxtListViewBottomSection2Title.setTextSize(Helper.getFontSize(mContext.getResources(), 3.5));
+
+        mtxtListViewBottomSection2SubTitle = (RegularTextView) findViewById(R.id.home_lv_bottom_section_2_title);
+        mtxtListViewBottomSection2SubTitle.setTypeface(null, Typeface.BOLD);
+        mtxtListViewBottomSection2SubTitle.setTextSize(Helper.getFontSize(mContext.getResources(), 5));
+
+        mtxtLvBottomSection2Per = (BoldSFTextView) findViewById(R.id.home_lv_bottom_section_2_txt_per);
+        mtxtLvBottomSection2Per.setTextSize(Helper.getFontSize(mContext.getResources(), 21));
+
+        mtxtLvBottomSection2Off = (ThinTextView) findViewById(R.id.home_lv_bottom_section_2_txt_off);
+        mtxtLvBottomSection2Off.setTextSize(Helper.getFontSize(mContext.getResources(), 21));
+
+        mtxtLvBottomSection2Products = (ThinTextView) findViewById(R.id.home_lv_bottom_section_2_txt_products);
+        mtxtLvBottomSection2Products.setTextSize(Helper.getFontSize(mContext.getResources(), 10));
+
+        mtxtListViewBottomSection3Title = (RegularTextView) findViewById(R.id.home_lv_bottom_section_3_title);
+        mtxtListViewBottomSection3Title.setTextSize(Helper.getFontSize(mContext.getResources(), 5));
+        mtxtListViewBottomSection3Title.setTypeface(null, Typeface.BOLD);
+
+        mtxtListViewBottomSection3Title = (RegularTextView) findViewById(R.id.home_lv_bottom_section_3_subTitle);
+        mtxtListViewBottomSection3Title.setTextSize(Helper.getFontSize(mContext.getResources(), 3.5));
+
+        //below setting
         mtxtListTitleTop = (RegularTextView) findViewById(R.id.home_list_top_title);
         mtxtListSubTitleTop = (RegularTextView) findViewById(R.id.home_list_top_sub_title);
-        mtxtListTitleBottom = (BoldSFTextView) findViewById(R.id.home_lv_bottom_title);
+
         mtxtListTitleTop.setTextSize(Helper.getFontSize(mContext.getResources(), 10));
+        mtxtListSubTitleTop.setTextSize(Helper.getFontSize(mContext.getResources(), 4.7));
         mtxtListTitleBottom.setTextSize(Helper.getFontSize(mContext.getResources(), 9));
         mtxtListSubTitleTop.setText(Helper.getBoldedText("2.3 miles  |  OPEN till 8:00pm", 14, 19));
+
+        mImgCart = (ImageView) findViewById(R.id.home_list_box_cart);
+        mImgDetail = (ImageView) findViewById(R.id.home_list_box_detail);
+        int padding = Math.round(Helper.getFontSize(mContext.getResources(), 19));
+        mImgCart.setPadding(padding, padding,
+                padding, padding);
+        mImgDetail.setPadding(padding, padding,
+                padding, padding);
+
     }
 
     public void initToolBar() {
@@ -76,7 +143,7 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     private void initViews() {
-        MenuGalleryAdapter adapter = new MenuGalleryAdapter();
+        MenuGalleryAdapter adapter = new MenuGalleryAdapter(mContext);
         adapter.setData(createPageList());
 
         ViewPager pager = (ViewPager) findViewById(R.id.viewPager);
@@ -86,11 +153,11 @@ public class HomeActivity extends AppCompatActivity {
     @NonNull
     private List<View> createPageList() {
         List<View> pageList = new ArrayList<>();
-        pageList.add(createPageView(R.color.white));
         pageList.add(createPageView(R.color.baseColor));
         pageList.add(createPageView(R.color.colorPrimaryDark));
         pageList.add(createPageView(R.color.login_status_color));
-
+        pageList.add(createPageView(R.color.baseColor));
+        pageList.add(createPageView(R.color.login_status_color));
         return pageList;
     }
 

@@ -1,10 +1,18 @@
 package com.ilsa.grassis.adapters;
 
+import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.view.PagerAdapter;
+import android.support.v4.view.ViewPager;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+
+import com.ilsa.grassis.R;
+import com.ilsa.grassis.library.RegularTextView;
+import com.ilsa.grassis.utils.Helper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,16 +20,31 @@ import java.util.List;
 public class MenuGalleryAdapter extends PagerAdapter {
 
     private List<View> viewList;
+    private Context mContext;
 
-    public MenuGalleryAdapter() {
+    public MenuGalleryAdapter(Context mContext) {
+        this.mContext = mContext;
         this.viewList = new ArrayList<>();
     }
 
     @Override
-    public Object instantiateItem(ViewGroup collection, int position) {
-        View view = viewList.get(position);
-        collection.addView(view);
-        return view;
+    public Object instantiateItem(ViewGroup container, int position) {
+
+        ImageView imgDisplay;
+        LayoutInflater inflater = (LayoutInflater) mContext
+                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View v = inflater.inflate(R.layout.activity_home_lv_slider_item, container, false);
+
+        RegularTextView bottomTitle = (RegularTextView) v.findViewById(R.id.home_lv_bottom_txt);
+        bottomTitle.setTextSize(Helper.getFontSize(mContext.getResources(), 4.5));
+
+        imgDisplay = (ImageView) v
+                .findViewById(R.id.home_lv_bottom_img);
+//        Glide.with(mContext).load(mUrls.get(position))
+//                .placeholder(R.drawable.wait_image).into(imgDisplay);
+        ((ViewPager) container).addView(v);
+
+        return v;
     }
 
     @Override
