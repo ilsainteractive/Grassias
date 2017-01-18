@@ -42,7 +42,12 @@
             android:name=".activites.MenuItemActivity"
             android:label="@null"
             android:screenOrientation="portrait"
-            android:theme="@style/HomeTheme"/>
+            android:theme="@style/HomeTheme" />
+        <activity
+            android:name=".activites.MenuItemDetailsActivity"
+            android:label="@null"
+            android:screenOrientation="portrait"
+            android:theme="@style/HomeTheme" />
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"

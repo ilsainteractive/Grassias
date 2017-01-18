@@ -2,6 +2,7 @@ package com.ilsa.grassis.activites;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -20,12 +21,12 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import android.widget.ScrollView;
-import android.widget.Toast;
 
 import com.ilsa.grassis.R;
-import com.ilsa.grassis.adapters.MenuAdapter;
-import com.ilsa.grassis.adapters.MenuGalleryAdapter;
+import com.ilsa.grassis.adapters.MenuItemAdapter;
+import com.ilsa.grassis.adapters.MenuItemGalleryAdapter;
 import com.ilsa.grassis.library.ExpandedRecyclerView;
 import com.ilsa.grassis.library.MediumTextView;
 import com.ilsa.grassis.library.MenuItemClickListener;
@@ -45,16 +46,16 @@ public class MenuItemActivity extends AppCompatActivity {
     private Toolbar toolbar;
     private SearchView mSearchView;
     private ScrollView mScrollView;
+    private ViewPager mViewPager;
 
     private MediumTextView mtxtToolbarTitle;
     private ThinTextView mtxtTtile, mTxtSubTitle, mTxtAction;
 
     private ExpandedRecyclerView recyclerView;
-    private MenuAdapter mMenuAdapter;
+    private MenuItemAdapter mMenuAdapter;
 
     private List<MenuListVO> menuListVOs;
-    private String[] titles = {"Exctracts"};
-    private int[] images = {R.mipmap.menu_lv_item_img};
+    private String[] titles = {"Hindu Kush", "Mango Kush", "Death Star", "Hindu Kush", "Mango Kush", "Death Star", "Hindu Kush", "Mango Kush", "Death Star"};
     private RecyclerTouchListener listener;
     private boolean isScrolled = false;
 
@@ -73,7 +74,7 @@ public class MenuItemActivity extends AppCompatActivity {
     }
 
     private void initViews() {
-        MenuGalleryAdapter adapter = new MenuGalleryAdapter(mContext);
+        MenuItemGalleryAdapter adapter = new MenuItemGalleryAdapter(mContext);
         adapter.setData(createPageList());
 
         ViewPager pager = (ViewPager) findViewById(R.id.viewPager);
@@ -95,7 +96,6 @@ public class MenuItemActivity extends AppCompatActivity {
     private View createPageView(int color) {
         View view = new View(this);
         view.setBackgroundColor(getResources().getColor(color));
-
         return view;
     }
 
@@ -117,12 +117,11 @@ public class MenuItemActivity extends AppCompatActivity {
 
     private void InitComponents() {
 
-        // mTopBanner = (ImageView) findViewById(R.id.menu_bottom_banner);
-        //mScrollView = (ScrollView) findViewById(R.id.scrollView);
-        // LinearLayout.LayoutParams paramsTexts = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
-        //        Math.round(Helper.getFontSize(mContext.getResources(), 190)));
-        //mTopBanner.setLayoutParams(paramsTexts);
-
+        mScrollView = (ScrollView) findViewById(R.id.scrollView);
+        mViewPager = (ViewPager) findViewById(R.id.viewPager);
+        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                Math.round(Helper.getFontSize(mContext.getResources(), 275)));
+        mViewPager.setLayoutParams(layoutParams);
         mtxtTtile = (ThinTextView) findViewById(R.id.menu_item_title);
         mTxtSubTitle = (ThinTextView) findViewById(R.id.menu_item_sub_title);
         mTxtAction = (ThinTextView) findViewById(R.id.menu_item_action);
@@ -135,7 +134,7 @@ public class MenuItemActivity extends AppCompatActivity {
         listener = new RecyclerTouchListener(mContext, recyclerView, new MenuItemClickListener() {
             @Override
             public void onClick(View view, int position) {
-                Toast.makeText(mContext, "Clicked " + position, Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(mContext, MenuItemDetailsActivity.class));
             }
 
             @Override
@@ -148,7 +147,7 @@ public class MenuItemActivity extends AppCompatActivity {
 
     private void syncData() {
         menuListVOs = new ArrayList<>();
-        mMenuAdapter = new MenuAdapter(mContext, menuListVOs);
+        mMenuAdapter = new MenuItemAdapter(mContext, menuListVOs);
 
         recyclerView.setHasFixedSize(true);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
@@ -157,11 +156,11 @@ public class MenuItemActivity extends AppCompatActivity {
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(mMenuAdapter);
         recyclerView.setNestedScrollingEnabled(false);
-        for (int i = 0; i < images.length; i++) {
+        for (int i = 0; i < titles.length; i++) {
             MenuListVO listVO = new MenuListVO();
             listVO.setId(i + "");
             listVO.setTitle(titles[i]);
-            listVO.setImg(images[i] + "");
+            listVO.setImg(titles[i] + "");
 
             menuListVOs.add(listVO);
         }
@@ -172,12 +171,12 @@ public class MenuItemActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         if (!isScrolled) {
-//            mScrollView.postDelayed(new Runnable() {
-//                public void run() {
-//                    mScrollView.fullScroll(View.FOCUS_UP);
-//                    isScrolled = true;
-//                }
-//            }, 200);
+            mScrollView.postDelayed(new Runnable() {
+                public void run() {
+                    mScrollView.fullScroll(View.FOCUS_UP);
+                    isScrolled = true;
+                }
+            }, 200);
         }
     }
 
