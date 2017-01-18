@@ -10,43 +10,43 @@
     tools:context="com.ilsa.grassis.activites.HomeActivity">
 
     <ImageView
+        android:id="@+id/home_btn_home"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1"
         android:padding="15dp"
-        android:src="@mipmap/home_bttom_icon_home"
-        android:id="@+id/home_btn_home" />
+        android:src="@mipmap/home_bttom_icon_home" />
 
     <ImageView
+        android:id="@+id/home_btn_dispensory"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1"
         android:padding="15dp"
-        android:src="@mipmap/home_bttom_icon_dispensory"
-        android:id="@+id/home_btn_dispensory" />
+        android:src="@mipmap/home_bttom_icon_dispensory" />
 
     <ImageView
+        android:id="@+id/home_btn_qr"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1"
         android:padding="5dp"
-        android:src="@mipmap/home_bttom_icon_qr"
-        android:id="@+id/home_btn_qr" />
+        android:src="@mipmap/home_bttom_icon_qr" />
 
     <ImageView
+        android:id="@+id/home_btn_deals"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1"
         android:padding="15dp"
-        android:src="@mipmap/home_bottom_icon_deals"
-        android:id="@+id/home_btn_deals" />
+        android:src="@mipmap/home_bottom_icon_deals" />
 
     <ImageView
+        android:id="@+id/home_btn_profile"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1"
         android:padding="15dp"
-        android:src="@mipmap/home_bottom_icon_profile"
-        android:id="@+id/home_btn_profile" />
+        android:src="@mipmap/home_bottom_icon_profile" />
 </LinearLayout>
 

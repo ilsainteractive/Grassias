@@ -13,8 +13,8 @@
         android:theme="@style/NoActionBar">
         <activity
             android:name=".activites.SplashActivity"
-            android:theme="@style/SplashTheme"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait"
+            android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -23,8 +23,8 @@
         </activity>
         <activity
             android:name=".activites.LoginActivity"
-            android:theme="@style/LoginTheme"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/LoginTheme" />
         <activity
             android:name=".activites.SignUpActivity"
             android:screenOrientation="portrait" />
@@ -33,6 +33,16 @@
             android:label="@null"
             android:screenOrientation="portrait"
             android:theme="@style/HomeTheme" />
+        <activity
+            android:name=".activites.MenuActivity"
+            android:label="@null"
+            android:screenOrientation="portrait"
+            android:theme="@style/HomeTheme" />
+        <activity
+            android:name=".activites.MenuItemActivity"
+            android:label="@null"
+            android:screenOrientation="portrait"
+            android:theme="@style/HomeTheme"/>
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"

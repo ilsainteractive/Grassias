@@ -179,7 +179,6 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
 
     }
 
-
     @Override
     public void onClick(View v) {
         switch (v.getId()) {

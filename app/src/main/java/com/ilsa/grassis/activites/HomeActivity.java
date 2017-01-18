@@ -2,6 +2,7 @@ package com.ilsa.grassis.activites;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Bundle;
@@ -31,7 +32,7 @@ import com.ilsa.grassis.utils.Helper;
 import java.util.ArrayList;
 import java.util.List;
 
-public class HomeActivity extends AppCompatActivity {
+public class HomeActivity extends AppCompatActivity implements View.OnClickListener {
 
     private Context mContext;
     private Activity mActivity;
@@ -59,7 +60,21 @@ public class HomeActivity extends AppCompatActivity {
         initToolBar();
         //ActionBarConfigs();
         InitComponents();
+        AddListener();
         initViews();
+    }
+
+    public void initToolBar() {
+
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        mtxtToolbarTitle = (BoldSFTextView) toolbar.findViewById(R.id.toolbar_title);
+        mtxtToolbarTitleDump = (RegularTextView) toolbar.findViewById(R.id.toolbar_title_dump);
+        toolbar.setTitle("");
+        String s = "Hi, " + "Cheryl.";
+        //mtxtToolbarTitle.setText(Helper.getBoldedText(s, 3, s.length()));
+        mtxtToolbarTitle.setTextSize(Helper.getFontSize(mContext.getResources(), 6));
+        mtxtToolbarTitleDump.setTextSize(Helper.getFontSize(mContext.getResources(), 6));
+        setSupportActionBar(toolbar);
     }
 
     private void InitComponents() {
@@ -129,18 +144,21 @@ public class HomeActivity extends AppCompatActivity {
 
     }
 
-    public void initToolBar() {
+    private void AddListener() {
 
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
-        mtxtToolbarTitle = (BoldSFTextView) toolbar.findViewById(R.id.toolbar_title);
-        mtxtToolbarTitleDump = (RegularTextView) toolbar.findViewById(R.id.toolbar_title_dump);
-        toolbar.setTitle("");
-        String s = "Hi, " + "Cheryl.";
-        //mtxtToolbarTitle.setText(Helper.getBoldedText(s, 3, s.length()));
-        mtxtToolbarTitle.setTextSize(Helper.getFontSize(mContext.getResources(), 6));
-        mtxtToolbarTitleDump.setTextSize(Helper.getFontSize(mContext.getResources(), 6));
-        setSupportActionBar(toolbar);
+        mImgDetail.setOnClickListener(this);
     }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.home_list_box_detail:
+                startActivity(new Intent(mContext, MenuActivity.class));
+                break;
+        }
+
+    }
+
 
     private void initViews() {
         MenuGalleryAdapter adapter = new MenuGalleryAdapter(mContext);
@@ -215,4 +233,6 @@ public class HomeActivity extends AppCompatActivity {
         });
         return true;
     }
+
+
 }

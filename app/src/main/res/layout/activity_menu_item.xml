@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:attrs="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_splash"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical"
+    tools:context="com.ilsa.grassis.activites.HomeActivity">
+
+    <include
+        android:id="@+id/toolbar"
+        layout="@layout/menu_item_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <!--<ScrollView-->
+    <!--android:id="@+id/scrollView"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="match_parent"-->
+    <!--android:layout_above="@+id/home_bottom_bar"-->
+    <!--android:layout_below="@+id/toolbar">-->
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/home_bottom_bar"
+        android:layout_below="@+id/toolbar"
+        android:orientation="vertical"
+        android:weightSum="11.5">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="2.5"
+            android:orientation="vertical"
+            android:weightSum="10">
+
+            <com.ilsa.grassis.library.ThinTextView
+                android:id="@+id/menu_item_title"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="5"
+                android:background="@color/baseColor"
+                android:gravity="center|bottom"
+                android:text="Bubba Kush"
+                android:textColor="@color/black" />
+
+            <com.ilsa.grassis.library.ThinTextView
+                android:id="@+id/menu_item_sub_title"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="2"
+
+                android:gravity="center|top"
+                android:text="Harvested this week"
+                android:textColor="@color/black" />
+
+            <com.ilsa.grassis.library.ThinTextView
+                android:id="@+id/menu_item_action"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="3"
+                android:gravity="center"
+                android:text="Buy"
+                android:textColor="#e80054" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/home_lv_bottom_pager"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="4.25">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <android.support.v4.view.ViewPager
+                    android:id="@+id/viewPager"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+
+                <com.rd.PageIndicatorView
+                    android:id="@+id/pageIndicatorView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="2dp"
+                    android:layout_alignParentBottom="true"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginBottom="10dp"
+                    attrs:piv_animationType="worm"
+                    attrs:piv_dynamicCount="true"
+                    attrs:piv_interactiveAnimation="true"
+                    attrs:piv_padding="0dp"
+                    attrs:piv_radius="35dp"
+                    attrs:piv_selectedColor="#c7c7c7"
+                    attrs:piv_unselectedColor="#f2f2f2"
+                    attrs:piv_viewPager="@id/viewPager" />
+            </RelativeLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.2"
+            android:orientation="vertical">
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.3"
+            android:orientation="vertical">
+
+        </LinearLayout>
+
+        <com.ilsa.grassis.library.ExpandedRecyclerView
+            android:id="@+id/recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginLeft="20dp"
+            android:layout_weight="4.25"
+            android:scrollbars="vertical"
+            android:visibility="visible" />
+    </LinearLayout>
+    <!--</ScrollView>-->
+
+    <include
+        android:id="@+id/home_bottom_bar"
+        layout="@layout/activity_home_bottom_bar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:layout_alignParentBottom="true" />
+</RelativeLayout>
+
