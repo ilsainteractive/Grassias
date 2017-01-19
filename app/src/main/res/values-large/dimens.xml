@@ -1,0 +1,18 @@
+<resources>
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+
+    <!--Splash Screen-->
+    <dimen name="splash_title">38px</dimen>
+    <dimen name="splash_sub_title">23px</dimen>
+
+    <!--Login Screen-->
+    <dimen name="login_input">15sp</dimen>
+
+    <!--Signup Screen-->
+    <dimen name="signup_email">12sp</dimen>
+    <dimen name="signup_next">16sp</dimen>
+    <dimen name="signup_phone_msg">16sp</dimen>
+
+</resources>
