@@ -27,7 +27,8 @@
             android:theme="@style/LoginTheme" />
         <activity
             android:name=".activites.SignUpActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/HomeTheme" />
         <activity
             android:name=".activites.HomeActivity"
             android:label="@null"
@@ -55,7 +56,8 @@
 
         <activity
             android:name=".activites.DispensaryActivity"
-            android:label="@string/title_activity_dispensary">
+            android:label="@string/title_activity_dispensary"
+            android:theme="@style/HomeTheme">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.ilsa.grassis.activites.SignUpActivity" />

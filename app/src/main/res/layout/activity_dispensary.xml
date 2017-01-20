@@ -9,7 +9,7 @@
 
     <include
         android:id="@+id/toolbar"
-        layout="@layout/home_toolbar" />
+        layout="@layout/dispensory_toolbar" />
 
     <LinearLayout
         android:layout_width="match_parent"

@@ -7,6 +7,9 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.ScrollView;
 
 import com.ilsa.grassis.R;
 import com.ilsa.grassis.library.BoldSFUITextView;
@@ -21,7 +24,8 @@ public class MenuItemDetailsActivity extends AppCompatActivity {
     private Activity mActivity;
 
     private Toolbar toolbar;
-    //private ScrollView mScrollView;
+    private ScrollView mScrollView;
+    private LinearLayout mImageLayout, mTitleLayout, mPrecentLayout, mValueBarLayout;
 
     private MediumTextView mtxtToolbarTitle;
     private BoldSFUITextView mtxtTtile;
@@ -64,13 +68,39 @@ public class MenuItemDetailsActivity extends AppCompatActivity {
 
     private void InitComponents() {
 
-        //mScrollView = (ScrollView) findViewById(R.id.scrollView);
+        mScrollView = (ScrollView) findViewById(R.id.scrollView);
         //LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
         //        Math.round(Helper.getFontSize(mContext.getResources(), 275)));
         //mViewPager.setLayoutParams(layoutParams);
 
+        mImageLayout = (LinearLayout) findViewById(R.id.menu_item_details_img_layout);
+        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                Math.round(Helper.getFontSize(mContext.getResources(), 390)));
+        mImageLayout.setLayoutParams(layoutParams);
+
+        mTitleLayout = (LinearLayout) findViewById(R.id.menu_item_details_title_bar_layout);
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                Math.round(Helper.getFontSize(mContext.getResources(), 60)));
+        params.setMargins(Math.round(Helper.getFontSize(mContext.getResources(), 15)), 0,
+                Math.round(Helper.getFontSize(mContext.getResources(), 15)), 0);
+        mTitleLayout.setLayoutParams(params);
+
+        mPrecentLayout = (LinearLayout) findViewById(R.id.menu_item_details_precent_bar_layout);
+        LinearLayout.LayoutParams paramsPrecent = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                Math.round(Helper.getFontSize(mContext.getResources(), 45)));
+        paramsPrecent.setMargins(Math.round(Helper.getFontSize(mContext.getResources(), 15)), 0,
+                Math.round(Helper.getFontSize(mContext.getResources(), 15)), 0);
+        mPrecentLayout.setLayoutParams(paramsPrecent);
+
+        mValueBarLayout = (LinearLayout) findViewById(R.id.menu_item_details_values_bar_layout);
+        LinearLayout.LayoutParams paramsValues = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                Math.round(Helper.getFontSize(mContext.getResources(), 70)));
+        mValueBarLayout.setLayoutParams(paramsValues);
+        mValueBarLayout.setPadding(Math.round(Helper.getFontSize(mContext.getResources(), 15)), 0,
+                Math.round(Helper.getFontSize(mContext.getResources(), 15)), 0);
+
         mtxtTtile = (BoldSFUITextView) findViewById(R.id.menu_item_details_txt_name);
-        mtxtTtile.setTextSize(Helper.getFontSize(getResources(), 6.2));
+        mtxtTtile.setTextSize(Helper.getFontSize(getResources(), 6));
 
         mTxtSubTitle = (ThinTextView) findViewById(R.id.menu_item_details_txt_sub_name);
 
@@ -121,14 +151,14 @@ public class MenuItemDetailsActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-//        if (!isScrolled) {
-//            mScrollView.postDelayed(new Runnable() {
-//                public void run() {
-//                    mScrollView.fullScroll(View.FOCUS_UP);
-//                    isScrolled = true;
-//                }
-//            }, 200);
-//        }
+        if (!isScrolled) {
+            mScrollView.postDelayed(new Runnable() {
+                public void run() {
+                    mScrollView.fullScroll(View.FOCUS_UP);
+                    isScrolled = true;
+                }
+            }, 200);
+        }
     }
 
 }

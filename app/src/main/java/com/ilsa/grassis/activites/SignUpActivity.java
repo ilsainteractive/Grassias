@@ -1,20 +1,25 @@
 package com.ilsa.grassis.activites;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 import com.ilsa.grassis.R;
 import com.ilsa.grassis.library.Constants;
 import com.ilsa.grassis.library.CustomEditText;
 import com.ilsa.grassis.library.RegularTextView;
 import com.ilsa.grassis.utils.Dailogs;
+import com.ilsa.grassis.utils.Helper;
 
 /**
  * Created by Ilsa on 1/3/2017.
@@ -23,11 +28,14 @@ import com.ilsa.grassis.utils.Dailogs;
 public class SignUpActivity extends AppCompatActivity implements View.OnClickListener, TextWatcher, View.OnFocusChangeListener {
 
     private Context mContext;
+    private Activity mActivity;
+    private Toolbar toolbar;
 
     private RegularTextView mtxtEmail, mtxtNext;
     private CustomEditText metFirstName, metLastName, metPhoneNo, metPassword;
     private ImageView mImgFirstName, mImgLastName, mImgPhoneNo, mImgPassword;
-    private ImageView mimgBackArrow;
+
+    private LinearLayout mTopLayout, mFirstNameLayout, mLastNameLayout, mEmailLayout, mPhoneNoLayout, mPasswordLayout, mNextLayout;
 
     private int whoHasFocus = 0;
 
@@ -37,11 +45,55 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
         setContentView(R.layout.activity_signup);
 
         mContext = this;
+        mActivity = this;
+        initToolBar();
         InitComponents();
         AddListener();
     }
 
+    public void initToolBar() {
+
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar.setTitle("");
+        toolbar.setNavigationIcon(R.mipmap.signup_back_arrow);
+        setSupportActionBar(toolbar);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
+    }
+
     private void InitComponents() {
+
+        mTopLayout = (LinearLayout) findViewById(R.id.signup_top_layout);
+        LinearLayout.LayoutParams paramsTopLayout = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, Math.round(Helper.getFontSize(mContext.getResources(), 100)));
+        mTopLayout.setLayoutParams(paramsTopLayout);
+
+        mFirstNameLayout = (LinearLayout) findViewById(R.id.signup_first_name_layout);
+        LinearLayout.LayoutParams paramsFirstName = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, Math.round(Helper.getFontSize(mContext.getResources(), 80)));
+        mFirstNameLayout.setLayoutParams(paramsFirstName);
+
+        mLastNameLayout = (LinearLayout) findViewById(R.id.signup_last_name_layout);
+        LinearLayout.LayoutParams paramslastName = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, Math.round(Helper.getFontSize(mContext.getResources(), 80)));
+        mLastNameLayout.setLayoutParams(paramslastName);
+
+        mEmailLayout = (LinearLayout) findViewById(R.id.signup_email_layout);
+        LinearLayout.LayoutParams paramsEmail = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, Math.round(Helper.getFontSize(mContext.getResources(), 90)));
+        mEmailLayout.setLayoutParams(paramsEmail);
+
+        mPhoneNoLayout = (LinearLayout) findViewById(R.id.signup_phone_no_layout);
+        LinearLayout.LayoutParams paramsPhoneNo = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, Math.round(Helper.getFontSize(mContext.getResources(), 80)));
+        mPhoneNoLayout.setLayoutParams(paramsPhoneNo);
+
+        mPasswordLayout = (LinearLayout) findViewById(R.id.signup_password_layout);
+        LinearLayout.LayoutParams paramsPassword = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, Math.round(Helper.getFontSize(mContext.getResources(), 80)));
+        mPasswordLayout.setLayoutParams(paramsPassword);
+
+        mNextLayout = (LinearLayout) findViewById(R.id.signup_next_layout);
+        LinearLayout.LayoutParams paramsNext = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, Math.round(Helper.getFontSize(mContext.getResources(), 150)));
+        mNextLayout.setLayoutParams(paramsNext);
 
         metFirstName = (CustomEditText) findViewById(R.id.signup_et_first_name);
         metLastName = (CustomEditText) findViewById(R.id.signup_et_last_name);
@@ -50,8 +102,6 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
 
         mtxtEmail = (RegularTextView) findViewById(R.id.signup_txt_email);
         mtxtNext = (RegularTextView) findViewById(R.id.signup_txt_next);
-
-        mimgBackArrow = (ImageView) findViewById(R.id.signup_img_back_arrow);
 
         mImgFirstName = (ImageView) findViewById(R.id.signup_img_first_name);
         mImgLastName = (ImageView) findViewById(R.id.signup_img_last_name);
@@ -62,7 +112,6 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
     private void AddListener() {
         mImgPhoneNo.setOnClickListener(this);
         mtxtNext.setOnClickListener(this);
-        mimgBackArrow.setOnClickListener(this);
 
         metFirstName.addTextChangedListener(this);
         metLastName.addTextChangedListener(this);
@@ -186,31 +235,31 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
                 if (IsFieldValid(metPhoneNo.getEditableText(), Constants.SIGNUP_PHONE_VALIDATION)) {
                 } else {
                     Dialog mBottomSheetDialog = Dailogs.CreateBottomSheet(mContext, R.style.MaterialDialogSheet, R.layout.signup_phone_dailog, true);
+                    RegularTextView textView = (RegularTextView) mBottomSheetDialog.findViewById(R.id.msg);
+                    textView.setTextSize(Helper.getFontSize(mContext.getResources(), 5.7));
                     mBottomSheetDialog.show();
                 }
                 break;
-            case R.id.signup_img_back_arrow:
-                onBackPressed();
-                break;
             case R.id.signup_txt_next:
-                if (IsFieldValid(metFirstName.getEditableText(), Constants.SIGNUP_FIRST_NAME)) {
-                    if (IsFieldValid(metLastName.getEditableText(), Constants.SIGNUP_LAST_NAME)) {
-                        if (IsFieldValid(metPhoneNo.getEditableText(), Constants.SIGNUP_PHONE_VALIDATION)) {
-                            if (IsFieldValid(metPassword.getEditableText(), Constants.SIGNUP_PASSWORD_VALIDATION)) {
-                                Dailogs.ShowToast(mContext, "Home service is not ready yet?", Constants.LONG_TIME);
-                                startActivity(new Intent(mContext, DispensaryActivity.class));
-                            } else {
-                                Dailogs.ShowToast(mContext, getString(R.string.invalid_password), Constants.SHORT_TIME);
-                            }
-                        } else {
-                            Dailogs.ShowToast(mContext, getString(R.string.invalid_phone_no), Constants.SHORT_TIME);
-                        }
-                    } else {
-                        Dailogs.ShowToast(mContext, getString(R.string.invalid_last_name), Constants.SHORT_TIME);
-                    }
-                } else {
-                    Dailogs.ShowToast(mContext, getString(R.string.invalid_first_name), Constants.SHORT_TIME);
-                }
+                startActivity(new Intent(mContext, DispensaryActivity.class));
+//                if (IsFieldValid(metFirstName.getEditableText(), Constants.SIGNUP_FIRST_NAME)) {
+//                    if (IsFieldValid(metLastName.getEditableText(), Constants.SIGNUP_LAST_NAME)) {
+//                        if (IsFieldValid(metPhoneNo.getEditableText(), Constants.SIGNUP_PHONE_VALIDATION)) {
+//                            if (IsFieldValid(metPassword.getEditableText(), Constants.SIGNUP_PASSWORD_VALIDATION)) {
+//                                Dailogs.ShowToast(mContext, "Home service is not ready yet?", Constants.LONG_TIME);
+//                                startActivity(new Intent(mContext, DispensaryActivity.class));
+//                            } else {
+//                                Dailogs.ShowToast(mContext, getString(R.string.invalid_password), Constants.SHORT_TIME);
+//                            }
+//                        } else {
+//                            Dailogs.ShowToast(mContext, getString(R.string.invalid_phone_no), Constants.SHORT_TIME);
+//                        }
+//                    } else {
+//                        Dailogs.ShowToast(mContext, getString(R.string.invalid_last_name), Constants.SHORT_TIME);
+//                    }
+//                } else {
+//                    Dailogs.ShowToast(mContext, getString(R.string.invalid_first_name), Constants.SHORT_TIME);
+//                }
                 break;
         }
     }

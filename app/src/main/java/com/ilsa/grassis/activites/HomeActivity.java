@@ -82,6 +82,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         mListViewTopSection = (LinearLayout) findViewById(R.id.home_lv_top_section);
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, Math.round(Helper.getFontSize(mContext.getResources(), 220)));
         mListViewTopSection.setLayoutParams(params);
+
         mImgLvTopSection = (ImageView) findViewById(R.id.home_lv_top_section_img);
         RelativeLayout.LayoutParams topImgHieght = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, Math.round(Helper.getFontSize(mContext.getResources(), 190)));
         mImgLvTopSection.setLayoutParams(topImgHieght);
