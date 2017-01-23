@@ -32,6 +32,9 @@ import com.ilsa.grassis.utils.Helper;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Home activity.
+ */
 public class HomeActivity extends AppCompatActivity implements View.OnClickListener {
 
     private Context mContext;
@@ -45,7 +48,6 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     private RegularTextView mtxtListViewBottomSection3Title, mtxtListViewBottomSection3SubTitle;
     private BoldSFTextView mtxtListTitleBottom, mtxtLvBottomSection2Per;
     private ThinTextView mtxtLvBottomSection2Off, mtxtLvBottomSection2Products;
-
     private ImageView mImgCart, mImgDetail, mImgLvTopSection;
 
     private LinearLayout mListViewTopSection, mListViewTopSectionText, mListViewBottomSectionPager, mListViewBottomSection2;
@@ -64,19 +66,23 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         initViews();
     }
 
+    /**
+     * Init toolbar.
+     */
     public void initToolBar() {
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         mtxtToolbarTitle = (BoldSFTextView) toolbar.findViewById(R.id.toolbar_title);
         mtxtToolbarTitleDump = (RegularTextView) toolbar.findViewById(R.id.toolbar_title_dump);
         toolbar.setTitle("");
-        String s = "Hi, " + "Cheryl.";
-        //mtxtToolbarTitle.setText(Helper.getBoldedText(s, 3, s.length()));
         mtxtToolbarTitle.setTextSize(Helper.getFontSize(mContext.getResources(), 6));
         mtxtToolbarTitleDump.setTextSize(Helper.getFontSize(mContext.getResources(), 6));
         setSupportActionBar(toolbar);
     }
 
+    /**
+     * Layout components initializing and bridging here.
+     */
     private void InitComponents() {
 
         mListViewTopSection = (LinearLayout) findViewById(R.id.home_lv_top_section);
@@ -188,6 +194,9 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         return view;
     }
 
+    /**
+     * Toolbar customization
+     */
     private void ActionBarConfigs() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             Window window = mActivity.getWindow();
@@ -217,8 +226,6 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         mSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                // Toast like print
-                // UserFeedback.show("SearchOnQueryTextSubmit: " + query);
 //                if (!mSearchView.isIconified()) {
 //                    mSearchView.setIconified(true);
 //                }
@@ -228,12 +235,9 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
             @Override
             public boolean onQueryTextChange(String s) {
-                // UserFeedback.show( "SearchOnQueryTextChanged: " + s);
                 return false;
             }
         });
         return true;
     }
-
-
 }

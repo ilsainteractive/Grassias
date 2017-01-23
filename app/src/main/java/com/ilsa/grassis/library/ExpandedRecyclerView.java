@@ -7,19 +7,36 @@ import android.util.AttributeSet;
 import android.view.ViewGroup;
 
 /**
- * Created by Ilsa on 1/18/2017.
+ * Expanded recycler view used to force exopnad all items of list.
  */
-
 public class ExpandedRecyclerView extends RecyclerView {
 
+    /**
+     * Instantiates a new Expanded recycler view.
+     *
+     * @param context the context
+     */
     public ExpandedRecyclerView(Context context) {
         super(context);
     }
 
+    /**
+     * Instantiates a new Expanded recycler view.
+     *
+     * @param context the context
+     * @param attrs   the attrs
+     */
     public ExpandedRecyclerView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
     }
 
+    /**
+     * Instantiates a new Expanded recycler view.
+     *
+     * @param context  the context
+     * @param attrs    the attrs
+     * @param defStyle the def style
+     */
     public ExpandedRecyclerView(Context context, @Nullable AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
     }

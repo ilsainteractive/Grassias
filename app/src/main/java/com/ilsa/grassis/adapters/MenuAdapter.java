@@ -15,17 +15,25 @@ import com.ilsa.grassis.vo.MenuListVO;
 import java.util.List;
 
 /**
- * Created by Ilsa on 1/18/2017.
+ * Menu list adapter.
  */
 public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.MyViewHolder> {
 
     private List<MenuListVO> menuList;
     private Context mContext;
 
+    /**
+     * The type My view holder.
+     */
     public class MyViewHolder extends RecyclerView.ViewHolder {
         private RegularTextView title;
         private ImageView imageView;
 
+        /**
+         * Instantiates a new My view holder.
+         *
+         * @param view the view
+         */
         public MyViewHolder(View view) {
             super(view);
             title = (RegularTextView) view.findViewById(R.id.menu_home_lv_title);
@@ -34,8 +42,14 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.MyViewHolder> 
         }
     }
 
-    public MenuAdapter(Context mContext, List<MenuListVO> moviesList) {
-        this.menuList = moviesList;
+    /**
+     * Instantiates a new Menu adapter.
+     *
+     * @param mContext the mContext
+     * @param menuList the menu list
+     */
+    public MenuAdapter(Context mContext, List<MenuListVO> menuList) {
+        this.menuList = menuList;
         this.mContext = mContext;
     }
 

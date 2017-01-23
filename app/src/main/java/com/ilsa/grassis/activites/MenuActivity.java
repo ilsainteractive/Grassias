@@ -35,6 +35,9 @@ import com.ilsa.grassis.vo.MenuListVO;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Menu activity contains list of items.
+ */
 public class MenuActivity extends AppCompatActivity {
 
     private Context mContext;
@@ -52,6 +55,8 @@ public class MenuActivity extends AppCompatActivity {
 
     private List<MenuListVO> menuListVOs;
 
+
+    // Dummy data for inflation
     private String[] titles = {"Exctracts", "Indica", "Sativa", "Hybrid", "Edibles", "Topicals", "Grow"};
     private int[] images = {R.mipmap.menu_lv_item_img, R.mipmap.menu_lv_item_img, R.mipmap.menu_lv_item_img,
             R.mipmap.menu_lv_item_img, R.mipmap.menu_lv_item_img, R.mipmap.menu_lv_item_img, R.mipmap.menu_lv_item_img};
@@ -72,6 +77,9 @@ public class MenuActivity extends AppCompatActivity {
         syncData();
     }
 
+    /**
+     * Init toolbar.
+     */
     public void initToolBar() {
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -88,6 +96,9 @@ public class MenuActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Layout components initializing and bridging here.
+     */
     private void InitComponents() {
 
         mTopBanner = (ImageView) findViewById(R.id.menu_bottom_banner);
@@ -99,18 +110,19 @@ public class MenuActivity extends AppCompatActivity {
         listener = new RecyclerTouchListener(mContext, recyclerView, new MenuItemClickListener() {
             @Override
             public void onClick(View view, int position) {
-//                Toast.makeText(mContext, "Clicked " + position, Toast.LENGTH_SHORT).show();
                 startActivity(new Intent(mContext, MenuItemActivity.class));
             }
 
             @Override
             public void onLongClick(View view, int position) {
-                //Toast.makeText(mContext, "long clicked " + position, Toast.LENGTH_SHORT).show();
             }
         });
         recyclerView.addOnItemTouchListener(listener);
     }
 
+    /**
+     * Syncing data from server to inflate on listview.
+     */
     private void syncData() {
         menuListVOs = new ArrayList<>();
         mMenuAdapter = new MenuAdapter(mContext, menuListVOs);
@@ -136,17 +148,19 @@ public class MenuActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        //mScrollView.scrollTo(0, mScrollView.getBottom());
         if (!isScrolled) {
-            mScrollView.postDelayed(new Runnable() {
+            mScrollView.post(new Runnable() {
                 public void run() {
                     mScrollView.fullScroll(View.FOCUS_UP);
                     isScrolled = true;
                 }
-            }, 200);
+            });
         }
     }
 
+    /**
+     * Toolbar customization
+     */
     private void ActionBarConfigs() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             Window window = mActivity.getWindow();
@@ -176,8 +190,6 @@ public class MenuActivity extends AppCompatActivity {
         mSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                // Toast like print
-                // UserFeedback.show("SearchOnQueryTextSubmit: " + query);
 //                if (!mSearchView.isIconified()) {
 //                    mSearchView.setIconified(true);
 //                }

@@ -7,14 +7,20 @@ import android.view.MotionEvent;
 import android.view.View;
 
 /**
- * Created by Ilsa on 1/18/2017.
+ * Recycler touch listener.
  */
-
 public class RecyclerTouchListener implements RecyclerView.OnItemTouchListener {
 
     private GestureDetector gestureDetector;
     private MenuItemClickListener clickListener;
 
+    /**
+     * Instantiates a new Recycler touch listener.
+     *
+     * @param context       the context
+     * @param recyclerView  the recycler view
+     * @param clickListener the click listener
+     */
     public RecyclerTouchListener(Context context, final RecyclerView recyclerView, final MenuItemClickListener clickListener) {
         this.clickListener = clickListener;
         gestureDetector = new GestureDetector(context, new GestureDetector.SimpleOnGestureListener() {

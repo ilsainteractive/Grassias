@@ -18,20 +18,23 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.ilsa.grassis.R;
-import com.ilsa.grassis.vo.DispensoryVO;
+import com.ilsa.grassis.vo.DispensaryVO;
 
 import java.util.ArrayList;
 
+/**
+ * Dispensary activity contains map view of locations.
+ */
 public class DispensaryActivity extends AppCompatActivity implements OnMapReadyCallback {
 
     private Context mContext;
-    private GoogleMap mMap;
     private Toolbar mToolbar;
-    private SearchView mSearchView;
     private Activity mActivity;
-    private Toolbar toolbar;
 
-    private ArrayList<DispensoryVO> list;
+    private GoogleMap mMap;
+    private SearchView mSearchView;
+
+    private ArrayList<DispensaryVO> list;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,13 +48,16 @@ public class DispensaryActivity extends AppCompatActivity implements OnMapReadyC
         AddListener();
     }
 
+    /**
+     * Init toolbar.
+     */
     public void initToolBar() {
 
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setTitle("");
-        toolbar.setNavigationIcon(R.mipmap.signup_back_arrow);
-        setSupportActionBar(toolbar);
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+        mToolbar = (Toolbar) findViewById(R.id.toolbar);
+        mToolbar.setTitle("Layout under construction");
+        mToolbar.setNavigationIcon(R.mipmap.signup_back_arrow);
+        setSupportActionBar(mToolbar);
+        mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 onBackPressed();
@@ -59,12 +65,14 @@ public class DispensaryActivity extends AppCompatActivity implements OnMapReadyC
         });
     }
 
+    /**
+     * Layout components initializing and bridging here.
+     */
     private void InitComponents() {
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
-
 
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
         mToolbar.setNavigationIcon(R.mipmap.signup_back_arrow);
@@ -72,6 +80,9 @@ public class DispensaryActivity extends AppCompatActivity implements OnMapReadyC
         getSupportActionBar().setDisplayShowHomeEnabled(true);
     }
 
+    /**
+     * Syncing data from server to inflate on map view.
+     */
     private void SyncData() {
         getDispensaryList();
     }
@@ -85,7 +96,7 @@ public class DispensaryActivity extends AppCompatActivity implements OnMapReadyC
         double[] longs = {74.349402, 74.346904, 74.333494, 74.349792};
         for (int i = 0; i < longs.length; i++) {
 
-            DispensoryVO item = new DispensoryVO();
+            DispensaryVO item = new DispensaryVO();
             item.setId(i + "");
             item.setImg(i + "");
             item.setTitle(Title[i]);
@@ -94,9 +105,11 @@ public class DispensaryActivity extends AppCompatActivity implements OnMapReadyC
             item.setLog(longs[i]);
             list.add(item);
         }
-        //Dailogs.ShowToast(mContext, "No web service available yet!", Constants.SHORT_TIME);
     }
 
+    /**
+     * Applying listeners to views.
+     */
     private void AddListener() {
     }
 
@@ -123,8 +136,6 @@ public class DispensaryActivity extends AppCompatActivity implements OnMapReadyC
         mSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                // Toast like print
-                // UserFeedback.show("SearchOnQueryTextSubmit: " + query);
 //                if (!mSearchView.isIconified()) {
 //                    mSearchView.setIconified(true);
 //                }
@@ -134,7 +145,6 @@ public class DispensaryActivity extends AppCompatActivity implements OnMapReadyC
 
             @Override
             public boolean onQueryTextChange(String s) {
-                // UserFeedback.show( "SearchOnQueryTextChanged: " + s);
                 return false;
             }
         });

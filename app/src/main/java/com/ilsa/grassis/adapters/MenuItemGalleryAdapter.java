@@ -14,11 +14,19 @@ import com.ilsa.grassis.R;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Menu item gallery view for adapter items screen shots.
+ */
 public class MenuItemGalleryAdapter extends PagerAdapter {
 
     private List<View> viewList;
     private Context mContext;
 
+    /**
+     * Instantiates a new Menu item gallery adapter.
+     *
+     * @param mContext the mContext
+     */
     public MenuItemGalleryAdapter(Context mContext) {
         this.mContext = mContext;
         this.viewList = new ArrayList<>();
@@ -37,8 +45,7 @@ public class MenuItemGalleryAdapter extends PagerAdapter {
 
         imgDisplay = (ImageView) v
                 .findViewById(R.id.home_lv_bottom_img);
-//        Glide.with(mContext).load(mUrls.get(position))
-//                .placeholder(R.drawable.wait_image).into(imgDisplay);
+        //Glide.with(mContext).load(mUrls.get(position)).placeholder(R.drawable.wait_image).into(imgDisplay);
         container.addView(v);
 
         return v;
@@ -64,21 +71,29 @@ public class MenuItemGalleryAdapter extends PagerAdapter {
         return POSITION_NONE;
     }
 
+    /**
+     * Gets data.
+     *
+     * @return the data
+     */
     @NonNull
     List<View> getData() {
         if (viewList == null) {
             viewList = new ArrayList<>();
         }
-
         return viewList;
     }
 
+    /**
+     * Sets data.
+     *
+     * @param list the list
+     */
     public void setData(@Nullable List<View> list) {
         this.viewList.clear();
         if (list != null && !list.isEmpty()) {
             this.viewList.addAll(list);
         }
-
         notifyDataSetChanged();
     }
 }

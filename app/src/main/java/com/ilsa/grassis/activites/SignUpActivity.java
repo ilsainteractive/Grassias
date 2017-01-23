@@ -22,10 +22,10 @@ import com.ilsa.grassis.utils.Dailogs;
 import com.ilsa.grassis.utils.Helper;
 
 /**
- * Created by Ilsa on 1/3/2017.
+ * Sign up activity.
  */
-
-public class SignUpActivity extends AppCompatActivity implements View.OnClickListener, TextWatcher, View.OnFocusChangeListener {
+public class SignUpActivity extends AppCompatActivity implements View.OnClickListener, TextWatcher,
+        View.OnFocusChangeListener {
 
     private Context mContext;
     private Activity mActivity;
@@ -34,8 +34,8 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
     private RegularTextView mtxtEmail, mtxtNext;
     private CustomEditText metFirstName, metLastName, metPhoneNo, metPassword;
     private ImageView mImgFirstName, mImgLastName, mImgPhoneNo, mImgPassword;
-
-    private LinearLayout mTopLayout, mFirstNameLayout, mLastNameLayout, mEmailLayout, mPhoneNoLayout, mPasswordLayout, mNextLayout;
+    private LinearLayout mTopLayout, mFirstNameLayout, mLastNameLayout,
+            mEmailLayout, mPhoneNoLayout, mPasswordLayout, mNextLayout;
 
     private int whoHasFocus = 0;
 
@@ -51,6 +51,9 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
         AddListener();
     }
 
+    /**
+     * Init toolbar.
+     */
     public void initToolBar() {
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -65,6 +68,9 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
         });
     }
 
+    /**
+     * Layout components initializing and bridging here.
+     */
     private void InitComponents() {
 
         mTopLayout = (LinearLayout) findViewById(R.id.signup_top_layout);
@@ -109,6 +115,9 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
         mImgPassword = (ImageView) findViewById(R.id.signup_img_password);
     }
 
+    /**
+     * Applying listeners to views.
+     */
     private void AddListener() {
         mImgPhoneNo.setOnClickListener(this);
         mtxtNext.setOnClickListener(this);

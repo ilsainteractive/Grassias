@@ -38,6 +38,9 @@ import com.ilsa.grassis.vo.MenuListVO;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Menu item activity contains details about selected item from menu.
+ */
 public class MenuItemActivity extends AppCompatActivity {
 
     private Context mContext;
@@ -54,6 +57,7 @@ public class MenuItemActivity extends AppCompatActivity {
     private ExpandedRecyclerView recyclerView;
     private MenuItemAdapter mMenuAdapter;
 
+    // dummy data list vaues
     private List<MenuListVO> menuListVOs;
     private String[] titles = {"Hindu Kush", "Mango Kush", "Death Star", "Hindu Kush", "Mango Kush", "Death Star", "Hindu Kush", "Mango Kush", "Death Star"};
     private RecyclerTouchListener listener;
@@ -99,6 +103,9 @@ public class MenuItemActivity extends AppCompatActivity {
         return view;
     }
 
+    /**
+     * Init toolbar.
+     */
     public void initToolBar() {
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -115,6 +122,9 @@ public class MenuItemActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Layout components initializing and bridging here.
+     */
     private void InitComponents() {
 
         mScrollView = (ScrollView) findViewById(R.id.scrollView);
@@ -145,6 +155,9 @@ public class MenuItemActivity extends AppCompatActivity {
         recyclerView.addOnItemTouchListener(listener);
     }
 
+    /**
+     * Syncing data from server to inflate on listview.
+     */
     private void syncData() {
         menuListVOs = new ArrayList<>();
         mMenuAdapter = new MenuItemAdapter(mContext, menuListVOs);
@@ -171,15 +184,18 @@ public class MenuItemActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         if (!isScrolled) {
-            mScrollView.postDelayed(new Runnable() {
+            mScrollView.post(new Runnable() {
                 public void run() {
                     mScrollView.fullScroll(View.FOCUS_UP);
                     isScrolled = true;
                 }
-            }, 200);
+            });
         }
     }
 
+    /**
+     * Toolbar customization
+     */
     private void ActionBarConfigs() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             Window window = mActivity.getWindow();
@@ -209,8 +225,6 @@ public class MenuItemActivity extends AppCompatActivity {
         mSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                // Toast like print
-                // UserFeedback.show("SearchOnQueryTextSubmit: " + query);
 //                if (!mSearchView.isIconified()) {
 //                    mSearchView.setIconified(true);
 //                }
@@ -220,7 +234,6 @@ public class MenuItemActivity extends AppCompatActivity {
 
             @Override
             public boolean onQueryTextChange(String s) {
-                // UserFeedback.show( "SearchOnQueryTextChanged: " + s);
                 return false;
             }
         });

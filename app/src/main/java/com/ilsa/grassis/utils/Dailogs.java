@@ -9,11 +9,17 @@ import android.widget.Toast;
 import com.ilsa.grassis.library.Constants;
 
 /**
- * Created by Ilsa on 1/4/2017.
+ * The type Dailogs.
  */
-
 public class Dailogs {
 
+    /**
+     * Show toast.
+     *
+     * @param context the context
+     * @param message the message
+     * @param type    the type
+     */
     public static void ShowToast(Context context, String message, int type) {
         if (Constants.LONG_TIME == type)
             Toast.makeText(context, message, Toast.LENGTH_LONG).show();
@@ -21,6 +27,15 @@ public class Dailogs {
             Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
     }
 
+    /**
+     * Create bottom sheet dialog.
+     *
+     * @param context    the context
+     * @param style      the style
+     * @param layout     the layout
+     * @param cancelable the cancelable
+     * @return the dialog
+     */
     public static Dialog CreateBottomSheet(Context context, int style, int layout, boolean cancelable) {
         if (context != null) {
             Dialog mBottomSheetDialog = new Dialog(context, style);

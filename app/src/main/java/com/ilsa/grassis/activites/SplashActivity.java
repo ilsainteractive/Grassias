@@ -18,6 +18,9 @@ import com.ilsa.grassis.library.BoldTextView;
 import com.ilsa.grassis.library.UltraThinTextView;
 import com.ilsa.grassis.utils.Helper;
 
+/**
+ * The type Splash activity.
+ */
 public class SplashActivity extends AppCompatActivity {
 
     private Context mContext;
@@ -34,7 +37,7 @@ public class SplashActivity extends AppCompatActivity {
 
         mContext = this;
         mActivity = this;
-        //ActionBarConfigs();
+        //ActionBarConfig();
         InitComponents();
 
         new CountDownTimer(mTotalTime, mTimeInterval) {
@@ -48,6 +51,9 @@ public class SplashActivity extends AppCompatActivity {
         }.start();
     }
 
+    /**
+     * Layout components initializing and bridging here.
+     */
     private void InitComponents() {
 
         mTxtTitle = (BoldTextView) findViewById(R.id.splash_txt_title);
@@ -60,7 +66,10 @@ public class SplashActivity extends AppCompatActivity {
         }
     }
 
-    private void ActionBarConfigs() {
+    /**
+     * Toolbar customization
+     */
+    private void ActionBarConfig() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             Window window = mActivity.getWindow();
             window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
@@ -78,44 +87,5 @@ public class SplashActivity extends AppCompatActivity {
                 view.setBackgroundColor(mContext.getResources().getColor(R.color.baseColor));
             }
         }
-    }
-
-    void progCreatedLayout() {//
-//        ImageView imageView = new ImageView(mContext);
-//        imageView.setImageResource(R.mipmap.flower);
-//        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
-//                LinearLayout.LayoutParams.WRAP_CONTENT);
-//        layoutParams.setMargins(0, Helper.pxToDp(mContext.getResources(), 600f), 0, 0);
-//        imageView.setLayoutParams(layoutParams);
-//        mainLayout.addView(imageView);
-//
-//        BoldTextView Title = new BoldTextView(mContext);
-//        Title.setText(getString(R.string.app_name_txt));
-//        Title.setTextSize(TypedValue.COMPLEX_UNIT_PX, 100);
-//        Title.setPadding(Helper.pxToDp(mContext.getResources(), 53f), Helper.pxToDp(mContext.getResources(), 80f), Helper.pxToDp(mContext.getResources(), 53f), 0);
-//        Title.setGravity(Gravity.CENTER);
-//        Title.setTextColor(getResources().getColor(R.color.white));
-//        Title.setLetterSpacing(.3f);
-//
-//        LinearLayout.LayoutParams titlePrams = new LinearLayout.LayoutParams(
-//                LinearLayout.LayoutParams.MATCH_PARENT,
-//                LinearLayout.LayoutParams.WRAP_CONTENT);
-//        Title.setLayoutParams(titlePrams);
-//        mainLayout.addView(Title);
-//
-//        UltraThinTextView SunTitle = new UltraThinTextView(mContext);
-//        SunTitle.setText(getString(R.string.splash_sub_title));
-//        SunTitle.setTextSize(TypedValue.COMPLEX_UNIT_PX, 65);
-//        SunTitle.setPadding(Helper.dpToPx(mContext.getResources(), 20), Helper.pxToDp(mContext.getResources(), 120), Helper.dpToPx(mContext.getResources(), 20), 0);
-//        SunTitle.setGravity(Gravity.CENTER | Gravity.LEFT);
-//        SunTitle.setTextColor(getResources().getColor(R.color.white));
-//        SunTitle.setLetterSpacing(.1f);
-//        SunTitle.setLineSpacing(0, 1f);
-//
-//        LinearLayout.LayoutParams SubTitlePrams = new LinearLayout.LayoutParams(
-//                LinearLayout.LayoutParams.MATCH_PARENT,
-//                LinearLayout.LayoutParams.WRAP_CONTENT);
-//        Title.setLayoutParams(SubTitlePrams);
-//        mainLayout.addView(SunTitle);}
     }
 }

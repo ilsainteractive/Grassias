@@ -78,7 +78,8 @@
                         android:inputType="textPersonName"
                         android:maxLines="1"
                         android:textColor="@color/lightGrey"
-                        android:textColorHint="@color/lightGrey" />
+                        android:textColorHint="@color/lightGrey"
+                        android:textCursorDrawable="@color/black" />
 
                     <ImageView
                         android:id="@+id/signup_img_first_name"
@@ -125,7 +126,8 @@
                         android:inputType="textPersonName"
                         android:maxLines="1"
                         android:textColor="@color/lightGrey"
-                        android:textColorHint="@color/lightGrey" />
+                        android:textColorHint="@color/lightGrey"
+                        android:textCursorDrawable="@color/black" />
 
                     <ImageView
                         android:id="@+id/signup_img_last_name"
@@ -233,7 +235,8 @@
                         android:inputType="phone"
                         android:maxLines="1"
                         android:textColor="@color/lightGrey"
-                        android:textColorHint="@color/lightGrey" />
+                        android:textColorHint="@color/lightGrey"
+                        android:textCursorDrawable="@color/black" />
 
                     <ImageView
                         android:id="@+id/signup_img_phone_question"
@@ -280,7 +283,8 @@
                         android:inputType="textPersonName"
                         android:maxLines="1"
                         android:textColor="@color/lightGrey"
-                        android:textColorHint="@color/lightGrey" />
+                        android:textColorHint="@color/lightGrey"
+                        android:textCursorDrawable="@color/black" />
 
                     <ImageView
                         android:id="@+id/signup_img_password"

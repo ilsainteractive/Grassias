@@ -15,15 +15,10 @@ import android.widget.FrameLayout;
 import com.ilsa.grassis.R;
 import com.ilsa.grassis.library.AppContoller;
 import com.ilsa.grassis.library.BoldTextView;
-import com.ilsa.grassis.library.Constants;
 import com.ilsa.grassis.library.CustomEditText;
 import com.ilsa.grassis.library.RegularTextView;
-import com.ilsa.grassis.utils.Dailogs;
 import com.ilsa.grassis.utils.Helper;
 
-/**
- * Created by Ilsa on 1/3/2017.
- */
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -104,7 +99,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 break;
             case R.id.login_txt_skip_now:
                 AppContoller.IsLoggedIn = false;
-                Dailogs.ShowToast(mContext, "Home service is not ready yet?", Constants.LONG_TIME);
+                startActivity(new Intent(mContext, SignUpActivity.class));
                 break;
             case R.id.login_txt_get_started:
                 startActivity(new Intent(mContext, HomeActivity.class));

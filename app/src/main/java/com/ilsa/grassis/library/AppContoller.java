@@ -5,11 +5,13 @@ import android.support.multidex.MultiDex;
 import android.support.multidex.MultiDexApplication;
 
 /**
- * Created by Ilsa on 1/4/2017.
+ * App contoller class to mange application lifecycle
  */
-
 public class AppContoller extends MultiDexApplication {
 
+    /**
+     * The constant IsLoggedIn.
+     */
     public static boolean IsLoggedIn;
 
     @Override

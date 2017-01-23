@@ -18,6 +18,9 @@ import com.ilsa.grassis.library.RegularTextView;
 import com.ilsa.grassis.library.ThinTextView;
 import com.ilsa.grassis.utils.Helper;
 
+/**
+ * Menu item details activity contain detail about single entity selected from menu list .
+ */
 public class MenuItemDetailsActivity extends AppCompatActivity {
 
     private Context mContext;
@@ -35,7 +38,6 @@ public class MenuItemDetailsActivity extends AppCompatActivity {
     private RegularTextView mtxtIngUnit1, mtxtIngUnit2, mtxtIngUnit3, mtxtIngUnit4, mtxtIngUnit5;
     private RegularTextView mtxtIngValue1, mtxtIngValue2, mtxtIngValue3, mtxtIngValue4, mtxtIngValue5;
 
-
     private boolean isScrolled = false;
 
     @Override
@@ -50,6 +52,9 @@ public class MenuItemDetailsActivity extends AppCompatActivity {
         InitComponents();
     }
 
+    /**
+     * Init toolbar.
+     */
     public void initToolBar() {
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -66,13 +71,12 @@ public class MenuItemDetailsActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Layout components initializing and bridging here.
+     */
     private void InitComponents() {
 
         mScrollView = (ScrollView) findViewById(R.id.scrollView);
-        //LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
-        //        Math.round(Helper.getFontSize(mContext.getResources(), 275)));
-        //mViewPager.setLayoutParams(layoutParams);
-
         mImageLayout = (LinearLayout) findViewById(R.id.menu_item_details_img_layout);
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
                 Math.round(Helper.getFontSize(mContext.getResources(), 390)));
@@ -152,12 +156,12 @@ public class MenuItemDetailsActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         if (!isScrolled) {
-            mScrollView.postDelayed(new Runnable() {
+            mScrollView.post(new Runnable() {
                 public void run() {
                     mScrollView.fullScroll(View.FOCUS_UP);
                     isScrolled = true;
                 }
-            }, 200);
+            });
         }
     }
 

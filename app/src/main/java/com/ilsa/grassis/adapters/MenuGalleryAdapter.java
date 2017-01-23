@@ -17,11 +17,19 @@ import com.ilsa.grassis.utils.Helper;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Menu gallery view for adapter items screen shots.
+ */
 public class MenuGalleryAdapter extends PagerAdapter {
 
     private List<View> viewList;
     private Context mContext;
 
+    /**
+     * Instantiates a new Menu gallery adapter.
+     *
+     * @param mContext the mContext
+     */
     public MenuGalleryAdapter(Context mContext) {
         this.mContext = mContext;
         this.viewList = new ArrayList<>();
@@ -67,21 +75,29 @@ public class MenuGalleryAdapter extends PagerAdapter {
         return POSITION_NONE;
     }
 
+    /**
+     * Sets data.
+     *
+     * @param list the list
+     */
     public void setData(@Nullable List<View> list) {
         this.viewList.clear();
         if (list != null && !list.isEmpty()) {
             this.viewList.addAll(list);
         }
-
         notifyDataSetChanged();
     }
 
+    /**
+     * Gets data.
+     *
+     * @return the data
+     */
     @NonNull
     List<View> getData() {
         if (viewList == null) {
             viewList = new ArrayList<>();
         }
-
         return viewList;
     }
 }
