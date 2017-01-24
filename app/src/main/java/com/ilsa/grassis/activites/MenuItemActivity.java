@@ -218,7 +218,7 @@ public class MenuItemActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.home_menu, menu);
+        getMenuInflater().inflate(R.menu.menu_home, menu);
 
         MenuItem myActionMenuItem = menu.findItem(R.id.action_search);
         mSearchView = (SearchView) myActionMenuItem.getActionView();

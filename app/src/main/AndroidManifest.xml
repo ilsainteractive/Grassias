@@ -57,10 +57,21 @@
         <activity
             android:name=".activites.DispensaryActivity"
             android:label="@string/title_activity_dispensary"
+            android:screenOrientation="portrait"
             android:theme="@style/HomeTheme">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.ilsa.grassis.activites.SignUpActivity" />
+        </activity>
+        <activity
+            android:name=".activites.DiscoverActivity"
+            android:label="@string/title_activity_discover"
+            android:parentActivityName=".activites.HomeActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.ilsa.grassis.activites.HomeActivity" />
         </activity>
     </application>
 

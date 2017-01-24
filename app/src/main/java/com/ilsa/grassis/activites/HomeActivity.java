@@ -32,6 +32,9 @@ import com.ilsa.grassis.utils.Helper;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 /**
  * Home activity.
  */
@@ -50,12 +53,16 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     private ThinTextView mtxtLvBottomSection2Off, mtxtLvBottomSection2Products;
     private ImageView mImgCart, mImgDetail, mImgLvTopSection;
 
+    @BindView(R.id.home_btn_dispensory)
+    ImageView mDiscover;
+
     private LinearLayout mListViewTopSection, mListViewTopSectionText, mListViewBottomSectionPager, mListViewBottomSection2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+        ButterKnife.bind(this);
 
         mContext = this;
         mActivity = this;
@@ -154,6 +161,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     private void AddListener() {
 
         mImgDetail.setOnClickListener(this);
+        mDiscover.setOnClickListener(this);
     }
 
     @Override
@@ -161,6 +169,9 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         switch (v.getId()) {
             case R.id.home_list_box_detail:
                 startActivity(new Intent(mContext, MenuActivity.class));
+                break;
+            case R.id.home_btn_dispensory:
+                startActivity(new Intent(mContext, DiscoverActivity.class));
                 break;
         }
 
@@ -219,7 +230,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.home_menu, menu);
+        getMenuInflater().inflate(R.menu.menu_home, menu);
 
         MenuItem myActionMenuItem = menu.findItem(R.id.action_search);
         mSearchView = (SearchView) myActionMenuItem.getActionView();

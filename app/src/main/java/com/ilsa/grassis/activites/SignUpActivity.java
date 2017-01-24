@@ -243,7 +243,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
             case R.id.signup_img_phone_question:
                 if (IsFieldValid(metPhoneNo.getEditableText(), Constants.SIGNUP_PHONE_VALIDATION)) {
                 } else {
-                    Dialog mBottomSheetDialog = Dailogs.CreateBottomSheet(mContext, R.style.MaterialDialogSheet, R.layout.signup_phone_dailog, true);
+                    Dialog mBottomSheetDialog = Dailogs.CreateBottomSheet(mContext, R.style.MaterialDialogSheet, R.layout.dailog_signup_phone, true);
                     RegularTextView textView = (RegularTextView) mBottomSheetDialog.findViewById(R.id.msg);
                     textView.setTextSize(Helper.getFontSize(mContext.getResources(), 5.7));
                     mBottomSheetDialog.show();

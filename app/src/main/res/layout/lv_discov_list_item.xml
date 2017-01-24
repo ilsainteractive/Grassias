@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:orientation="horizontal"
+    android:padding="15dp"
+    android:weightSum="10"
+    tools:context="com.ilsa.grassis.activites.MenuItemActivity">
+
+    <ImageView
+        android:id="@+id/discov_map_item_lv_image"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_marginRight="5dp"
+        android:layout_weight="2.2"
+        android:scaleType="centerInside"
+        android:src="@mipmap/map_dailog_popup_img" />
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="6.8"
+        android:orientation="vertical">
+
+        <com.ilsa.grassis.library.BoldSFTextView
+            android:id="@+id/discov_map_item_lv_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="TITLE NAME HERE"
+            android:textColor="@color/txt_psd_color"></com.ilsa.grassis.library.BoldSFTextView>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <com.ilsa.grassis.library.RegularTextView
+                android:id="@+id/discov_map_item_lv_add"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:text="1658 W. 227th st. Torrance, CA 90501 "
+                android:textColor="@color/txt_psd_color" />
+
+            <com.ilsa.grassis.library.RegularTextView
+                android:id="@+id/discov_map_item_lv_timings"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginTop="2dp"
+                android:text="2.3 miles  |  OPEN till 8:00pm"
+                android:textColor="@color/txt_psd_color" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/menu_item_lv_image_proceed"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:layout_weight="1"
+        android:scaleType="centerInside"
+        android:src="@mipmap/heart_icon_empty" />
+
+</LinearLayout>
