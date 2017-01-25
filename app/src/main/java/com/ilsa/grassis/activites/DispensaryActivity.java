@@ -67,7 +67,6 @@ public class DispensaryActivity extends AppCompatActivity implements OnMapReadyC
     @BindView(R.id.home_lv_bottom_section_2_subTitle)
     RegularTextView mtxtSelecAddresse;
 
-
     private ArrayList<DispensaryVO> list;
 
     @Override

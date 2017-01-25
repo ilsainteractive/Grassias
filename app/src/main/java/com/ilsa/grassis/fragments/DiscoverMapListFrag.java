@@ -2,12 +2,19 @@ package com.ilsa.grassis.fragments;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.DividerItemDecoration;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -18,6 +25,11 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.ilsa.grassis.R;
+import com.ilsa.grassis.activites.DispensaryInfoActivity;
+import com.ilsa.grassis.adapters.DiscovAdapter;
+import com.ilsa.grassis.library.ExpandedRecyclerView;
+import com.ilsa.grassis.library.MenuItemClickListener;
+import com.ilsa.grassis.library.RecyclerTouchListener;
 import com.ilsa.grassis.vo.DispensaryVO;
 
 import java.util.ArrayList;
@@ -26,26 +38,31 @@ import java.util.ArrayList;
  * Created by SohailZahid on 1/24/2017.
  */
 
-public class DiscoverMapFrag extends Fragment implements OnMapReadyCallback {
+public class DiscoverMapListFrag extends Fragment implements OnMapReadyCallback {
 
     private Context mContext;
     private Toolbar mToolbar;
     private Activity mActivity;
 
     private GoogleMap mMap;
+    public static LinearLayout mapView;
+    public static ExpandedRecyclerView recyclerView;
+    private DiscovAdapter discovAdapter;
+    private RecyclerTouchListener listener;
+
     private ArrayList<DispensaryVO> list;
 
     private static final String ARG_SECTION_NUMBER = "section_number";
 
-    public DiscoverMapFrag() {
+    public DiscoverMapListFrag() {
     }
 
     /**
      * Returns a new instance of this fragment for the given section
      * number.
      */
-    public static DiscoverMapFrag newInstance(int sectionNumber) {
-        DiscoverMapFrag fragment = new DiscoverMapFrag();
+    public static DiscoverMapListFrag newInstance(int sectionNumber) {
+        DiscoverMapListFrag fragment = new DiscoverMapListFrag();
         Bundle args = new Bundle();
         args.putInt(ARG_SECTION_NUMBER, sectionNumber);
         fragment.setArguments(args);
@@ -55,11 +72,40 @@ public class DiscoverMapFrag extends Fragment implements OnMapReadyCallback {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_discover_map, container, false);
-        getDispensaryList();
+        View rootView = inflater.inflate(R.layout.fragment_discover_map_list, container, false);
+        mContext = getContext();
+        mActivity = getActivity();
+        mapView = (LinearLayout) rootView.findViewById(R.id.map_view);
         SupportMapFragment mapFragment = ((SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map));
         mapFragment.getMapAsync(this);
         return rootView;
+    }
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        getDispensaryList();
+        discovAdapter = new DiscovAdapter(mContext, list);
+        recyclerView = (ExpandedRecyclerView) view.findViewById(R.id.recycler_view);
+        listener = new RecyclerTouchListener(mContext, recyclerView, new MenuItemClickListener() {
+            @Override
+            public void onClick(View view, int position) {
+                startActivity(new Intent(mContext, DispensaryInfoActivity.class));
+            }
+
+            @Override
+            public void onLongClick(View view, int position) {
+                //Toast.makeText(mContext, "long clicked " + position, Toast.LENGTH_SHORT).show();
+            }
+        });
+        recyclerView.addOnItemTouchListener(listener);
+        recyclerView.setHasFixedSize(true);
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(mContext);
+        recyclerView.setLayoutManager(mLayoutManager);
+        recyclerView.addItemDecoration(new DividerItemDecoration(mContext, LinearLayoutManager.VERTICAL));
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        recyclerView.setAdapter(discovAdapter);
+        recyclerView.setNestedScrollingEnabled(false);
     }
 
     private void getDispensaryList() {

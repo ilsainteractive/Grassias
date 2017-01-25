@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_splash"
+    android:layout_width="match_parent"
+    android:layout_height="?attr/actionBarSize"
+    android:background="#252b2b"
+    android:padding="15dp"
+    tools:context="com.ilsa.grassis.activites.HomeActivity">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:layout_gravity="center_horizontal|center_vertical">
+
+        <ImageView
+            android:id="@+id/home_btn_home"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:paddingRight="20dp"
+            android:src="@mipmap/heart_icon_empty_white" />
+
+        <com.ilsa.grassis.library.RegularTextView
+            android:id="@+id/home_btn_dispensory"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:src="@mipmap/home_bttom_icon_dispensory"
+            android:text="ADD TO FAVORITES"
+            android:textColor="@color/white" />
+    </LinearLayout>
+
+</RelativeLayout>
+
