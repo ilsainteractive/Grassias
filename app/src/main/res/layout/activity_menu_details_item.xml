@@ -56,7 +56,7 @@
                     android:layout_weight="7.5"
                     android:orientation="vertical">
 
-                    <com.ilsa.grassis.library.BoldSFUITextView
+                    <com.ilsa.grassis.library.SFUITextBold
                         android:id="@+id/menu_item_details_txt_name"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"

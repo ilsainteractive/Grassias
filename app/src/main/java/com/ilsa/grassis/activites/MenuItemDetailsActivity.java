@@ -12,7 +12,7 @@ import android.widget.LinearLayout;
 import android.widget.ScrollView;
 
 import com.ilsa.grassis.R;
-import com.ilsa.grassis.library.BoldSFUITextView;
+import com.ilsa.grassis.library.SFUITextBold;
 import com.ilsa.grassis.library.MediumTextView;
 import com.ilsa.grassis.library.RegularTextView;
 import com.ilsa.grassis.library.ThinTextView;
@@ -31,7 +31,7 @@ public class MenuItemDetailsActivity extends AppCompatActivity {
     private LinearLayout mImageLayout, mTitleLayout, mPrecentLayout, mValueBarLayout;
 
     private MediumTextView mtxtToolbarTitle;
-    private BoldSFUITextView mtxtTtile;
+    private SFUITextBold mtxtTtile;
     private ThinTextView mTxtSubTitle;
     private RegularTextView mtxtTHC, mtxtCBD, mtxtCBN, mtxtDesc;
 
@@ -103,7 +103,7 @@ public class MenuItemDetailsActivity extends AppCompatActivity {
         mValueBarLayout.setPadding(Math.round(Helper.getFontSize(mContext.getResources(), 15)), 0,
                 Math.round(Helper.getFontSize(mContext.getResources(), 15)), 0);
 
-        mtxtTtile = (BoldSFUITextView) findViewById(R.id.menu_item_details_txt_name);
+        mtxtTtile = (SFUITextBold) findViewById(R.id.menu_item_details_txt_name);
         mtxtTtile.setTextSize(Helper.getFontSize(getResources(), 6));
 
         mTxtSubTitle = (ThinTextView) findViewById(R.id.menu_item_details_txt_sub_name);

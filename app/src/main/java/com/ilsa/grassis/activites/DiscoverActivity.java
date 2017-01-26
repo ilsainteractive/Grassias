@@ -83,6 +83,7 @@ public class DiscoverActivity extends AppCompatActivity {
             }
         });
 
+
         mtxtStoreFront.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

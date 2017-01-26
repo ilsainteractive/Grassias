@@ -9,7 +9,7 @@ import android.widget.TextView;
 /**
  * Bold TextView with font `SFUIText-Bold.otf`.
  */
-public class BoldSFUITextView extends TextView {
+public class SFUITextBold extends TextView {
 
 
     /**
@@ -17,7 +17,7 @@ public class BoldSFUITextView extends TextView {
      *
      * @param context the context
      */
-    public BoldSFUITextView(Context context) {
+    public SFUITextBold(Context context) {
         super(context);
         Typeface face = Typeface.createFromAsset(context.getAssets(), "fonts/SFUIText-Bold.otf");
         this.setTypeface(face);
@@ -29,7 +29,7 @@ public class BoldSFUITextView extends TextView {
      * @param context the context
      * @param attrs   the attrs
      */
-    public BoldSFUITextView(Context context, AttributeSet attrs) {
+    public SFUITextBold(Context context, AttributeSet attrs) {
         super(context, attrs);
         Typeface face = Typeface.createFromAsset(context.getAssets(), "fonts/SFUIText-Bold.otf");
         this.setTypeface(face);
@@ -42,7 +42,7 @@ public class BoldSFUITextView extends TextView {
      * @param attrs    the attrs
      * @param defStyle the def style
      */
-    public BoldSFUITextView(Context context, AttributeSet attrs, int defStyle) {
+    public SFUITextBold(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         Typeface face = Typeface.createFromAsset(context.getAssets(), "fonts/SFUIText-Bold.otf");
         this.setTypeface(face);

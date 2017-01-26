@@ -2,6 +2,7 @@ package com.ilsa.grassis.activites;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -22,7 +23,8 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.ilsa.grassis.R;
 import com.ilsa.grassis.adapters.MenuGalleryAdapter;
-import com.ilsa.grassis.library.BoldSFUITextView;
+import com.ilsa.grassis.library.SFUITextBold;
+import com.ilsa.grassis.library.MediumTextView;
 import com.ilsa.grassis.library.RegularTextView;
 import com.ilsa.grassis.utils.Helper;
 
@@ -56,7 +58,7 @@ public class DispensaryInfoActivity extends AppCompatActivity implements OnMapRe
      * The Mtxt toolbar title.
      */
     @BindView(R.id.dispensary_info_toolbar_title)
-    BoldSFUITextView mtxtToolbarTitle;
+    SFUITextBold mtxtToolbarTitle;
 
     /**
      * The Mtxt toolbar sub title.
@@ -78,6 +80,9 @@ public class DispensaryInfoActivity extends AppCompatActivity implements OnMapRe
     @BindView(R.id.viewPager)
     ViewPager pager_layout;
 
+    @BindView(R.id.dispensaryInfo_txt_menu_view)
+    MediumTextView mtxtMenuView;
+
     private GoogleMap mMap;
     private SearchView mSearchView;
 
@@ -91,6 +96,17 @@ public class DispensaryInfoActivity extends AppCompatActivity implements OnMapRe
         initToolBar();
         InitComponents();
         initViews();
+        addListener();
+    }
+
+    private void addListener() {
+
+        mtxtMenuView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(mContext, MenuActivity.class));
+            }
+        });
     }
 
     /**

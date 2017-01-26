@@ -49,6 +49,11 @@
             android:label="@null"
             android:screenOrientation="portrait"
             android:theme="@style/HomeTheme" />
+        <activity
+            android:name=".activites.ProfileActivity"
+            android:label="@null"
+            android:screenOrientation="portrait"
+            android:theme="@style/HomeTheme" />
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
@@ -56,6 +61,11 @@
 
         <activity
             android:name=".activites.DispensaryInfoActivity"
+            android:label="@string/title_activity_dispensary"
+            android:screenOrientation="portrait"
+            android:theme="@style/HomeTheme" />
+        <activity
+            android:name=".activites.MemberStatusActivity"
             android:label="@string/title_activity_dispensary"
             android:screenOrientation="portrait"
             android:theme="@style/HomeTheme" />

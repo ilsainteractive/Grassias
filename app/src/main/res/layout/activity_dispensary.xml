@@ -48,7 +48,7 @@
                 android:layout_weight="7.5"
                 android:orientation="vertical">
 
-                <com.ilsa.grassis.library.BoldSFUITextView
+                <com.ilsa.grassis.library.SFUITextBold
                     android:id="@+id/home_lv_bottom_section_2_title"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

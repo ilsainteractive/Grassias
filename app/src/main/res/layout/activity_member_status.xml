@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical"
+    tools:context="com.ilsa.grassis.activites.MemberStatusActivity">
+
+    <include
+        android:id="@+id/toolbar"
+        layout="@layout/toolbar_profile_status"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/home_bottom_bar"
+        android:layout_below="@+id/toolbar"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="10dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <com.ilsa.grassis.library.SFUITextBold
+                    android:id="@+id/member_txt_green_status"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="GREEN STATUS"
+                    android:textColor="#38b549" />
+
+                <com.ilsa.grassis.library.RegularTextView
+                    android:id="@+id/member_txt_green_status_desc"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="You buy weed, we get it. Not a huge accomplish-ment but we’ll still reward you for it. Because hey, give credit where credit is due."
+                    android:textColor="@color/black" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="10dp"
+                android:orientation="vertical">
+
+                <com.ilsa.grassis.library.RegularTextView
+                    android:id="@+id/member_txt_green_status_get"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:text="GET"
+                    android:textColor="#38b549" />
+
+                <com.ilsa.grassis.library.RegularTextView
+                    android:id="@+id/member_txt_green_status_get_details"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="At green status you will recieve 5% off all \npurchases."
+                    android:textColor="@color/black" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="20dp"
+                android:orientation="vertical">
+
+                <com.ilsa.grassis.library.SFUITextBold
+                    android:id="@+id/member_txt_pink_status"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:text="PINK SATUS"
+                    android:textColor="@color/baseColor" />
+
+                <com.ilsa.grassis.library.RegularTextView
+                    android:id="@+id/member_txt_pink_status_desc"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="You buy weed, we get it. Not a huge accomplish-ment but we’ll still reward you for it. Because hey, give credit where credit is due. "
+                    android:textColor="@color/black" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="20dp"
+                android:orientation="vertical">
+
+                <com.ilsa.grassis.library.RegularTextView
+                    android:id="@+id/member_txt_pink_status_get"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:text="GET"
+                    android:textColor="@color/baseColor" />
+
+                <com.ilsa.grassis.library.RegularTextView
+                    android:id="@+id/member_txt_pink_status_get_details"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="At green status you will recieve 5% off all \npurchases."
+                    android:textColor="@color/black" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="20dp"
+                android:orientation="vertical">
+
+                <com.ilsa.grassis.library.SFUITextBold
+                    android:id="@+id/member_txt_yellow_status"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:text="GOLD STATUS"
+                    android:textColor="#d4c120" />
+
+                <com.ilsa.grassis.library.RegularTextView
+                    android:id="@+id/member_txt_yellow_status_desc"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="You buy weed, we get it. Not a huge accomplish-ment but we’ll still reward you for it. Because hey, give credit where credit is due. "
+                    android:textColor="@color/black" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="20dp"
+                android:orientation="vertical">
+
+                <com.ilsa.grassis.library.RegularTextView
+                    android:id="@+id/member_txt_yellow_status_get"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:text="RECIEVE"
+                    android:textColor="#d4c120" />
+
+                <com.ilsa.grassis.library.RegularTextView
+                    android:id="@+id/member_txt_yellow_status_get_details"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="At green status you will recieve 5% off all \npurchases."
+                    android:textColor="@color/black" />
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+
+    <include
+        android:id="@+id/home_bottom_bar"
+        layout="@layout/activity_home_bottom_bar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:layout_alignParentBottom="true" />
+</RelativeLayout>

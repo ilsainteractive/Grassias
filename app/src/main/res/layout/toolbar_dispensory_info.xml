@@ -22,7 +22,7 @@
         android:layout_marginTop="8dp"
         android:orientation="vertical">
 
-        <com.ilsa.grassis.library.BoldSFUITextView
+        <com.ilsa.grassis.library.SFUITextBold
             android:id="@+id/dispensary_info_toolbar_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

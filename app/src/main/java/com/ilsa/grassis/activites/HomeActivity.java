@@ -56,6 +56,9 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     @BindView(R.id.home_btn_dispensory)
     ImageView mDiscover;
 
+    @BindView(R.id.home_btn_profile)
+    ImageView mProfile;
+
     private LinearLayout mListViewTopSection, mListViewTopSectionText, mListViewBottomSectionPager, mListViewBottomSection2;
 
     @Override
@@ -162,6 +165,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
         mImgDetail.setOnClickListener(this);
         mDiscover.setOnClickListener(this);
+        mProfile.setOnClickListener(this);
     }
 
     @Override
@@ -172,6 +176,9 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case R.id.home_btn_dispensory:
                 startActivity(new Intent(mContext, DiscoverActivity.class));
+                break;
+            case R.id.home_btn_profile:
+                startActivity(new Intent(mContext, ProfileActivity.class));
                 break;
         }
 

@@ -23,7 +23,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.ilsa.grassis.R;
-import com.ilsa.grassis.library.BoldSFUITextView;
+import com.ilsa.grassis.library.SFUITextBold;
 import com.ilsa.grassis.library.RegularTextView;
 import com.ilsa.grassis.library.ThinTextView;
 import com.ilsa.grassis.utils.Helper;
@@ -62,7 +62,7 @@ public class DispensaryActivity extends AppCompatActivity implements OnMapReadyC
     ThinTextView mtxtBtmSecSubTitle;
 
     @BindView(R.id.home_lv_bottom_section_2_title)
-    BoldSFUITextView mtxtSelecTitle;
+    SFUITextBold mtxtSelecTitle;
 
     @BindView(R.id.home_lv_bottom_section_2_subTitle)
     RegularTextView mtxtSelecAddresse;

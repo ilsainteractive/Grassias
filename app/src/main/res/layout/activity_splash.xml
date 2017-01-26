@@ -60,8 +60,7 @@
                 android:letterSpacing=".07"
                 android:lineSpacingExtra="1dp"
                 android:text="@string/splash_sub_title"
-                android:textColor="@color/white"
-                android:textSize="@dimen/splash_sub_title" />
+                android:textColor="@color/white" />
         </RelativeLayout>
     </LinearLayout>
 
