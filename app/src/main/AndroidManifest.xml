@@ -60,6 +60,16 @@
             android:value="@string/google_maps_key" />
 
         <activity
+            android:name=".activites.DealDetailsActivity"
+            android:label="@string/title_activity_dispensary"
+            android:screenOrientation="portrait"
+            android:theme="@style/HomeTheme" />
+        <activity
+            android:name=".activites.DealsRewardActivity"
+            android:label="@string/title_activity_dispensary"
+            android:screenOrientation="portrait"
+            android:theme="@style/HomeTheme" />
+        <activity
             android:name=".activites.DispensaryInfoActivity"
             android:label="@string/title_activity_dispensary"
             android:screenOrientation="portrait"

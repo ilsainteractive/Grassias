@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:local="http://schemas.android.com/tools"
+    android:id="@+id/toolbar_top"
+    android:layout_width="match_parent"
+    android:layout_height="?attr/actionBarSize"
+    android:background="@color/white"
+    android:minHeight="?attr/actionBarSize"
+    local:theme="@style/AppActionBarTheme">
+
+    <!--app:layout_scrollFlags="scroll|enterAlways"-->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <com.ilsa.grassis.library.BoldSFTextView
+            android:id="@+id/toolbar_deals"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="DEALS"
+            android:textColor="@color/black" />
+
+        <com.ilsa.grassis.library.RegularTextView
+            android:id="@+id/toolbar_rewards"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="REWARDS"
+            android:textColor="@color/black" />
+    </LinearLayout>
+</android.support.v7.widget.Toolbar>

@@ -99,7 +99,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 break;
             case R.id.login_txt_skip_now:
                 AppContoller.IsLoggedIn = false;
-                startActivity(new Intent(mContext, SignUpActivity.class));
+                startActivity(new Intent(mContext, HomeActivity.class));
                 break;
             case R.id.login_txt_get_started:
                 startActivity(new Intent(mContext, HomeActivity.class));

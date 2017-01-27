@@ -11,4 +11,5 @@
     <color name="transparent">@android:color/transparent</color>
     <color name="login_status_color">#D3D9EF</color>
     <color name="txt_psd_color">#252b2b</color>
+    <color name="txt_psd_coloras">#232323</color>
 </resources>

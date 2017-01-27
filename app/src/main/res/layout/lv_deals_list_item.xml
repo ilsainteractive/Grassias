@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="400dp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/deals_item_lv_img"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:id="@+id/deals_item_lv_top_txts"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="25dp"
+            android:orientation="vertical">
+
+            <com.ilsa.grassis.library.MediumTextView
+                android:id="@+id/deals_item_lv_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="KIVA BARS"
+                android:textColor="@color/white" />
+
+            <com.ilsa.grassis.library.BoldSFTextView
+                android:id="@+id/deals_item_lv_off"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@+id/deals_item_lv_title"
+                android:layout_alignStart="@+id/deals_item_lv_title"
+                android:layout_below="@+id/deals_item_lv_title"
+                android:text="30 % OFF"
+                android:textColor="@color/white" />
+        </LinearLayout>
+
+        <com.ilsa.grassis.library.RegularTextView
+            android:id="@+id/discov_map_item_lv_timasdings"
+            android:layout_width="wrap_content"
+            android:layout_height="25dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="15dp"
+            android:padding="20dp" />
+
+        <com.ilsa.grassis.library.RegularTextView
+            android:id="@+id/deals_item_lv_view_deals"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/discov_map_item_lv_timasdings"
+            android:layout_alignLeft="@+id/discov_map_item_lv_timasdings"
+            android:layout_alignStart="@+id/discov_map_item_lv_timasdings"
+            android:background="@drawable/round_edge_white_trans"
+            android:padding="10dp"
+            android:text="VIEW DEALS"
+            android:textColor="@color/white"
+            android:textSize="16dp" />
+    </RelativeLayout>
+</FrameLayout>

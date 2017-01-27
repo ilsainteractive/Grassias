@@ -8,7 +8,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
@@ -23,8 +22,8 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.ilsa.grassis.R;
-import com.ilsa.grassis.library.SFUITextBold;
 import com.ilsa.grassis.library.RegularTextView;
+import com.ilsa.grassis.library.SFUITextBold;
 import com.ilsa.grassis.library.ThinTextView;
 import com.ilsa.grassis.utils.Helper;
 import com.ilsa.grassis.vo.DispensaryVO;
@@ -195,25 +194,7 @@ public class DispensaryActivity extends AppCompatActivity implements OnMapReadyC
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_dispensory, menu);
-
-        MenuItem myActionMenuItem = menu.findItem(R.id.action_search);
-        mSearchView = (SearchView) myActionMenuItem.getActionView();
-        mSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-//                if (!mSearchView.isIconified()) {
-//                    mSearchView.setIconified(true);
-//                }
-//                myActionMenuItem.collapseActionView();
-                return false;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String s) {
-                return false;
-            }
-        });
+        getMenuInflater().inflate(R.menu.menu_home, menu);
         return true;
     }
 }
