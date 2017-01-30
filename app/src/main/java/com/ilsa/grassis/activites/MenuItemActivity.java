@@ -21,27 +21,33 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 
 import com.ilsa.grassis.R;
 import com.ilsa.grassis.adapters.MenuItemAdapter;
 import com.ilsa.grassis.adapters.MenuItemGalleryAdapter;
+import com.ilsa.grassis.library.Constants;
 import com.ilsa.grassis.library.ExpandedRecyclerView;
 import com.ilsa.grassis.library.MediumTextView;
 import com.ilsa.grassis.library.MenuItemClickListener;
 import com.ilsa.grassis.library.RecyclerTouchListener;
 import com.ilsa.grassis.library.ThinTextView;
+import com.ilsa.grassis.utils.Dailogs;
 import com.ilsa.grassis.utils.Helper;
 import com.ilsa.grassis.vo.MenuListVO;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 /**
  * Menu item activity contains details about selected item from menu.
  */
-public class MenuItemActivity extends AppCompatActivity {
+public class MenuItemActivity extends AppCompatActivity implements View.OnClickListener {
 
     private Context mContext;
     private Activity mActivity;
@@ -63,10 +69,26 @@ public class MenuItemActivity extends AppCompatActivity {
     private RecyclerTouchListener listener;
     private boolean isScrolled = false;
 
+    @BindView(R.id.home_btn_dispensory)
+    ImageView mDiscover;
+
+    @BindView(R.id.home_btn_profile)
+    ImageView mProfile;
+
+    @BindView(R.id.home_btn_deals)
+    ImageView mDeals;
+
+    @BindView(R.id.home_btn_home)
+    ImageView mHome;
+
+    @BindView(R.id.home_btn_qr)
+    ImageView mQr;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu_item);
+        ButterKnife.bind(this);
 
         mContext = this;
         mActivity = this;
@@ -75,6 +97,7 @@ public class MenuItemActivity extends AppCompatActivity {
         InitComponents();
         syncData();
         initViews();
+        AddListener();
     }
 
     private void initViews() {
@@ -101,6 +124,14 @@ public class MenuItemActivity extends AppCompatActivity {
         View view = new View(this);
         view.setBackgroundColor(getResources().getColor(color));
         return view;
+    }
+
+    private void AddListener() {
+        mDiscover.setOnClickListener(this);
+        mProfile.setOnClickListener(this);
+        mDeals.setOnClickListener(this);
+        mHome.setOnClickListener(this);
+        mQr.setOnClickListener(this);
     }
 
     /**
@@ -238,5 +269,27 @@ public class MenuItemActivity extends AppCompatActivity {
             }
         });
         return true;
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.home_btn_dispensory:
+                startActivity(new Intent(mContext, DiscoverActivity.class));
+                break;
+            case R.id.home_btn_profile:
+                startActivity(new Intent(mContext, ProfileActivity.class));
+                break;
+            case R.id.home_btn_deals:
+                startActivity(new Intent(mContext, DealsRewardActivity.class));
+                break;
+            case R.id.home_btn_home:
+                startActivity(new Intent(mContext, HomeActivity.class));
+                break;
+            case R.id.home_btn_qr:
+                //startActivity(new Intent(mContext, DealsRewardActivity.class));
+                Dailogs.ShowToast(mContext, "QR Scan is not integrated.", Constants.SHORT_TIME);
+                break;
+        }
     }
 }

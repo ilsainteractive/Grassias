@@ -74,6 +74,7 @@ public class DispensaryActivity extends AppCompatActivity implements OnMapReadyC
         setContentView(R.layout.activity_dispensary);
         ButterKnife.bind(this);
 
+        mActivity = this;
         mContext = this;
         initToolBar();
         InitComponents();
@@ -140,9 +141,9 @@ public class DispensaryActivity extends AppCompatActivity implements OnMapReadyC
 
         list = new ArrayList<>();
 
-        String[] Title = {"McDonald's", "Boulevard Heights", "Gaddafi Stadium", "Vogue Towers"};
-        double[] lats = {31.527486, 31.520324, 31.513488, 31.508790};
-        double[] longs = {74.349402, 74.346904, 74.333494, 74.349792};
+        String[] Title = {"Fairfax", "Weho West", "7000 Hollywood Blvd", "Tinhorn Flats Saloon & Grill"};
+        double[] lats = {34.070973,34.083457,34.100806, 34.102972};
+        double[] longs = {-118.344889,  -118.385493,-118.342434, -118.338447};
         for (int i = 0; i < longs.length; i++) {
 
             DispensaryVO item = new DispensaryVO();
@@ -169,17 +170,72 @@ public class DispensaryActivity extends AppCompatActivity implements OnMapReadyC
         });
     }
 
+//    @Override
+//    public void onMapReady(GoogleMap googleMap) {
+//        mMap = googleMap;
+//        LatLng latLng = null;
+//        for (int i = 0; i < list.size(); i++) {
+//            latLng = new LatLng(list.get(i).getLat(), list.get(i).getLog());
+//            MarkerOptions marker = new MarkerOptions().position(new LatLng(list.get(i).getLat(), list.get(i).getLog()))
+//                    .title(list.get(i).getTitle()).snippet(list.get(i).getDesc());
+//            marker.icon(BitmapDescriptorFactory.fromResource(R.mipmap.home_lv_bottom_icon))
+//                    .icon(BitmapDescriptorFactory.fromResource(R.mipmap.home_lv_bottom_icon));
+//            Marker marker1 = mMap.addMarker(marker);
+//            mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+//                @Override
+//                public boolean onMarkerClick(Marker marker) {
+//
+//                    marker.getTag();
+//                    return false;
+//                }
+//            });
+//        }
+//        googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 13.0f));
+//    }
+
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
         LatLng latLng = null;
         for (int i = 0; i < list.size(); i++) {
             latLng = new LatLng(list.get(i).getLat(), list.get(i).getLog());
+//            MarkerOptions marker = new MarkerOptions().position(new LatLng(list.get(i).getLat(), list.get(i).getLog()))
+//                    .title(list.get(i).getTitle()).snippet(list.get(i).getDesc());
+//            marker.icon(BitmapDescriptorFactory.fromResource(R.mipmap.home_lv_bottom_icon))
+//                    .icon(BitmapDescriptorFactory.fromResource(R.mipmap.home_lv_bottom_icon));
             MarkerOptions marker = new MarkerOptions().position(new LatLng(list.get(i).getLat(), list.get(i).getLog()))
                     .title(list.get(i).getTitle()).snippet(list.get(i).getDesc());
             marker.icon(BitmapDescriptorFactory.fromResource(R.mipmap.home_lv_bottom_icon))
                     .icon(BitmapDescriptorFactory.fromResource(R.mipmap.home_lv_bottom_icon));
+
             Marker marker1 = mMap.addMarker(marker);
+            mMap.setInfoWindowAdapter(new GoogleMap.InfoWindowAdapter() {
+
+                // Use default InfoWindow frame
+                @Override
+                public View getInfoWindow(Marker marker) {
+                    View v = mActivity.getLayoutInflater().inflate(R.layout.coustom_marker_layout, null);
+                    return v;
+                }
+
+
+                // Defines the contents of the InfoWindow
+                @Override
+                public View getInfoContents(Marker marker) {
+                    //View v = mActivity.getLayoutInflater().inflate(R.layout.coustom_marker_layout, null);
+                    // Getting reference to the TextView to set title
+                    // TextView note = (TextView) v.findViewById(R.id.note);
+                    //note.setText(marker.getTitle());
+                    // Returning the view containing InfoWindow contents
+                    return null;
+                }
+            });
+            mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
+                @Override
+                public void onInfoWindowClick(Marker marker) {
+                    startActivity(new Intent(mContext, DispensaryInfoActivity.class));
+                }
+            });
             mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
                 @Override
                 public boolean onMarkerClick(Marker marker) {
@@ -189,7 +245,7 @@ public class DispensaryActivity extends AppCompatActivity implements OnMapReadyC
                 }
             });
         }
-        googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 13.0f));
+        googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 14f));
     }
 
     @Override

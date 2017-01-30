@@ -2,6 +2,7 @@ package com.ilsa.grassis.activites;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -15,19 +16,23 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 
 import com.ilsa.grassis.R;
 import com.ilsa.grassis.fragments.DiscoverDeliveryFrag;
 import com.ilsa.grassis.fragments.DiscoverMapListFrag;
 import com.ilsa.grassis.library.BoldSFTextView;
+import com.ilsa.grassis.library.Constants;
 import com.ilsa.grassis.library.RegularTextView;
+import com.ilsa.grassis.utils.Dailogs;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
- * The type Discover activity.
+ * Discover activity.
  */
-public class DiscoverActivity extends AppCompatActivity {
+public class DiscoverActivity extends AppCompatActivity implements View.OnClickListener {
 
     private SectionsPagerAdapter mSectionsPagerAdapter;
     private ViewPager mViewPager;
@@ -41,11 +46,27 @@ public class DiscoverActivity extends AppCompatActivity {
     BoldSFTextView mtxtStoreFront;
     RegularTextView mtxtDelivery;
 
+    @BindView(R.id.home_btn_dispensory)
+    ImageView mDiscover;
+
+    @BindView(R.id.home_btn_profile)
+    ImageView mProfile;
+
+    @BindView(R.id.home_btn_deals)
+    ImageView mDeals;
+
+    @BindView(R.id.home_btn_home)
+    ImageView mHome;
+
+    @BindView(R.id.home_btn_qr)
+    ImageView mQr;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_discover);
         ButterKnife.bind(this);
+
         mContext = this;
         mActivity = this;
 
@@ -104,6 +125,37 @@ public class DiscoverActivity extends AppCompatActivity {
                 mtxtStoreFront.setTypeface(regular);
             }
         });
+        AddListener();
+    }
+
+    private void AddListener() {
+        mDiscover.setOnClickListener(this);
+        mProfile.setOnClickListener(this);
+        mDeals.setOnClickListener(this);
+        mHome.setOnClickListener(this);
+        mQr.setOnClickListener(this);
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.home_btn_dispensory:
+                //startActivity(new Intent(mContext, DiscoverActivity.class));
+                break;
+            case R.id.home_btn_profile:
+                startActivity(new Intent(mContext, ProfileActivity.class));
+                break;
+            case R.id.home_btn_deals:
+                startActivity(new Intent(mContext, DealsRewardActivity.class));
+                break;
+            case R.id.home_btn_home:
+                startActivity(new Intent(mContext, HomeActivity.class));
+                break;
+            case R.id.home_btn_qr:
+                //startActivity(new Intent(mContext, DealsRewardActivity.class));
+                Dailogs.ShowToast(mContext, "QR Scan is not integrated.", Constants.SHORT_TIME);
+                break;
+        }
     }
 
     @Override

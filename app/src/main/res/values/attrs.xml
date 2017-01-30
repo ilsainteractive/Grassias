@@ -29,5 +29,4 @@
             <enum name="thinWorm" value="6" />
         </attr>
     </declare-styleable>
-
 </resources>

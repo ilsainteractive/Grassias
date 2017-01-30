@@ -25,8 +25,10 @@ import android.widget.RelativeLayout;
 import com.ilsa.grassis.R;
 import com.ilsa.grassis.adapters.MenuGalleryAdapter;
 import com.ilsa.grassis.library.BoldSFTextView;
+import com.ilsa.grassis.library.Constants;
 import com.ilsa.grassis.library.RegularTextView;
 import com.ilsa.grassis.library.ThinTextView;
+import com.ilsa.grassis.utils.Dailogs;
 import com.ilsa.grassis.utils.Helper;
 
 import java.util.ArrayList;
@@ -61,6 +63,12 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
     @BindView(R.id.home_btn_deals)
     ImageView mDeals;
+
+    @BindView(R.id.home_btn_home)
+    ImageView mHome;
+
+    @BindView(R.id.home_btn_qr)
+    ImageView mQr;
 
     private LinearLayout mListViewTopSection, mListViewTopSectionText, mListViewBottomSectionPager, mListViewBottomSection2;
 
@@ -169,6 +177,8 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         mDiscover.setOnClickListener(this);
         mProfile.setOnClickListener(this);
         mDeals.setOnClickListener(this);
+        mHome.setOnClickListener(this);
+        mQr.setOnClickListener(this);
     }
 
     @Override
@@ -185,6 +195,13 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case R.id.home_btn_deals:
                 startActivity(new Intent(mContext, DealsRewardActivity.class));
+                break;
+            case R.id.home_btn_home:
+                //startActivity(new Intent(mContext, DealsRewardActivity.class));
+                break;
+            case R.id.home_btn_qr:
+                //startActivity(new Intent(mContext, CodeScanner.class));
+                Dailogs.ShowToast(mContext, "Not integrated yet", Constants.SHORT_TIME);
                 break;
         }
     }

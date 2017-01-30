@@ -3,7 +3,13 @@ package com.ilsa.grassis.fragments;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.annotation.DrawableRes;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -14,6 +20,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -112,9 +119,9 @@ public class DiscoverMapListFrag extends Fragment implements OnMapReadyCallback 
 
         list = new ArrayList<>();
 
-        String[] Title = {"McDonald's", "Boulevard Heights", "Gaddafi Stadium", "Vogue Towers"};
-        double[] lats = {31.527486, 31.520324, 31.513488, 31.508790};
-        double[] longs = {74.349402, 74.346904, 74.333494, 74.349792};
+        String[] Title = {"Fairfax", "Weho West", "7000 Hollywood Blvd", "Tinhorn Flats Saloon & Grill"};
+        double[] lats = {34.070973,34.083457,34.100806, 34.102972};
+        double[] longs = {-118.344889,  -118.385493,-118.342434, -118.338447};
         for (int i = 0; i < longs.length; i++) {
 
             DispensaryVO item = new DispensaryVO();
@@ -134,11 +141,43 @@ public class DiscoverMapListFrag extends Fragment implements OnMapReadyCallback 
         LatLng latLng = null;
         for (int i = 0; i < list.size(); i++) {
             latLng = new LatLng(list.get(i).getLat(), list.get(i).getLog());
+//            MarkerOptions marker = new MarkerOptions().position(new LatLng(list.get(i).getLat(), list.get(i).getLog()))
+//                    .title(list.get(i).getTitle()).snippet(list.get(i).getDesc());
+//            marker.icon(BitmapDescriptorFactory.fromResource(R.mipmap.home_lv_bottom_icon))
+//                    .icon(BitmapDescriptorFactory.fromResource(R.mipmap.home_lv_bottom_icon));
             MarkerOptions marker = new MarkerOptions().position(new LatLng(list.get(i).getLat(), list.get(i).getLog()))
                     .title(list.get(i).getTitle()).snippet(list.get(i).getDesc());
             marker.icon(BitmapDescriptorFactory.fromResource(R.mipmap.home_lv_bottom_icon))
                     .icon(BitmapDescriptorFactory.fromResource(R.mipmap.home_lv_bottom_icon));
+
             Marker marker1 = mMap.addMarker(marker);
+            mMap.setInfoWindowAdapter(new GoogleMap.InfoWindowAdapter() {
+
+                // Use default InfoWindow frame
+                @Override
+                public View getInfoWindow(Marker marker) {
+                    View v = mActivity.getLayoutInflater().inflate(R.layout.coustom_marker_layout, null);
+                    return v;
+                }
+
+
+                // Defines the contents of the InfoWindow
+                @Override
+                public View getInfoContents(Marker marker) {
+                    //View v = mActivity.getLayoutInflater().inflate(R.layout.coustom_marker_layout, null);
+                    // Getting reference to the TextView to set title
+                    // TextView note = (TextView) v.findViewById(R.id.note);
+                    //note.setText(marker.getTitle());
+                    // Returning the view containing InfoWindow contents
+                    return null;
+                }
+            });
+            mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
+                @Override
+                public void onInfoWindowClick(Marker marker) {
+                    startActivity(new Intent(mContext, DispensaryInfoActivity.class));
+                }
+            });
             mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
                 @Override
                 public boolean onMarkerClick(Marker marker) {
@@ -148,7 +187,26 @@ public class DiscoverMapListFrag extends Fragment implements OnMapReadyCallback 
                 }
             });
         }
-        googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 13.0f));
+        googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 14f));
     }
 
+    private Bitmap getMarkerBitmapFromView(@DrawableRes int resId) {
+
+        View customMarkerView = ((LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.coustom_marker_layout, null);
+        ImageView markerImageView = (ImageView) customMarkerView.findViewById(R.id.profile_image);
+        ImageView like = (ImageView) customMarkerView.findViewById(R.id.like);
+        markerImageView.setImageResource(resId);
+        customMarkerView.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
+        customMarkerView.layout(0, 0, customMarkerView.getMeasuredWidth(), customMarkerView.getMeasuredHeight());
+        customMarkerView.buildDrawingCache();
+        Bitmap returnedBitmap = Bitmap.createBitmap(customMarkerView.getMeasuredWidth(), customMarkerView.getMeasuredHeight(),
+                Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(returnedBitmap);
+        canvas.drawColor(Color.WHITE, PorterDuff.Mode.SRC_IN);
+        Drawable drawable = customMarkerView.getBackground();
+        if (drawable != null)
+            drawable.draw(canvas);
+        customMarkerView.draw(canvas);
+        return returnedBitmap;
+    }
 }

@@ -3,6 +3,7 @@
     package="com.ilsa.grassis">
 
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:name=".library.AppContoller"
@@ -24,7 +25,7 @@
         <activity
             android:name=".activites.LoginActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/LoginTheme" />
+            android:theme="@style/HomeTheme" />
         <activity
             android:name=".activites.SignUpActivity"
             android:screenOrientation="portrait"
@@ -93,11 +94,19 @@
             android:label="@string/title_activity_discover"
             android:parentActivityName=".activites.HomeActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/NoActionBar">
+            android:theme="@style/HomeTheme">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.ilsa.grassis.activites.HomeActivity" />
         </activity>
+        <activity
+            android:name=".activites.CodeScanner"
+            android:label="@string/title_activity_discover"
+            android:parentActivityName=".activites.HomeActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/NoActionBar">
+        </activity>
+
     </application>
 
 </manifest>

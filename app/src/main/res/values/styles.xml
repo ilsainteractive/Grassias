@@ -5,6 +5,7 @@
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="android:windowAnimationStyle">@null</item>
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
@@ -14,6 +15,7 @@
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:windowActionBarOverlay">false</item>
         <item name="colorPrimary">@android:color/transparent</item>
+        <item name="android:windowAnimationStyle">@null</item>
         <item name="android:windowTranslucentStatus">true</item>
     </style>
 
@@ -21,6 +23,7 @@
         <item name="colorPrimaryDark">@color/colorAccent</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:windowActionBarOverlay">false</item>
+        <item name="android:windowAnimationStyle">@null</item>
         <item name="colorPrimary">@android:color/transparent</item>
     </style>
 
@@ -28,6 +31,7 @@
         <item name="colorPrimaryDark">@color/colorAccent</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:windowActionBarOverlay">true</item>
+        <item name="android:windowAnimationStyle">@null</item>
         <item name="colorPrimary">@android:color/transparent</item>
         <item name="android:windowTranslucentStatus">true</item>
     </style>
@@ -39,6 +43,7 @@
         <item name="android:windowActionBarOverlay">true</item>
         <item name="android:windowTranslucentStatus">false</item>
         <item name="android:windowNoTitle">true</item>
+        <item name="android:windowAnimationStyle">@null</item>
         <item name="windowActionBar">false</item>
     </style>
 
@@ -46,6 +51,7 @@
         <!-- Customize your theme here. -->
         <item name="colorPrimaryDark">@color/colorAccent</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:windowAnimationStyle">@null</item>
         <item name="android:windowActionBarOverlay">true</item>
         <item name="colorPrimary">@android:color/transparent</item>
         <item name="android:windowTranslucentStatus">false</item>
@@ -84,5 +90,10 @@
 
     <style name="NoActionBar.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
-
+    <style name="AppTheme1" parent="Theme.AppCompat">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
 </resources>
