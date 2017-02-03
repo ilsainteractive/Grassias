@@ -44,7 +44,7 @@ public class MenuGalleryAdapter extends PagerAdapter {
         View v = inflater.inflate(R.layout.activity_home_lv_slider_item, container, false);
 
         RegularTextView bottomTitle = (RegularTextView) v.findViewById(R.id.home_lv_bottom_txt);
-        bottomTitle.setTextSize(Helper.getFontSize(mContext.getResources(), 4.5));
+//        bottomTitle.setTextSize(Helper.getFontSize(mContext.getResources(), 4.5));
 
         imgDisplay = (ImageView) v
                 .findViewById(R.id.home_lv_bottom_img);

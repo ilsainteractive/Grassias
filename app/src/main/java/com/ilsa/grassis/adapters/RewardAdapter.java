@@ -107,9 +107,9 @@ public class RewardAdapter extends RecyclerView.Adapter<RewardAdapter.MyViewHold
             add_stamp = (RegularTextView) view.findViewById(R.id.frag_reward_lv_add_stamp);
             circle = (View) view.findViewById(R.id.circle_shape);
 
-            title.setTextSize(Helper.getFontSize(mContext.getResources(), 5));
-            subTitle.setTextSize(Helper.getFontSize(mContext.getResources(), 8.5));
-            add_stamp.setTextSize(Helper.getFontSize(mContext.getResources(), 4.5));
+//            title.setTextSize(Helper.getFontSize(mContext.getResources(), 5));
+//            subTitle.setTextSize(Helper.getFontSize(mContext.getResources(), 8.5));
+//            add_stamp.setTextSize(Helper.getFontSize(mContext.getResources(), 4.5));
 
         }
     }

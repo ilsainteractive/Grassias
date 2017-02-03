@@ -9,9 +9,6 @@ import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -23,9 +20,6 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.ilsa.grassis.R;
 import com.ilsa.grassis.library.RegularTextView;
-import com.ilsa.grassis.library.SFUITextBold;
-import com.ilsa.grassis.library.ThinTextView;
-import com.ilsa.grassis.utils.Helper;
 import com.ilsa.grassis.vo.DispensaryVO;
 
 import java.util.ArrayList;
@@ -45,26 +39,26 @@ public class DispensaryActivity extends AppCompatActivity implements OnMapReadyC
     private GoogleMap mMap;
     private SearchView mSearchView;
 
-    @BindView(R.id.dispensary_map_btm_section)
-    LinearLayout mBtmSec;
+//    @BindView(R.id.dispensary_map_btm_section)
+//    LinearLayout mBtmSec;
 
-    @BindView(R.id.dispensary_map_btm_section_next)
-    LinearLayout mBtmSecNext;
+    //@BindView(R.id.dispensary_map_btm_section_next)
+    //LinearLayout mBtmSecNext;
 
     @BindView(R.id.dispensary_map_btm_section_txt_next)
     RegularTextView mtxtBtmSecNext;
 
-    @BindView(R.id.dispensary_map_btm_section_title)
-    RegularTextView mtxtBtmSecTitle;
+    //@BindView(R.id.dispensary_map_btm_section_title)
+    //RegularTextView mtxtBtmSecTitle;
 
-    @BindView(R.id.dispensary_map_btm_section_sub_title)
-    ThinTextView mtxtBtmSecSubTitle;
+    //@BindView(R.id.dispensary_map_btm_section_sub_title)
+    //ThinTextView mtxtBtmSecSubTitle;
 
-    @BindView(R.id.home_lv_bottom_section_2_title)
-    SFUITextBold mtxtSelecTitle;
+    //@BindView(R.id.home_lv_bottom_section_2_title)
+    //SFUITextBold mtxtSelecTitle;
 
-    @BindView(R.id.home_lv_bottom_section_2_subTitle)
-    RegularTextView mtxtSelecAddresse;
+    //@BindView(R.id.home_lv_bottom_section_2_subTitle)
+    //RegularTextView mtxtSelecAddresse;
 
     private ArrayList<DispensaryVO> list;
 
@@ -104,21 +98,21 @@ public class DispensaryActivity extends AppCompatActivity implements OnMapReadyC
      */
     private void InitComponents() {
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
-        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
-                Math.round(Helper.getFontSize(mContext.getResources(), 90)));
+//        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+//                Math.round(Helper.getFontSize(mContext.getResources(), 90)));
         //params.alignWithParent = RelativeLayout.ALIGN_PARENT_BOTTOM;
-        params.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
-        mBtmSec.setLayoutParams(params);
+//        params.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+//        mBtmSec.setLayoutParams(params);
 
         // int padding = Math.round(Helper.getFontSize(mContext.getResources(), 19));
-        int paddingTopBtm = Math.round(Helper.getFontSize(mContext.getResources(), 19));
-        mBtmSecNext.setPadding(0, paddingTopBtm, 0, paddingTopBtm);
-        mtxtBtmSecNext.setTextSize(Helper.getFontSize(mContext.getResources(), 5.5));
-        mtxtBtmSecTitle.setTextSize(Helper.getFontSize(mContext.getResources(), 6));
-        mtxtBtmSecSubTitle.setTextSize(Helper.getFontSize(mContext.getResources(), 3.0));
+        //int paddingTopBtm = Math.round(Helper.getFontSize(mContext.getResources(), 19));
+        //mBtmSecNext.setPadding(0, paddingTopBtm, 0, paddingTopBtm);
+        //mtxtBtmSecNext.setTextSize(Helper.getFontSize(mContext.getResources(), 5.5));
+        //mtxtBtmSecTitle.setTextSize(Helper.getFontSize(mContext.getResources(), 6));
+        //mtxtBtmSecSubTitle.setTextSize(Helper.getFontSize(mContext.getResources(), 3.0));
 
-        mtxtSelecTitle.setTextSize(Helper.getFontSize(mContext.getResources(), 6.2)); //6.5 psd
-        mtxtSelecAddresse.setTextSize(Helper.getFontSize(mContext.getResources(), 3.6));
+        //mtxtSelecTitle.setTextSize(Helper.getFontSize(mContext.getResources(), 6.2)); //6.5 psd
+        //mtxtSelecAddresse.setTextSize(Helper.getFontSize(mContext.getResources(), 3.6));
 
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
@@ -142,8 +136,8 @@ public class DispensaryActivity extends AppCompatActivity implements OnMapReadyC
         list = new ArrayList<>();
 
         String[] Title = {"Fairfax", "Weho West", "7000 Hollywood Blvd", "Tinhorn Flats Saloon & Grill"};
-        double[] lats = {34.070973,34.083457,34.100806, 34.102972};
-        double[] longs = {-118.344889,  -118.385493,-118.342434, -118.338447};
+        double[] lats = {34.070973, 34.083457, 34.100806, 34.102972};
+        double[] longs = {-118.344889, -118.385493, -118.342434, -118.338447};
         for (int i = 0; i < longs.length; i++) {
 
             DispensaryVO item = new DispensaryVO();

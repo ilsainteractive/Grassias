@@ -120,8 +120,8 @@ public class DiscoverMapListFrag extends Fragment implements OnMapReadyCallback 
         list = new ArrayList<>();
 
         String[] Title = {"Fairfax", "Weho West", "7000 Hollywood Blvd", "Tinhorn Flats Saloon & Grill"};
-        double[] lats = {34.070973,34.083457,34.100806, 34.102972};
-        double[] longs = {-118.344889,  -118.385493,-118.342434, -118.338447};
+        double[] lats = {34.070973, 34.083457, 34.100806, 34.102972};
+        double[] longs = {-118.344889, -118.385493, -118.342434, -118.338447};
         for (int i = 0; i < longs.length; i++) {
 
             DispensaryVO item = new DispensaryVO();
@@ -145,44 +145,44 @@ public class DiscoverMapListFrag extends Fragment implements OnMapReadyCallback 
 //                    .title(list.get(i).getTitle()).snippet(list.get(i).getDesc());
 //            marker.icon(BitmapDescriptorFactory.fromResource(R.mipmap.home_lv_bottom_icon))
 //                    .icon(BitmapDescriptorFactory.fromResource(R.mipmap.home_lv_bottom_icon));
-            MarkerOptions marker = new MarkerOptions().position(new LatLng(list.get(i).getLat(), list.get(i).getLog()))
-                    .title(list.get(i).getTitle()).snippet(list.get(i).getDesc());
+
+            MarkerOptions marker = new MarkerOptions().position(new LatLng(list.get(i).getLat(), list.get(i).getLog()));
             marker.icon(BitmapDescriptorFactory.fromResource(R.mipmap.home_lv_bottom_icon))
                     .icon(BitmapDescriptorFactory.fromResource(R.mipmap.home_lv_bottom_icon));
 
             Marker marker1 = mMap.addMarker(marker);
-            mMap.setInfoWindowAdapter(new GoogleMap.InfoWindowAdapter() {
-
-                // Use default InfoWindow frame
-                @Override
-                public View getInfoWindow(Marker marker) {
-                    View v = mActivity.getLayoutInflater().inflate(R.layout.coustom_marker_layout, null);
-                    return v;
-                }
-
-
-                // Defines the contents of the InfoWindow
-                @Override
-                public View getInfoContents(Marker marker) {
-                    //View v = mActivity.getLayoutInflater().inflate(R.layout.coustom_marker_layout, null);
-                    // Getting reference to the TextView to set title
-                    // TextView note = (TextView) v.findViewById(R.id.note);
-                    //note.setText(marker.getTitle());
-                    // Returning the view containing InfoWindow contents
-                    return null;
-                }
-            });
-            mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
-                @Override
-                public void onInfoWindowClick(Marker marker) {
-                    startActivity(new Intent(mContext, DispensaryInfoActivity.class));
-                }
-            });
+//            mMap.setInfoWindowAdapter(new GoogleMap.InfoWindowAdapter() {
+//
+//                // Use default InfoWindow frame
+//                @Override
+//                public View getInfoWindow(Marker marker) {
+//                    View v = mActivity.getLayoutInflater().inflate(R.layout.coustom_marker_layout, null);
+//                    return v;
+//                }
+//
+//
+//                // Defines the contents of the InfoWindow
+//                @Override
+//                public View getInfoContents(Marker marker) {
+//                    //View v = mActivity.getLayoutInflater().inflate(R.layout.coustom_marker_layout, null);
+//                    // Getting reference to the TextView to set title
+//                    // TextView note = (TextView) v.findViewById(R.id.note);
+//                    //note.setText(marker.getTitle());
+//                    // Returning the view containing InfoWindow contents
+//                    return null;
+//                }
+//            });
+//            mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
+//                @Override
+//                public void onInfoWindowClick(Marker marker) {
+//                   // startActivity(new Intent(mContext, DispensaryInfoActivity.class));
+//                }
+//            });
             mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
                 @Override
                 public boolean onMarkerClick(Marker marker) {
-
-                    marker.getTag();
+                    startActivity(new Intent(mContext, DispensaryInfoActivity.class));
+//                    marker.getTag();
                     return false;
                 }
             });

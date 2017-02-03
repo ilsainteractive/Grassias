@@ -73,9 +73,9 @@ public class DiscovAdapter extends RecyclerView.Adapter<DiscovAdapter.MyViewHold
             title = (BoldSFTextView) view.findViewById(R.id.discov_map_item_lv_title);
             add = (RegularTextView) view.findViewById(R.id.discov_map_item_lv_add);
             timing = (RegularTextView) view.findViewById(R.id.discov_map_item_lv_timings);
-            title.setTextSize(Helper.getFontSize(mContext.getResources(), 5));
-            add.setTextSize(Helper.getFontSize(mContext.getResources(), 3.5));
-            timing.setTextSize(Helper.getFontSize(mContext.getResources(), 3.5));
+            //title.setTextSize(Helper.getFontSize(mContext.getResources(), 5));
+            //add.setTextSize(Helper.getFontSize(mContext.getResources(), 3.5));
+            //timing.setTextSize(Helper.getFontSize(mContext.getResources(), 3.5));
             icon = (ImageView) view.findViewById(R.id.menu_item_lv_image);
         }
     }

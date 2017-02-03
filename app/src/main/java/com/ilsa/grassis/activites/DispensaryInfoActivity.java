@@ -115,8 +115,6 @@ public class DispensaryInfoActivity extends AppCompatActivity implements OnMapRe
     public void initToolBar() {
         mToolbar.setTitle("");
         setSupportActionBar(mToolbar);
-        mtxtToolbarTitle.setTextSize(Helper.getFontSize(mContext.getResources(), 5.6));
-        mtxtToolbarSubTitle.setTextSize(Helper.getFontSize(mContext.getResources(), 4));
     }
 
     /**
@@ -133,12 +131,6 @@ public class DispensaryInfoActivity extends AppCompatActivity implements OnMapRe
         //int paddingTopBtm = Math.round(Helper.getFontSize(mContext.getResources(), 19));
         // mBtmSecNext.setPadding(0, paddingTopBtm, 0, paddingTopBtm);
         // mtxtSelecTitle.setTextSize(Helper.getFontSize(mContext.getResources(), 6.2)); //6.5 psd
-        RelativeLayout.LayoutParams paramsBottomPager = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, Math.round(Helper.getFontSize(mContext.getResources(), 360)));
-        pager_layout.setLayoutParams(paramsBottomPager);
-
-        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
-                Math.round(Helper.getFontSize(mContext.getResources(), 230)));
-        mMapView.setLayoutParams(params);
 
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);

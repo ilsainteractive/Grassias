@@ -17,7 +17,6 @@ import com.ilsa.grassis.library.MediumTextView;
 import com.ilsa.grassis.library.RegularTextView;
 import com.ilsa.grassis.library.SFUITextBold;
 import com.ilsa.grassis.utils.Dailogs;
-import com.ilsa.grassis.utils.Helper;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -101,7 +100,6 @@ public class MemberStatusActivity extends AppCompatActivity implements View.OnCl
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         mtxtToolbarTitle = (MediumTextView) toolbar.findViewById(R.id.member_profile_status_toolbar_title);
         toolbar.setTitle("");
-        mtxtToolbarTitle.setTextSize(Helper.getFontSize(mContext.getResources(), 6));
         toolbar.setNavigationIcon(R.mipmap.signup_back_arrow);
         setSupportActionBar(toolbar);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -117,21 +115,6 @@ public class MemberStatusActivity extends AppCompatActivity implements View.OnCl
      */
     private void InitComponents() {
 
-        mtxtGreen.setTextSize(Helper.getFontSize(mContext.getResources(), 6));
-        mtxtPink.setTextSize(Helper.getFontSize(mContext.getResources(), 6));
-        mtxtYellow.setTextSize(Helper.getFontSize(mContext.getResources(), 6));
-
-        mtxtGreenDesc.setTextSize(Helper.getFontSize(mContext.getResources(), 4.3));
-        mtxtPinkDesc.setTextSize(Helper.getFontSize(mContext.getResources(), 4.3));
-        mtxtYellowDesc.setTextSize(Helper.getFontSize(mContext.getResources(), 4.3));
-
-        mtxtGreenGet.setTextSize(Helper.getFontSize(mContext.getResources(), 5));
-        mtxtPinkGet.setTextSize(Helper.getFontSize(mContext.getResources(), 5));
-        mtxtYellowGet.setTextSize(Helper.getFontSize(mContext.getResources(), 5));
-
-        mtxtGreenGetDetails.setTextSize(Helper.getFontSize(mContext.getResources(), 4.3));
-        mtxtPinkGetDetails.setTextSize(Helper.getFontSize(mContext.getResources(), 4.3));
-        mtxtYellowGetDetails.setTextSize(Helper.getFontSize(mContext.getResources(), 4.3));
     }
 
     private void AddListener() {
@@ -140,6 +123,7 @@ public class MemberStatusActivity extends AppCompatActivity implements View.OnCl
         mDeals.setOnClickListener(this);
         mHome.setOnClickListener(this);
         mQr.setOnClickListener(this);
+        mProfile.setImageResource(R.mipmap.profile_icon1);
     }
 
     @Override

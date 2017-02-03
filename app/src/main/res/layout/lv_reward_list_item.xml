@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="400dp"
+    android:layout_height="@dimen/_290sdp"
     android:background="#fafafa">
 
     <LinearLayout
@@ -10,6 +10,7 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
+        android:paddingBottom="@dimen/_10sdp"
         android:orientation="vertical">
 
         <LinearLayout
@@ -36,8 +37,8 @@
                     android:layout_alignParentLeft="true"
                     android:layout_alignParentStart="true"
                     android:layout_centerVertical="true"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
+                    android:layout_marginLeft="@dimen/_8sdp"
+                    android:layout_marginRight="@dimen/_8sdp"
                     android:orientation="vertical">
 
                     <com.ilsa.grassis.library.MediumTextView
@@ -46,7 +47,8 @@
                         android:layout_height="wrap_content"
                         android:gravity="bottom"
                         android:text="BUY 10 EDIBLES"
-                        android:textColor="@color/white" />
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/_14sdp" />
 
                     <com.ilsa.grassis.library.BoldSFTextView
                         android:id="@+id/frag_reward_lv_subtitle"
@@ -54,7 +56,8 @@
                         android:layout_height="wrap_content"
                         android:gravity="top"
                         android:text="GET A FREE GRAM"
-                        android:textColor="@color/white" />
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/_25sdp" />
                 </LinearLayout>
             </RelativeLayout>
         </LinearLayout>
@@ -68,8 +71,8 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_marginLeft="50dp"
-                android:layout_marginRight="50dp"
+                android:layout_marginLeft="@dimen/_44sdp"
+                android:layout_marginRight="@dimen/_44sdp"
                 android:layout_weight="1.5"
                 android:orientation="horizontal">
 
@@ -107,8 +110,8 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_marginLeft="50dp"
-                android:layout_marginRight="50dp"
+                android:layout_marginLeft="@dimen/_44sdp"
+                android:layout_marginRight="@dimen/_44sdp"
                 android:layout_weight="1.5"
                 android:orientation="horizontal">
 
@@ -153,12 +156,14 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:background="@drawable/round_edge_black"
-                    android:paddingBottom="10dp"
-                    android:paddingLeft="20dp"
-                    android:paddingRight="20dp"
-                    android:paddingTop="10dp"
+                    android:paddingBottom="@dimen/_5sdp"
+                    android:paddingLeft="@dimen/_17sdp"
+                    android:paddingRight="@dimen/_17sdp"
+                    android:paddingTop="@dimen/_5sdp"
                     android:text="ADD STAMP"
-                    android:textColor="#24292c" />
+                    android:textColor="#24292c"
+                    android:layout_marginTop="@dimen/_8sdp"
+                    android:textSize="@dimen/_13sdp" />
             </LinearLayout>
         </LinearLayout>
 

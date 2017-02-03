@@ -62,8 +62,6 @@ public class DealDetailsActivity extends AppCompatActivity {
      */
     public void initToolBar() {
         toolbar.setTitle("");
-        mtxtToolbarTitle.setTextSize(Helper.getFontSize(mContext.getResources(), 6));
-        mtxtToolbarSubTitle.setTextSize(Helper.getFontSize(mContext.getResources(), 10));
         toolbar.setNavigationIcon(R.mipmap.signup_back_arrow);
         setSupportActionBar(toolbar);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -79,7 +77,6 @@ public class DealDetailsActivity extends AppCompatActivity {
      */
     private void InitComponents() {
 
-        mtxtDetails.setTextSize(Helper.getFontSize(mContext.getResources(), 5.3));
     }
 
     @Override

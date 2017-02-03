@@ -13,6 +13,7 @@
         android:id="@+id/member_profile_status_toolbar_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:textSize="@dimen/_16sdp"
         android:gravity="center"
         android:text="Member Status"
         android:textColor="@color/black" />

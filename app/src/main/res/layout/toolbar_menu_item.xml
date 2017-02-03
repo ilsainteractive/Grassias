@@ -15,6 +15,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:text="Indica"
+        android:textSize="@dimen/_16sdp"
         android:textColor="@color/black" />
 
 </android.support.v7.widget.Toolbar>

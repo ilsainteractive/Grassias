@@ -17,6 +17,7 @@
     <ScrollView
         android:id="@+id/scrollView"
         android:layout_width="match_parent"
+        android:fillViewport="true"
         android:layout_height="wrap_content"
         android:layout_above="@+id/home_bottom_bar"
         android:layout_below="@+id/toolbar">
@@ -29,7 +30,7 @@
             <ImageView
                 android:id="@+id/menu_bottom_banner"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="@dimen/_150sdp"
                 android:scaleType="centerCrop"
                 android:src="@mipmap/menu_top_banner">
 

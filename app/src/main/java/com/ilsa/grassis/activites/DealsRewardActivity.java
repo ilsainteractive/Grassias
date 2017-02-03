@@ -132,6 +132,7 @@ public class DealsRewardActivity extends AppCompatActivity implements View.OnCli
         mDeals.setOnClickListener(this);
         mHome.setOnClickListener(this);
         mQr.setOnClickListener(this);
+        mDeals.setImageResource(R.mipmap.deals1);
     }
 
     @Override

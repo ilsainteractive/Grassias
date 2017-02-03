@@ -20,46 +20,44 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_above="@+id/home_bottom_bar"
-        android:layout_below="@+id/toolbar">
+        android:layout_below="@+id/toolbar"
+        android:fillViewport="true">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:weightSum="11.5">
+            android:orientation="vertical">
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="2.5"
-                android:orientation="vertical"
-                android:weightSum="10">
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
 
                 <com.ilsa.grassis.library.ThinTextView
                     android:id="@+id/menu_item_title"
                     android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="5"
+                    android:layout_height="wrap_content"
                     android:gravity="center|bottom"
                     android:text="Bubba Kush"
-                    android:textColor="@color/black" />
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_28sdp" />
 
                 <com.ilsa.grassis.library.ThinTextView
                     android:id="@+id/menu_item_sub_title"
                     android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="2"
+                    android:layout_height="wrap_content"
                     android:gravity="center|top"
                     android:text="Harvested this week"
-                    android:textColor="@color/black" />
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_12sdp" />
 
                 <com.ilsa.grassis.library.ThinTextView
                     android:id="@+id/menu_item_action"
                     android:layout_width="match_parent"
-                    android:layout_height="0dp"
+                    android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
-                    android:layout_weight="3"
                     android:gravity="center|bottom"
+                    android:textSize="@dimen/_12sdp"
                     android:text="Buy"
                     android:textColor="#e80054" />
             </LinearLayout>
@@ -68,8 +66,7 @@
             <android.support.v4.view.ViewPager
                 android:id="@+id/viewPager"
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="6.5" />
+                android:layout_height="280dp"/>
 
             <LinearLayout
                 android:layout_width="match_parent"

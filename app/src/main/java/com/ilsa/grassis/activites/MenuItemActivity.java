@@ -3,7 +3,6 @@ package com.ilsa.grassis.activites;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.view.ViewPager;
@@ -17,12 +16,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.Window;
-import android.view.WindowManager;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ScrollView;
 
 import com.ilsa.grassis.R;
@@ -35,7 +29,6 @@ import com.ilsa.grassis.library.MenuItemClickListener;
 import com.ilsa.grassis.library.RecyclerTouchListener;
 import com.ilsa.grassis.library.ThinTextView;
 import com.ilsa.grassis.utils.Dailogs;
-import com.ilsa.grassis.utils.Helper;
 import com.ilsa.grassis.vo.MenuListVO;
 
 import java.util.ArrayList;
@@ -132,6 +125,7 @@ public class MenuItemActivity extends AppCompatActivity implements View.OnClickL
         mDeals.setOnClickListener(this);
         mHome.setOnClickListener(this);
         mQr.setOnClickListener(this);
+        mHome.setImageResource(R.mipmap.home_icon1);
     }
 
     /**
@@ -142,7 +136,7 @@ public class MenuItemActivity extends AppCompatActivity implements View.OnClickL
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         mtxtToolbarTitle = (MediumTextView) toolbar.findViewById(R.id.toolbar_title);
         toolbar.setTitle("");
-        mtxtToolbarTitle.setTextSize(Helper.getFontSize(mContext.getResources(), 6));
+        //mtxtToolbarTitle.setTextSize(Helper.getFontSize(mContext.getResources(), 6));
         toolbar.setNavigationIcon(R.mipmap.signup_back_arrow);
         setSupportActionBar(toolbar);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -160,16 +154,16 @@ public class MenuItemActivity extends AppCompatActivity implements View.OnClickL
 
         mScrollView = (ScrollView) findViewById(R.id.scrollView);
         mViewPager = (ViewPager) findViewById(R.id.viewPager);
-        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
-                Math.round(Helper.getFontSize(mContext.getResources(), 275)));
-        mViewPager.setLayoutParams(layoutParams);
+//        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+//                Math.round(Helper.getFontSize(mContext.getResources(), 275)));
+//        mViewPager.setLayoutParams(layoutParams);
         mtxtTtile = (ThinTextView) findViewById(R.id.menu_item_title);
         mTxtSubTitle = (ThinTextView) findViewById(R.id.menu_item_sub_title);
         mTxtAction = (ThinTextView) findViewById(R.id.menu_item_action);
 
-        mtxtTtile.setTextSize(Helper.getFontSize(getResources(), 10));
-        mTxtSubTitle.setTextSize(Helper.getFontSize(getResources(), 4));
-        mTxtAction.setTextSize(Helper.getFontSize(getResources(), 4));
+        //mtxtTtile.setTextSize(Helper.getFontSize(getResources(), 10));
+        //mTxtSubTitle.setTextSize(Helper.getFontSize(getResources(), 4));
+        //mTxtAction.setTextSize(Helper.getFontSize(getResources(), 4));
 
         recyclerView = (ExpandedRecyclerView) findViewById(R.id.recycler_view);
         listener = new RecyclerTouchListener(mContext, recyclerView, new MenuItemClickListener() {
@@ -224,29 +218,6 @@ public class MenuItemActivity extends AppCompatActivity implements View.OnClickL
         }
     }
 
-    /**
-     * Toolbar customization
-     */
-    private void ActionBarConfigs() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            Window window = mActivity.getWindow();
-            window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-            window.setStatusBarColor(mActivity.getResources().getColor(R.color.lightGrey));
-        } else {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-                Window w = mActivity.getWindow();
-                w.setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS, WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-                int statusBarHeight = Helper.getStatusBarHeight(mContext);
-                View view = new View(mContext);
-                view.setLayoutParams(new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-                view.getLayoutParams().height = statusBarHeight;
-                ((ViewGroup) w.getDecorView()).addView(view);
-                view.setBackgroundColor(mContext.getResources().getColor(R.color.lightGrey));
-            }
-        }
-    }
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_home, menu);
@@ -256,10 +227,6 @@ public class MenuItemActivity extends AppCompatActivity implements View.OnClickL
         mSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-//                if (!mSearchView.isIconified()) {
-//                    mSearchView.setIconified(true);
-//                }
-//                myActionMenuItem.collapseActionView();
                 return false;
             }
 

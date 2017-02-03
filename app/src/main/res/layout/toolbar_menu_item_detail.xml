@@ -8,12 +8,12 @@
     android:minHeight="?attr/actionBarSize"
     local:theme="@style/AppActionBarTheme">
 
-
     <com.ilsa.grassis.library.MediumTextView
         android:id="@+id/toolbar_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
+        android:textSize="@dimen/_16sdp"
         android:text="Hindu Kush"
         android:textColor="@color/black" />
 

@@ -3,7 +3,6 @@ package com.ilsa.grassis.activites;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -15,12 +14,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.Window;
-import android.view.WindowManager;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ScrollView;
 
 import com.ilsa.grassis.R;
@@ -59,7 +53,6 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
     private MenuAdapter mMenuAdapter;
 
     private List<MenuListVO> menuListVOs;
-
 
     // Dummy data for inflation
     private String[] titles = {"Exctracts", "Indica", "Sativa", "Hybrid", "Edibles", "Topicals", "Grow"};
@@ -108,7 +101,6 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         mtxtToolbarTitle = (MediumTextView) toolbar.findViewById(R.id.toolbar_title);
         toolbar.setTitle("");
-        mtxtToolbarTitle.setTextSize(Helper.getFontSize(mContext.getResources(), 6));
         toolbar.setNavigationIcon(R.mipmap.signup_back_arrow);
         setSupportActionBar(toolbar);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -126,9 +118,9 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
 
         mTopBanner = (ImageView) findViewById(R.id.menu_bottom_banner);
         mScrollView = (ScrollView) findViewById(R.id.scrollView);
-        LinearLayout.LayoutParams paramsTexts = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
-                Math.round(Helper.getFontSize(mContext.getResources(), 190)));
-        mTopBanner.setLayoutParams(paramsTexts);
+//        LinearLayout.LayoutParams paramsTexts = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+//                Math.round(Helper.getFontSize(mContext.getResources(), 190)));
+//        mTopBanner.setLayoutParams(paramsTexts);
         recyclerView = (ExpandedRecyclerView) findViewById(R.id.recycler_view);
         listener = new RecyclerTouchListener(mContext, recyclerView, new MenuItemClickListener() {
             @Override
@@ -182,29 +174,6 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
-    /**
-     * Toolbar customization
-     */
-    private void ActionBarConfigs() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            Window window = mActivity.getWindow();
-            window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-            window.setStatusBarColor(mActivity.getResources().getColor(R.color.lightGrey));
-        } else {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-                Window w = mActivity.getWindow();
-                w.setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS, WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-                int statusBarHeight = Helper.getStatusBarHeight(mContext);
-                View view = new View(mContext);
-                view.setLayoutParams(new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-                view.getLayoutParams().height = statusBarHeight;
-                ((ViewGroup) w.getDecorView()).addView(view);
-                view.setBackgroundColor(mContext.getResources().getColor(R.color.lightGrey));
-            }
-        }
-    }
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_home, menu);
@@ -223,7 +192,6 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
 
             @Override
             public boolean onQueryTextChange(String s) {
-                // UserFeedback.show( "SearchOnQueryTextChanged: " + s);
                 return false;
             }
         });
@@ -236,6 +204,7 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
         mDeals.setOnClickListener(this);
         mHome.setOnClickListener(this);
         mQr.setOnClickListener(this);
+        mHome.setImageResource(R.mipmap.home_icon1);
     }
 
     @Override

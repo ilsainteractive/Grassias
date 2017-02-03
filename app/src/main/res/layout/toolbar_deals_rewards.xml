@@ -22,7 +22,8 @@
             android:layout_weight="1"
             android:gravity="center"
             android:text="DEALS"
-            android:textColor="@color/black" />
+            android:textColor="@color/black"
+            android:textSize="@dimen/_12sdp" />
 
         <com.ilsa.grassis.library.RegularTextView
             android:id="@+id/toolbar_rewards"
@@ -32,6 +33,7 @@
             android:layout_weight="1"
             android:gravity="center"
             android:text="REWARDS"
-            android:textColor="@color/black" />
+            android:textColor="@color/black"
+            android:textSize="@dimen/_12sdp" />
     </LinearLayout>
 </android.support.v7.widget.Toolbar>

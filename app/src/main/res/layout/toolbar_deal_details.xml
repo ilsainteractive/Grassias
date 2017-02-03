@@ -21,7 +21,8 @@
             android:layout_height="wrap_content"
             android:gravity="bottom|center"
             android:text="KIVA BARS"
-            android:textColor="#232323" />
+            android:textColor="#232323"
+            android:textSize="@dimen/_15sdp" />
 
         <com.ilsa.grassis.library.BoldSFTextView
             android:id="@+id/dispensary_info_toolbar_subtitle"
@@ -29,7 +30,8 @@
             android:layout_height="wrap_content"
             android:gravity="top|center"
             android:text="30% OFF"
-            android:textColor="#232323" />
+            android:textColor="#232323"
+            android:textSize="@dimen/_22sdp" />
     </LinearLayout>
 
 </android.support.v7.widget.Toolbar>

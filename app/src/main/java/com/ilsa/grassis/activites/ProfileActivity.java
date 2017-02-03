@@ -16,7 +16,6 @@ import com.ilsa.grassis.library.Constants;
 import com.ilsa.grassis.library.MediumTextView;
 import com.ilsa.grassis.library.RoundedImageView;
 import com.ilsa.grassis.utils.Dailogs;
-import com.ilsa.grassis.utils.Helper;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -82,15 +81,8 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
      * Layout components initializing and bridging here.
      */
     private void InitComponents() {
-//        LinearLayout.LayoutParams paramsTexts = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
-//                Math.round(Helper.getFontSize(mContext.getResources(), 190)));
-//        mTopBanner.setLayoutParams(paramsTexts);
-        mtxtName.setTextSize(Helper.getFontSize(mContext.getResources(), 10));
-        mtxtMemberStatus.setTextSize(Helper.getFontSize(mContext.getResources(), 5.5));
-        mtxtHistory.setTextSize(Helper.getFontSize(mContext.getResources(), 5.5));
-        mtxtFavorite.setTextSize(Helper.getFontSize(mContext.getResources(), 5.5));
-        mtxtTermsCondition.setTextSize(Helper.getFontSize(mContext.getResources(), 5.5));
-        mtxtPolicy.setTextSize(Helper.getFontSize(mContext.getResources(), 5.5));
+        // mtxtMemberStatus.setTextSize(Helper.getFontSize(mContext.getResources(), 5.5));
+        // mtxtTermsCondition.setTextSize(Helper.getFontSize(mContext.getResources(), 5.5));
     }
 
 
@@ -101,6 +93,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         mDeals.setOnClickListener(this);
         mHome.setOnClickListener(this);
         mQr.setOnClickListener(this);
+        mProfile.setImageResource(R.mipmap.profile_icon1);
     }
 
     @Override

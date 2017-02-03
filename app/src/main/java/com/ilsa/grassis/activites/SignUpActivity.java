@@ -73,33 +73,33 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
      */
     private void InitComponents() {
 
-        mTopLayout = (LinearLayout) findViewById(R.id.signup_top_layout);
-        LinearLayout.LayoutParams paramsTopLayout = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, Math.round(Helper.getFontSize(mContext.getResources(), 100)));
-        mTopLayout.setLayoutParams(paramsTopLayout);
-
-        mFirstNameLayout = (LinearLayout) findViewById(R.id.signup_first_name_layout);
-        LinearLayout.LayoutParams paramsFirstName = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, Math.round(Helper.getFontSize(mContext.getResources(), 80)));
-        mFirstNameLayout.setLayoutParams(paramsFirstName);
-
-        mLastNameLayout = (LinearLayout) findViewById(R.id.signup_last_name_layout);
-        LinearLayout.LayoutParams paramslastName = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, Math.round(Helper.getFontSize(mContext.getResources(), 80)));
-        mLastNameLayout.setLayoutParams(paramslastName);
-
-        mEmailLayout = (LinearLayout) findViewById(R.id.signup_email_layout);
-        LinearLayout.LayoutParams paramsEmail = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, Math.round(Helper.getFontSize(mContext.getResources(), 90)));
-        mEmailLayout.setLayoutParams(paramsEmail);
-
-        mPhoneNoLayout = (LinearLayout) findViewById(R.id.signup_phone_no_layout);
-        LinearLayout.LayoutParams paramsPhoneNo = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, Math.round(Helper.getFontSize(mContext.getResources(), 80)));
-        mPhoneNoLayout.setLayoutParams(paramsPhoneNo);
-
-        mPasswordLayout = (LinearLayout) findViewById(R.id.signup_password_layout);
-        LinearLayout.LayoutParams paramsPassword = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, Math.round(Helper.getFontSize(mContext.getResources(), 80)));
-        mPasswordLayout.setLayoutParams(paramsPassword);
-
-        mNextLayout = (LinearLayout) findViewById(R.id.signup_next_layout);
-        LinearLayout.LayoutParams paramsNext = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, Math.round(Helper.getFontSize(mContext.getResources(), 150)));
-        mNextLayout.setLayoutParams(paramsNext);
+//        mTopLayout = (LinearLayout) findViewById(R.id.signup_top_layout);
+//        LinearLayout.LayoutParams paramsTopLayout = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, Math.round(Helper.getFontSize(mContext.getResources(), 100)));
+//        mTopLayout.setLayoutParams(paramsTopLayout);
+//
+//        mFirstNameLayout = (LinearLayout) findViewById(R.id.signup_first_name_layout);
+//        LinearLayout.LayoutParams paramsFirstName = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, Math.round(Helper.getFontSize(mContext.getResources(), 80)));
+//        mFirstNameLayout.setLayoutParams(paramsFirstName);
+//
+//        mLastNameLayout = (LinearLayout) findViewById(R.id.signup_last_name_layout);
+//        LinearLayout.LayoutParams paramslastName = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, Math.round(Helper.getFontSize(mContext.getResources(), 80)));
+//        mLastNameLayout.setLayoutParams(paramslastName);
+//
+//        mEmailLayout = (LinearLayout) findViewById(R.id.signup_email_layout);
+//        LinearLayout.LayoutParams paramsEmail = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, Math.round(Helper.getFontSize(mContext.getResources(), 90)));
+//        mEmailLayout.setLayoutParams(paramsEmail);
+//
+//        mPhoneNoLayout = (LinearLayout) findViewById(R.id.signup_phone_no_layout);
+//        LinearLayout.LayoutParams paramsPhoneNo = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, Math.round(Helper.getFontSize(mContext.getResources(), 80)));
+//        mPhoneNoLayout.setLayoutParams(paramsPhoneNo);
+//
+//        mPasswordLayout = (LinearLayout) findViewById(R.id.signup_password_layout);
+//        LinearLayout.LayoutParams paramsPassword = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, Math.round(Helper.getFontSize(mContext.getResources(), 80)));
+//        mPasswordLayout.setLayoutParams(paramsPassword);
+//
+//        mNextLayout = (LinearLayout) findViewById(R.id.signup_next_layout);
+//        LinearLayout.LayoutParams paramsNext = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, Math.round(Helper.getFontSize(mContext.getResources(), 150)));
+//        mNextLayout.setLayoutParams(paramsNext);
 
         metFirstName = (CustomEditText) findViewById(R.id.signup_et_first_name);
         metLastName = (CustomEditText) findViewById(R.id.signup_et_last_name);

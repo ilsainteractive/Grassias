@@ -134,6 +134,7 @@ public class DiscoverActivity extends AppCompatActivity implements View.OnClickL
         mDeals.setOnClickListener(this);
         mHome.setOnClickListener(this);
         mQr.setOnClickListener(this);
+        mDiscover.setImageResource(R.mipmap.dispensary1);
     }
 
     @Override

@@ -19,7 +19,6 @@ import com.ilsa.grassis.library.CustomEditText;
 import com.ilsa.grassis.library.RegularTextView;
 import com.ilsa.grassis.utils.Helper;
 
-
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
 
     private Context mContext;
@@ -49,38 +48,18 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         metPassword = (CustomEditText) findViewById(R.id.login_et_password);
         mTxtTitle = (BoldTextView) findViewById(R.id.login_txt_title);
 
-        mTxtTitle.setTextSize(Helper.getFontSize(getResources(), 11));
-        metUserName.setTextSize(Helper.getFontSize(getResources(), 4));
-        metPassword.setTextSize(Helper.getFontSize(getResources(), 4));
-        mTxtCreateAccount.setTextSize(Helper.getFontSize(getResources(), 4));
-        mTxtSkipNow.setTextSize(Helper.getFontSize(getResources(), 4));
-        mTxtGetStarted.setTextSize(Helper.getFontSize(getResources(), 4));
+        //mTxtTitle.setTextSize(Helper.getFontSize(getResources(), 11));
+        //metUserName.setTextSize(Helper.getFontSize(getResources(), 4));
+        //metPassword.setTextSize(Helper.getFontSize(getResources(), 4));
+        //mTxtCreateAccount.setTextSize(Helper.getFontSize(getResources(), 4));
+        //mTxtSkipNow.setTextSize(Helper.getFontSize(getResources(), 4));
+        //mTxtGetStarted.setTextSize(Helper.getFontSize(getResources(), 4));
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
-            mTxtTitle.setLetterSpacing(.05f * getResources().getDisplayMetrics().density);
-            metUserName.setLetterSpacing(.02f * getResources().getDisplayMetrics().density);
-            metPassword.setLetterSpacing(.02f * getResources().getDisplayMetrics().density);
-            mTxtCreateAccount.setLetterSpacing(.02f * getResources().getDisplayMetrics().density);
-        }
-    }
-
-    private void ActionBarConfigs() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            Window window = mActivity.getWindow();
-            window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-            window.setStatusBarColor(mActivity.getResources().getColor(R.color.transparent));
-        } else {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-                Window w = mActivity.getWindow();
-                w.setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS, WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-                int statusBarHeight = Helper.getStatusBarHeight(mContext);
-                View view = new View(mContext);
-                view.setLayoutParams(new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-                view.getLayoutParams().height = statusBarHeight;
-                ((ViewGroup) w.getDecorView()).addView(view);
-                view.setBackgroundColor(mContext.getResources().getColor(R.color.transparent));
-            }
+//            mTxtTitle.setLetterSpacing(.05f * getResources().getDisplayMetrics().density);
+//            metUserName.setLetterSpacing(.02f * getResources().getDisplayMetrics().density);
+//            metPassword.setLetterSpacing(.02f * getResources().getDisplayMetrics().density);
+//            mTxtCreateAccount.setLetterSpacing(.02f * getResources().getDisplayMetrics().density);
         }
     }
 

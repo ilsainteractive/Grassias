@@ -2,7 +2,6 @@ package com.ilsa.grassis.fragments;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -16,7 +15,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.ilsa.grassis.R;
-import com.ilsa.grassis.activites.DispensaryInfoActivity;
 import com.ilsa.grassis.adapters.DealsAdapter;
 import com.ilsa.grassis.library.ExpandedRecyclerView;
 import com.ilsa.grassis.library.MenuItemClickListener;

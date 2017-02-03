@@ -20,10 +20,10 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="15dp"
-                android:layout_marginRight="15dp"
-                android:layout_marginTop="30dp"
+                android:layout_height="@dimen/_80sdp"
+                android:layout_marginLeft="@dimen/_12sdp"
+                android:layout_marginRight="@dimen/_12sdp"
+                android:layout_marginTop="@dimen/_10sdp"
                 android:orientation="horizontal">
 
                 <com.ilsa.grassis.library.BoldSFTextView
@@ -31,8 +31,10 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="7.5"
+                    android:layout_marginTop="@dimen/_10sdp"
                     android:text="Ellie \nPatrikios"
-                    android:textColor="#24292c" />
+                    android:textColor="#24292c"
+                    android:textSize="@dimen/_20sdp" />
 
                 <com.ilsa.grassis.library.RoundedImageView
                     android:id="@+id/profile_image"
@@ -40,14 +42,14 @@
                     android:layout_height="match_parent"
                     android:layout_weight="2.5"
                     android:gravity="center"
-                    android:paddingBottom="10dp"
+                    android:paddingBottom="@dimen/_7sdp"
                     android:src="@mipmap/profile_img" />
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="15dp"
+                android:layout_margin="@dimen/_12sdp"
                 android:weightSum="10">
 
                 <com.ilsa.grassis.library.RegularTextView
@@ -57,9 +59,10 @@
                     android:layout_weight="6"
                     android:background="@drawable/round_edge_white"
                     android:gravity="center"
-                    android:padding="16dp"
+                    android:padding="@dimen/_12sdp"
                     android:text="Edit Profile"
-                    android:textColor="#24292c" />
+                    android:textColor="#24292c"
+                    android:textSize="@dimen/_14sdp" />
 
                 <LinearLayout
                     android:layout_width="0dp"
@@ -70,7 +73,7 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:layout_marginTop="15dp"
+                android:layout_marginTop="@dimen/_12sdp"
                 android:background="#c8c8c8" />
 
             <LinearLayout
@@ -81,11 +84,11 @@
                 <LinearLayout
                     android:id="@+id/profile_member_layout"
                     android:layout_width="match_parent"
-                    android:layout_height="60dp"
-                    android:layout_marginBottom="10dp"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginRight="20dp"
-                    android:layout_marginTop="10dp"
+                    android:layout_height="@dimen/_48sdp"
+                    android:layout_marginBottom="@dimen/_7sdp"
+                    android:layout_marginLeft="@dimen/_15sdp"
+                    android:layout_marginRight="@dimen/_15sdp"
+                    android:layout_marginTop="@dimen/_7sdp"
                     android:layout_weight="11.3"
                     android:orientation="horizontal">
 
@@ -96,7 +99,8 @@
                         android:layout_weight="9.3"
                         android:gravity="center|left"
                         android:text="Current Membership Status"
-                        android:textColor="#24292c" />
+                        android:textColor="#24292c"
+                        android:textSize="@dimen/_15sdp" />
 
                     <LinearLayout
                         android:layout_width="0dp"
@@ -108,22 +112,23 @@
                             android:layout_height="match_parent"
                             android:gravity="center|right"
                             android:text="GOLD"
-                            android:textColor="#e6cd6b" />
+                            android:textColor="#e6cd6b"
+                            android:textSize="@dimen/_13sdp" />
                     </LinearLayout>
                 </LinearLayout>
 
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginRight="20dp"
+                    android:layout_marginLeft="@dimen/_18sdp"
+                    android:layout_marginRight="@dimen/_18sdp"
                     android:background="#c8c8c8" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="60dp"
-                    android:layout_marginBottom="10dp"
-                    android:layout_marginTop="10dp"
+                    android:layout_height="@dimen/_48sdp"
+                    android:layout_marginBottom="@dimen/_7sdp"
+                    android:layout_marginTop="@dimen/_7sdp"
                     android:layout_weight="11.3"
                     android:orientation="horizontal">
 
@@ -131,11 +136,12 @@
                         android:id="@+id/profile_txt_history"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
-                        android:layout_marginLeft="20dp"
+                        android:layout_marginLeft="@dimen/_17sdp"
                         android:layout_weight="9.3"
                         android:gravity="center|left"
                         android:text="History"
-                        android:textColor="#24292c" />
+                        android:textColor="#24292c"
+                        android:textSize="@dimen/_15sdp" />
 
                     <LinearLayout
                         android:layout_width="0dp"
@@ -154,15 +160,15 @@
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginRight="20dp"
+                    android:layout_marginLeft="@dimen/_17sdp"
+                    android:layout_marginRight="@dimen/_17sdp"
                     android:background="#c8c8c8" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="60dp"
-                    android:layout_marginBottom="10dp"
-                    android:layout_marginTop="10dp"
+                    android:layout_height="@dimen/_48sdp"
+                    android:layout_marginBottom="@dimen/_7sdp"
+                    android:layout_marginTop="@dimen/_7sdp"
                     android:layout_weight="11.3"
                     android:orientation="horizontal">
 
@@ -170,11 +176,12 @@
                         android:id="@+id/profile_txt_favorite"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
-                        android:layout_marginLeft="20dp"
+                        android:layout_marginLeft="@dimen/_18sdp"
                         android:layout_weight="9.3"
                         android:gravity="center|left"
                         android:text="Favorites"
-                        android:textColor="#24292c" />
+                        android:textColor="#24292c"
+                        android:textSize="@dimen/_15sdp" />
 
                     <LinearLayout
                         android:layout_width="0dp"
@@ -193,15 +200,15 @@
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginRight="20dp"
+                    android:layout_marginLeft="@dimen/_17sdp"
+                    android:layout_marginRight="@dimen/_17sdp"
                     android:background="#c8c8c8" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="60dp"
-                    android:layout_marginBottom="10dp"
-                    android:layout_marginTop="10dp"
+                    android:layout_height="@dimen/_48sdp"
+                    android:layout_marginBottom="@dimen/_7sdp"
+                    android:layout_marginTop="@dimen/_7sdp"
                     android:layout_weight="11.3"
                     android:orientation="horizontal">
 
@@ -213,7 +220,8 @@
                         android:layout_weight="9.3"
                         android:gravity="center|left"
                         android:text="Terms and Conditions"
-                        android:textColor="#24292c" />
+                        android:textColor="#24292c"
+                        android:textSize="@dimen/_15sdp" />
 
                     <LinearLayout
                         android:layout_width="0dp"
@@ -232,15 +240,15 @@
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginRight="20dp"
+                    android:layout_marginLeft="@dimen/_17sdp"
+                    android:layout_marginRight="@dimen/_17sdp"
                     android:background="#c8c8c8" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="60dp"
-                    android:layout_marginBottom="10dp"
-                    android:layout_marginTop="10dp"
+                    android:layout_height="@dimen/_48sdp"
+                    android:layout_marginBottom="@dimen/_7sdp"
+                    android:layout_marginTop="@dimen/_7sdp"
                     android:layout_weight="11.3"
                     android:orientation="horizontal">
 
@@ -248,11 +256,12 @@
                         android:id="@+id/profile_txt_policy"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
-                        android:layout_marginLeft="20dp"
+                        android:layout_marginLeft="@dimen/_18sdp"
                         android:layout_weight="9.3"
                         android:gravity="center|left"
                         android:text="Privacy Policy"
-                        android:textColor="#24292c" />
+                        android:textColor="#24292c"
+                        android:textSize="@dimen/_15sdp" />
 
                     <LinearLayout
                         android:layout_width="0dp"
@@ -271,9 +280,9 @@
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:layout_marginBottom="20dp"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginRight="20dp"
+                    android:layout_marginBottom="@dimen/_17sdp"
+                    android:layout_marginLeft="@dimen/_17sdp"
+                    android:layout_marginRight="@dimen/_17sdp"
                     android:background="#c8c8c8" />
             </LinearLayout>
         </LinearLayout>

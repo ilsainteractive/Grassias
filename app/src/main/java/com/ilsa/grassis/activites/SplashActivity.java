@@ -18,6 +18,8 @@ import com.ilsa.grassis.library.BoldTextView;
 import com.ilsa.grassis.library.UltraThinTextView;
 import com.ilsa.grassis.utils.Helper;
 
+import org.json.JSONObject;
+
 /**
  * The type Splash activity.
  */
@@ -57,12 +59,12 @@ public class SplashActivity extends AppCompatActivity {
     private void InitComponents() {
 
         mTxtTitle = (BoldTextView) findViewById(R.id.splash_txt_title);
-        mTxtTitle.setTextSize(Helper.getFontSize(getResources(), 10));
+        //mTxtTitle.setTextSize(Helper.getFontSize(getResources(), 10));
         mTxtSubTitle = (UltraThinTextView) findViewById(R.id.splash_txt_subtitle);
-        mTxtSubTitle.setTextSize(Helper.getFontSize(getResources(), 6));
+        //mTxtSubTitle.setTextSize(Helper.getFontSize(getResources(), 6));
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
-            mTxtTitle.setLetterSpacing(.05f * getResources().getDisplayMetrics().density);
-            mTxtSubTitle.setLetterSpacing(.02f * getResources().getDisplayMetrics().density);
+            //mTxtTitle.setLetterSpacing(.05f * getResources().getDisplayMetrics().density);
+            //mTxtSubTitle.setLetterSpacing(.02f * getResources().getDisplayMetrics().density);
         }
     }
 

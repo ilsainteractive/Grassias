@@ -32,7 +32,7 @@
             android:layout_margin="10dp"
             android:background="@drawable/signup_phone_dailog_wall"
             android:orientation="horizontal"
-            android:padding="10dp"
+            android:padding="@dimen/_5sdp"
             android:visibility="visible"
             android:weightSum="10">
 
@@ -55,7 +55,8 @@
                     android:layout_weight="1"
                     android:gravity="left|top"
                     android:text="Malibu Community Collective"
-                    android:textColor="#474747" />
+                    android:textColor="#474747"
+                    android:textSize="@dimen/_16sdp" />
 
                 <com.ilsa.grassis.library.RegularTextView
                     android:id="@+id/home_lv_bottom_section_2_subTitle"
@@ -64,7 +65,8 @@
                     android:layout_weight="1"
                     android:gravity="left|top"
                     android:text="22523 Pacific Coast Hwy, Malibu, CA 90265"
-                    android:textColor="#474747" />
+                    android:textColor="#474747"
+                    android:textSize="@dimen/_9sdp" />
             </LinearLayout>
 
             <ImageView
@@ -73,16 +75,17 @@
                 android:layout_weight="1" />
         </LinearLayout>
 
-
         <LinearLayout
             android:id="@+id/dispensary_map_btm_section"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/_65sdp"
             android:layout_alignParentBottom="true"
             android:background="@color/white"
             android:orientation="horizontal"
-            android:paddingLeft="15dp"
-            android:paddingRight="15dp"
+            android:paddingBottom="@dimen/_10sdp"
+            android:paddingLeft="@dimen/_16sdp"
+            android:paddingRight="@dimen/_16sdp"
+            android:paddingTop="@dimen/_10sdp"
             android:weightSum="10">
 
             <LinearLayout
@@ -95,28 +98,29 @@
                 <com.ilsa.grassis.library.RegularTextView
                     android:id="@+id/dispensary_map_btm_section_title"
                     android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="2"
+                    android:layout_height="wrap_content"
                     android:gravity="center|left|bottom"
-                    android:text="Select your primary
-dispensary."
-                    android:textColor="#252b2b" />
+                    android:text="Select your primary \ndispensary."
+                    android:textColor="#252b2b"
+                    android:textSize="@dimen/_14sdp" />
 
                 <com.ilsa.grassis.library.ThinTextView
                     android:id="@+id/dispensary_map_btm_section_sub_title"
                     android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
                     android:gravity="center|left|top"
                     android:text="You can change this selection later."
-                    android:textColor="#252b2b" />
+                    android:textColor="#252b2b"
+                    android:textSize="@dimen/_8sdp" />
             </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/dispensary_map_btm_section_next"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="3.5">
+                android:layout_weight="3.5"
+                android:paddingBottom="@dimen/_2sdp"
+                android:paddingTop="@dimen/_2sdp">
 
                 <com.ilsa.grassis.library.RegularTextView
                     android:id="@+id/dispensary_map_btm_section_txt_next"
@@ -125,7 +129,8 @@ dispensary."
                     android:background="@drawable/round_edge_rectangle_base"
                     android:gravity="center"
                     android:text="NEXT"
-                    android:textColor="@color/white" />
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_14sdp" />
             </LinearLayout>
         </LinearLayout>
     </RelativeLayout>

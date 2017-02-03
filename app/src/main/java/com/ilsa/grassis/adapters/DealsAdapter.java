@@ -101,9 +101,9 @@ public class DealsAdapter extends RecyclerView.Adapter<DealsAdapter.MyViewHolder
             title = (MediumTextView) view.findViewById(R.id.deals_item_lv_title);
             Off = (BoldSFTextView) view.findViewById(R.id.deals_item_lv_off);
             ViewDeal = (RegularTextView) view.findViewById(R.id.deals_item_lv_view_deals);
-            title.setTextSize(Helper.getFontSize(mContext.getResources(), 6));
-            Off.setTextSize(Helper.getFontSize(mContext.getResources(), 8.5));
-            ViewDeal.setTextSize(Helper.getFontSize(mContext.getResources(), 6));
+            //title.setTextSize(Helper.getFontSize(mContext.getResources(), 6));
+            //Off.setTextSize(Helper.getFontSize(mContext.getResources(), 8.5));
+            //ViewDeal.setTextSize(Helper.getFontSize(mContext.getResources(), 6));
             icon = (ImageView) view.findViewById(R.id.deals_item_lv_img);
         }
     }

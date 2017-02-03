@@ -67,7 +67,6 @@ public class MenuItemAdapter extends RecyclerView.Adapter<MenuItemAdapter.MyView
         public MyViewHolder(View view) {
             super(view);
             title = (RegularTextView) view.findViewById(R.id.menu_item_lv_txt);
-            title.setTextSize(Helper.getFontSize(mContext.getResources(), 6));
             imageView = (ImageView) view.findViewById(R.id.menu_item_lv_image);
             proceed = (ImageView) view.findViewById(R.id.menu_item_lv_image_proceed);
         }

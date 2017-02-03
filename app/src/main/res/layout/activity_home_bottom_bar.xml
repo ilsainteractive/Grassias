@@ -15,7 +15,7 @@
         android:layout_height="match_parent"
         android:layout_weight="1"
         android:padding="15dp"
-        android:src="@mipmap/home_bttom_icon_home" />
+        android:src="@mipmap/home_icon" />
 
     <ImageView
         android:id="@+id/home_btn_dispensory"
@@ -23,7 +23,7 @@
         android:layout_height="match_parent"
         android:layout_weight="1"
         android:padding="15dp"
-        android:src="@mipmap/home_bttom_icon_dispensory" />
+        android:src="@mipmap/dispensary" />
 
     <ImageView
         android:id="@+id/home_btn_qr"
@@ -31,7 +31,7 @@
         android:layout_height="match_parent"
         android:layout_weight="1"
         android:padding="5dp"
-        android:src="@mipmap/home_bttom_icon_qr" />
+        android:src="@mipmap/fingerprint" />
 
     <ImageView
         android:id="@+id/home_btn_deals"
@@ -39,7 +39,7 @@
         android:layout_height="match_parent"
         android:layout_weight="1"
         android:padding="15dp"
-        android:src="@mipmap/home_bottom_icon_deals" />
+        android:src="@mipmap/deals" />
 
     <ImageView
         android:id="@+id/home_btn_profile"
@@ -47,6 +47,6 @@
         android:layout_height="match_parent"
         android:layout_weight="1"
         android:padding="15dp"
-        android:src="@mipmap/home_bottom_icon_profile" />
+        android:src="@mipmap/profile_icon" />
 </LinearLayout>
 
