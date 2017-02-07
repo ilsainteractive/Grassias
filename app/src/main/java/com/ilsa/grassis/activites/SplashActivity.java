@@ -18,8 +18,6 @@ import com.ilsa.grassis.library.BoldTextView;
 import com.ilsa.grassis.library.UltraThinTextView;
 import com.ilsa.grassis.utils.Helper;
 
-import org.json.JSONObject;
-
 /**
  * The type Splash activity.
  */

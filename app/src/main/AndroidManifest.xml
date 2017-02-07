@@ -99,14 +99,10 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.ilsa.grassis.activites.HomeActivity" />
         </activity>
+
         <activity
             android:name=".activites.CodeScanner"
-            android:label="@string/title_activity_discover"
-            android:parentActivityName=".activites.HomeActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/NoActionBar">
-        </activity>
-
+            android:theme="@style/HomeTheme"></activity>
     </application>
 
 </manifest>

@@ -195,46 +195,41 @@ public class DispensaryActivity extends AppCompatActivity implements OnMapReadyC
             latLng = new LatLng(list.get(i).getLat(), list.get(i).getLog());
 //            MarkerOptions marker = new MarkerOptions().position(new LatLng(list.get(i).getLat(), list.get(i).getLog()))
 //                    .title(list.get(i).getTitle()).snippet(list.get(i).getDesc());
-//            marker.icon(BitmapDescriptorFactory.fromResource(R.mipmap.home_lv_bottom_icon))
-//                    .icon(BitmapDescriptorFactory.fromResource(R.mipmap.home_lv_bottom_icon));
-            MarkerOptions marker = new MarkerOptions().position(new LatLng(list.get(i).getLat(), list.get(i).getLog()))
-                    .title(list.get(i).getTitle()).snippet(list.get(i).getDesc());
-            marker.icon(BitmapDescriptorFactory.fromResource(R.mipmap.home_lv_bottom_icon))
-                    .icon(BitmapDescriptorFactory.fromResource(R.mipmap.home_lv_bottom_icon));
-
+//            marker.icon(BitmapDescriptorFactory.fromResource(R.mipmap.home_lv_bottom_icon));
+            MarkerOptions marker = new MarkerOptions().position(new LatLng(list.get(i).getLat(), list.get(i).getLog()));
+            marker.icon(BitmapDescriptorFactory.fromResource(R.mipmap.home_lv_bottom_icon));
             Marker marker1 = mMap.addMarker(marker);
-            mMap.setInfoWindowAdapter(new GoogleMap.InfoWindowAdapter() {
-
-                // Use default InfoWindow frame
-                @Override
-                public View getInfoWindow(Marker marker) {
-                    View v = mActivity.getLayoutInflater().inflate(R.layout.coustom_marker_layout, null);
-                    return v;
-                }
-
-
-                // Defines the contents of the InfoWindow
-                @Override
-                public View getInfoContents(Marker marker) {
-                    //View v = mActivity.getLayoutInflater().inflate(R.layout.coustom_marker_layout, null);
-                    // Getting reference to the TextView to set title
-                    // TextView note = (TextView) v.findViewById(R.id.note);
-                    //note.setText(marker.getTitle());
-                    // Returning the view containing InfoWindow contents
-                    return null;
-                }
-            });
-            mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
-                @Override
-                public void onInfoWindowClick(Marker marker) {
-                    startActivity(new Intent(mContext, DispensaryInfoActivity.class));
-                }
-            });
+//            mMap.setInfoWindowAdapter(new GoogleMap.InfoWindowAdapter() {
+//
+//                // Use default InfoWindow frame
+//                @Override
+//                public View getInfoWindow(Marker marker) {
+//                    View v = mActivity.getLayoutInflater().inflate(R.layout.coustom_marker_layout, null);
+//                    return v;
+//                }
+//
+//
+//                // Defines the contents of the InfoWindow
+//                @Override
+//                public View getInfoContents(Marker marker) {
+//                    //View v = mActivity.getLayoutInflater().inflate(R.layout.coustom_marker_layout, null);
+//                    // Getting reference to the TextView to set title
+//                    // TextView note = (TextView) v.findViewById(R.id.note);
+//                    //note.setText(marker.getTitle());
+//                    // Returning the view containing InfoWindow contents
+//                    return null;
+//                }
+//            });
+//            mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
+//                @Override
+//                public void onInfoWindowClick(Marker marker) {
+//                    startActivity(new Intent(mContext, DispensaryInfoActivity.class));
+//                }
+//            });
             mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
                 @Override
                 public boolean onMarkerClick(Marker marker) {
-
-                    marker.getTag();
+                    startActivity(new Intent(mContext, DispensaryInfoActivity.class));
                     return false;
                 }
             });
