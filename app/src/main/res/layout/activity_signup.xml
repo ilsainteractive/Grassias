@@ -139,6 +139,53 @@
                 android:background="@color/lightGrey" />
 
             <LinearLayout
+                android:id="@+id/signup_user_name_layout"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_60sdp"
+                android:orientation="vertical">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+
+                    <com.ilsa.grassis.library.CustomEditText
+                        android:id="@+id/signup_et_user_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_alignParentTop="true"
+                        android:layout_toLeftOf="@+id/signup_img_user_name"
+                        android:layout_toStartOf="@+id/signup_img_user_name"
+                        android:background="@android:color/transparent"
+                        android:ems="10"
+                        android:hint="@string/user_name"
+                        android:inputType="textPersonName"
+                        android:maxLines="1"
+                        android:textColor="@color/lightGrey"
+                        android:textColorHint="@color/lightGrey"
+                        android:textCursorDrawable="@color/black"
+                        android:textSize="@dimen/_16sdp" />
+
+                    <ImageView
+                        android:id="@+id/signup_img_user_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentTop="true"
+                        android:paddingLeft="15dp"
+                        android:visibility="gone"
+                        app:srcCompat="@mipmap/signup_tick" />
+                </RelativeLayout>
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/lightGrey" />
+
+            <LinearLayout
                 android:id="@+id/signup_email_layout"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_70sdp"

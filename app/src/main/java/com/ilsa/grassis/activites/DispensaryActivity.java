@@ -228,7 +228,7 @@ public class DispensaryActivity extends AppCompatActivity implements OnMapReadyC
             OkHttpClient client = new OkHttpClient();
 
             MediaType mediaType = MediaType.parse("application/json");
-            RequestBody body = RequestBody.create(mediaType, "{\n  \"user\": {\n    \"email\": \"" + signUpVO.getEmail() + "\",\n    \"first_name\": \"" + signUpVO.getFirst_name() + "\",\n    \"last_name\": \"" + signUpVO.getLast_name() + "\",\n    \"password\": \"" + signUpVO.getPassword() + "\",\n    \"username\": \"" + signUpVO.getFirst_name() + "\"\n  }\n}");
+            RequestBody body = RequestBody.create(mediaType, "{\n  \"user\": {\n    \"email\": \"" + signUpVO.getEmail() + "\",\n    \"first_name\": \"" + signUpVO.getFirst_name() + "\",\n    \"last_name\": \"" + signUpVO.getLast_name() + "\",\n    \"password\": \"" + signUpVO.getPassword() + "\",\n    \"username\": \"" + signUpVO.getUsername() + "\"\n  }\n}");
             Request request = new Request.Builder()
                     .url("http://kushmarketing.herokuapp.com/api/users")
                     .post(body)
@@ -275,6 +275,7 @@ public class DispensaryActivity extends AppCompatActivity implements OnMapReadyC
                             mActivity.runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
+                                    Dailogs.ShowToast(mContext, "Successfully sign up", Constants.LONG_TIME);
                                     Intent i = new Intent(mContext, HomeActivity.class);
                                     startActivity(i);
                                 }

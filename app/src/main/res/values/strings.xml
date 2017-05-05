@@ -19,6 +19,7 @@
     <!--Signup Screen-->
     <string name="first_name">First Name</string>
     <string name="last_name">Last Name</string>
+    <string name="user_name">User Name</string>
     <string name="email">Email</string>
     <string name="company_email">parker@kushmarketing.us</string>
     <string name="phone_no">Phone Number</string>
@@ -26,6 +27,7 @@
     <string name="signup_phone_msg">We use your phone number to send you confirmations and requests regarding your account and will NOT be shared with third parties.</string>
     <string name="invalid_first_name">Invalid first name</string>
     <string name="invalid_last_name">Invalid last name</string>
+    <string name="invalid_user_name">Invalid user name</string>
     <string name="invalid_phone_no">Invalid phone no</string>
 
     <!--Dispensary Screen-->

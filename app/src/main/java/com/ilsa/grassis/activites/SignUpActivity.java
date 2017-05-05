@@ -32,8 +32,8 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
     private Toolbar toolbar;
 
     private RegularTextView mtxtNext;
-    private CustomEditText mtxtEmail, metFirstName, metLastName, metPhoneNo, metPassword;
-    private ImageView mImgFirstName, mImgLastName, mImgPhoneNo, mImgPassword;
+    private CustomEditText mtxtEmail, metFirstName, metLastName, metUserName, metPhoneNo, metPassword;
+    private ImageView mImgFirstName, mImgLastName, mImgUserName, mImgPhoneNo, mImgPassword;
     private LinearLayout mTopLayout, mFirstNameLayout, mLastNameLayout,
             mEmailLayout, mPhoneNoLayout, mPasswordLayout, mNextLayout;
 
@@ -103,6 +103,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
 
         metFirstName = (CustomEditText) findViewById(R.id.signup_et_first_name);
         metLastName = (CustomEditText) findViewById(R.id.signup_et_last_name);
+        metUserName = (CustomEditText) findViewById(R.id.signup_et_user_name);
         metPhoneNo = (CustomEditText) findViewById(R.id.signup_et_phone_no);
         metPassword = (CustomEditText) findViewById(R.id.signup_et_password);
 
@@ -111,6 +112,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
 
         mImgFirstName = (ImageView) findViewById(R.id.signup_img_first_name);
         mImgLastName = (ImageView) findViewById(R.id.signup_img_last_name);
+        mImgUserName = (ImageView) findViewById(R.id.signup_img_user_name);
         mImgPhoneNo = (ImageView) findViewById(R.id.signup_img_phone_question);
         mImgPassword = (ImageView) findViewById(R.id.signup_img_password);
     }
@@ -124,11 +126,13 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
 
         metFirstName.addTextChangedListener(this);
         metLastName.addTextChangedListener(this);
+        metUserName.addTextChangedListener(this);
         metPhoneNo.addTextChangedListener(this);
         metPassword.addTextChangedListener(this);
 
         metFirstName.setOnFocusChangeListener(this);
         metLastName.setOnFocusChangeListener(this);
+        metUserName.setOnFocusChangeListener(this);
         metPhoneNo.setOnFocusChangeListener(this);
         metPassword.setOnFocusChangeListener(this);
     }
@@ -141,6 +145,9 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
                 break;
             case R.id.signup_et_last_name:
                 whoHasFocus = Constants.SIGNUP_LAST_NAME;
+                break;
+            case R.id.signup_et_user_name:
+                whoHasFocus = Constants.SIGNUP_USER_NAME;
                 break;
             case R.id.signup_et_phone_no:
                 whoHasFocus = Constants.SIGNUP_PHONE_VALIDATION;
@@ -166,6 +173,13 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
                     mImgLastName.setVisibility(View.VISIBLE);
                 } else {
                     mImgLastName.setVisibility(View.GONE);
+                }
+                break;
+            case Constants.SIGNUP_USER_NAME:
+                if (IsFieldValid(s, whoHasFocus)) {
+                    mImgUserName.setVisibility(View.VISIBLE);
+                } else {
+                    mImgUserName.setVisibility(View.GONE);
                 }
                 break;
             case Constants.SIGNUP_PHONE_VALIDATION:
@@ -199,6 +213,15 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
             case Constants.SIGNUP_LAST_NAME:
                 if (!editable.toString().equalsIgnoreCase("")) {
                     if (editable.length() > Constants.FIELD_VALIDATION_LENGTH_MIN && editable.length() < Constants.FIELD_VALIDATION_LENGTH_MAX)
+                        return true;
+                    else
+                        return false;
+                } else {
+                    return false;
+                }
+            case Constants.SIGNUP_USER_NAME:
+                if (!editable.toString().equalsIgnoreCase("")) {
+                    if (editable.length() > Constants.FIELD_PASSWORD_VALIDATION_LENGTH_MIN && editable.length() < Constants.FIELD_PASSWORD_VALIDATION_LENGTH_MAX)
                         return true;
                     else
                         return false;
@@ -252,16 +275,20 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
             case R.id.signup_txt_next:
                 if (IsFieldValid(metFirstName.getEditableText(), Constants.SIGNUP_FIRST_NAME)) {
                     if (IsFieldValid(metLastName.getEditableText(), Constants.SIGNUP_LAST_NAME)) {
-                        if (IsFieldValid(metPhoneNo.getEditableText(), Constants.SIGNUP_PHONE_VALIDATION)) {
-                            if (IsFieldValid(metPassword.getEditableText(), Constants.SIGNUP_PASSWORD_VALIDATION)) {
-                                SigingUpOnServer(mContext, "users", metFirstName.getText().toString(),
-                                        metLastName.getText().toString(), mtxtEmail.getText().toString(), metPhoneNo.getText().toString(),
-                                        metPassword.getText().toString());
+                        if (IsFieldValid(metUserName.getEditableText(), Constants.SIGNUP_USER_NAME)) {
+                            if (IsFieldValid(metPhoneNo.getEditableText(), Constants.SIGNUP_PHONE_VALIDATION)) {
+                                if (IsFieldValid(metPassword.getEditableText(), Constants.SIGNUP_PASSWORD_VALIDATION)) {
+                                    SigingUpOnServer(mContext, "users", metFirstName.getText().toString(),
+                                            metLastName.getText().toString(),metUserName.getText().toString(), mtxtEmail.getText().toString(), metPhoneNo.getText().toString(),
+                                            metPassword.getText().toString());
+                                } else {
+                                    Dailogs.ShowToast(mContext, getString(R.string.invalid_password), Constants.SHORT_TIME);
+                                }
                             } else {
-                                Dailogs.ShowToast(mContext, getString(R.string.invalid_password), Constants.SHORT_TIME);
+                                Dailogs.ShowToast(mContext, getString(R.string.invalid_phone_no), Constants.SHORT_TIME);
                             }
                         } else {
-                            Dailogs.ShowToast(mContext, getString(R.string.invalid_phone_no), Constants.SHORT_TIME);
+                            Dailogs.ShowToast(mContext, getString(R.string.invalid_user_name), Constants.SHORT_TIME);
                         }
                     } else {
                         Dailogs.ShowToast(mContext, getString(R.string.invalid_last_name), Constants.SHORT_TIME);
@@ -273,38 +300,17 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
         }
     }
 
-    public void SigingUpOnServer(Context context, String service, String firstName, String LastName, String email, String phone, String password) {
+    public void SigingUpOnServer(Context context, String service, String firstName, String LastName,String UserName, String email, String phone, String password) {
 
         SignUpVO signUpVO = new SignUpVO();
         signUpVO.setEmail(email);
         signUpVO.setFirst_name(firstName);
         signUpVO.setLast_name(LastName);
         signUpVO.setPassword(password);
-        signUpVO.setUsername(firstName);
+        signUpVO.setUsername(UserName);
 
         Intent intent = new Intent(context, DispensaryActivity.class);
         intent.putExtra("SignUp_info", signUpVO);
         startActivity(intent);
-//        JsonObject json = new JsonObject();
-//        json.addProperty("first_name", firstName);
-//        json.addProperty("last_name", LastName);
-//        json.addProperty("password", password);
-//        json.addProperty("username", firstName);
-//        json.addProperty("email", "akoshy20@gmail.com");
-//
-//        Ion.with(context)
-//                .load(Constants.baseUrl + service + "/")
-//                .setHeader("Content-Type", "application/json")
-//                .setHeader("Accept", clientAccept)
-//                .setHeader("Authorization", clientToken)
-//                .setHeader("X-DISPENSARY-ID", "4")
-//                .setJsonObjectBody(json)
-//                .asJsonObject()
-//                .setCallback(new FutureCallback<JsonObject>() {
-//                    @Override
-//                    public void onCompleted(Exception e, JsonObject result) {
-//                        // do stuff with the result or error
-//                    }
-//                });
     }
 }
