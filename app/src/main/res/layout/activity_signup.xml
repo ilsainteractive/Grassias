@@ -164,18 +164,18 @@
                     android:gravity="center|top"
                     android:orientation="horizontal">
 
-                    <com.ilsa.grassis.library.RegularTextView
+                    <com.ilsa.grassis.library.CustomEditText
                         android:id="@+id/signup_txt_email"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentLeft="true"
                         android:layout_alignParentStart="true"
                         android:layout_alignParentTop="true"
-                        android:layout_toLeftOf="@+id/imageView3"
-                        android:layout_toStartOf="@+id/imageView3"
+                        android:background="@android:color/transparent"
+                        android:hint="@string/company_email"
                         android:maxLines="1"
-                        android:text="@string/company_email"
-                        android:textColor="@color/black"
+                        android:textColor="@color/lightGrey"
+                        android:textColorHint="@color/lightGrey"
                         android:textSize="@dimen/_16sdp" />
 
                     <ImageView

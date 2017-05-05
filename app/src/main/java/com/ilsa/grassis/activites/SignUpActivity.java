@@ -10,7 +10,6 @@ import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
@@ -20,6 +19,7 @@ import com.ilsa.grassis.library.CustomEditText;
 import com.ilsa.grassis.library.RegularTextView;
 import com.ilsa.grassis.utils.Dailogs;
 import com.ilsa.grassis.utils.Helper;
+import com.ilsa.grassis.vo.SignUpVO;
 
 /**
  * Sign up activity.
@@ -31,8 +31,8 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
     private Activity mActivity;
     private Toolbar toolbar;
 
-    private RegularTextView mtxtEmail, mtxtNext;
-    private CustomEditText metFirstName, metLastName, metPhoneNo, metPassword;
+    private RegularTextView mtxtNext;
+    private CustomEditText mtxtEmail, metFirstName, metLastName, metPhoneNo, metPassword;
     private ImageView mImgFirstName, mImgLastName, mImgPhoneNo, mImgPassword;
     private LinearLayout mTopLayout, mFirstNameLayout, mLastNameLayout,
             mEmailLayout, mPhoneNoLayout, mPasswordLayout, mNextLayout;
@@ -106,7 +106,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
         metPhoneNo = (CustomEditText) findViewById(R.id.signup_et_phone_no);
         metPassword = (CustomEditText) findViewById(R.id.signup_et_password);
 
-        mtxtEmail = (RegularTextView) findViewById(R.id.signup_txt_email);
+        mtxtEmail = (CustomEditText) findViewById(R.id.signup_txt_email);
         mtxtNext = (RegularTextView) findViewById(R.id.signup_txt_next);
 
         mImgFirstName = (ImageView) findViewById(R.id.signup_img_first_name);
@@ -250,26 +250,61 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
                 }
                 break;
             case R.id.signup_txt_next:
-                startActivity(new Intent(mContext, DispensaryActivity.class));
-//                if (IsFieldValid(metFirstName.getEditableText(), Constants.SIGNUP_FIRST_NAME)) {
-//                    if (IsFieldValid(metLastName.getEditableText(), Constants.SIGNUP_LAST_NAME)) {
-//                        if (IsFieldValid(metPhoneNo.getEditableText(), Constants.SIGNUP_PHONE_VALIDATION)) {
-//                            if (IsFieldValid(metPassword.getEditableText(), Constants.SIGNUP_PASSWORD_VALIDATION)) {
-//                                Dailogs.ShowToast(mContext, "Home service is not ready yet?", Constants.LONG_TIME);
-//                                startActivity(new Intent(mContext, DispensaryActivity.class));
-//                            } else {
-//                                Dailogs.ShowToast(mContext, getString(R.string.invalid_password), Constants.SHORT_TIME);
-//                            }
-//                        } else {
-//                            Dailogs.ShowToast(mContext, getString(R.string.invalid_phone_no), Constants.SHORT_TIME);
-//                        }
-//                    } else {
-//                        Dailogs.ShowToast(mContext, getString(R.string.invalid_last_name), Constants.SHORT_TIME);
-//                    }
-//                } else {
-//                    Dailogs.ShowToast(mContext, getString(R.string.invalid_first_name), Constants.SHORT_TIME);
-//                }
+                if (IsFieldValid(metFirstName.getEditableText(), Constants.SIGNUP_FIRST_NAME)) {
+                    if (IsFieldValid(metLastName.getEditableText(), Constants.SIGNUP_LAST_NAME)) {
+                        if (IsFieldValid(metPhoneNo.getEditableText(), Constants.SIGNUP_PHONE_VALIDATION)) {
+                            if (IsFieldValid(metPassword.getEditableText(), Constants.SIGNUP_PASSWORD_VALIDATION)) {
+                                SigingUpOnServer(mContext, "users", metFirstName.getText().toString(),
+                                        metLastName.getText().toString(), mtxtEmail.getText().toString(), metPhoneNo.getText().toString(),
+                                        metPassword.getText().toString());
+                            } else {
+                                Dailogs.ShowToast(mContext, getString(R.string.invalid_password), Constants.SHORT_TIME);
+                            }
+                        } else {
+                            Dailogs.ShowToast(mContext, getString(R.string.invalid_phone_no), Constants.SHORT_TIME);
+                        }
+                    } else {
+                        Dailogs.ShowToast(mContext, getString(R.string.invalid_last_name), Constants.SHORT_TIME);
+                    }
+                } else {
+                    Dailogs.ShowToast(mContext, getString(R.string.invalid_first_name), Constants.SHORT_TIME);
+                }
                 break;
         }
+    }
+
+    public void SigingUpOnServer(Context context, String service, String firstName, String LastName, String email, String phone, String password) {
+
+        SignUpVO signUpVO = new SignUpVO();
+        signUpVO.setEmail(email);
+        signUpVO.setFirst_name(firstName);
+        signUpVO.setLast_name(LastName);
+        signUpVO.setPassword(password);
+        signUpVO.setUsername(firstName);
+
+        Intent intent = new Intent(context, DispensaryActivity.class);
+        intent.putExtra("SignUp_info", signUpVO);
+        startActivity(intent);
+//        JsonObject json = new JsonObject();
+//        json.addProperty("first_name", firstName);
+//        json.addProperty("last_name", LastName);
+//        json.addProperty("password", password);
+//        json.addProperty("username", firstName);
+//        json.addProperty("email", "akoshy20@gmail.com");
+//
+//        Ion.with(context)
+//                .load(Constants.baseUrl + service + "/")
+//                .setHeader("Content-Type", "application/json")
+//                .setHeader("Accept", clientAccept)
+//                .setHeader("Authorization", clientToken)
+//                .setHeader("X-DISPENSARY-ID", "4")
+//                .setJsonObjectBody(json)
+//                .asJsonObject()
+//                .setCallback(new FutureCallback<JsonObject>() {
+//                    @Override
+//                    public void onCompleted(Exception e, JsonObject result) {
+//                        // do stuff with the result or error
+//                    }
+//                });
     }
 }

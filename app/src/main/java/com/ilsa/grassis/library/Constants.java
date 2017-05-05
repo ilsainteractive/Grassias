@@ -57,4 +57,13 @@ public class Constants {
      * The constant FIELD_PASSWORD_VALIDATION_LENGTH_MAX.
      */
     public static final int FIELD_PASSWORD_VALIDATION_LENGTH_MAX = 20;
+
+    public static String baseUrl = "http://kushmarketing.herokuapp.com/api/";
+    public static String grant_type = "client_credentials";
+    public static String client_id = "156508433a3c2f402e64c2acf95dfda2e4a0bc51d55e12608d5fb982b8fb9e33";
+    public static String client_secret = "7d423d84e3859dc3d562d82733b3f3792b1f090f227a958b0cc66f9f49ebb7bf";
+    public static String clientAccept = "application/vnd.kush_marketing.com; version=1";
+    public static String clientToken = "977fa5b9a9e56fa2b2e4cfcad7a626b760c7752a4da9dfebb87c3cd0393f4e31";
+
+
 }
