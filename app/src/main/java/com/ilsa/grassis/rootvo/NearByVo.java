@@ -1,6 +1,7 @@
-package com.ilsa.grassis.apivo;
+package com.ilsa.grassis.rootvo;
 
 import com.google.gson.annotations.SerializedName;
+import com.ilsa.grassis.apivo.*;
 
 /**
  * Created by SohailZahid on 5/4/2017.
@@ -9,7 +10,7 @@ import com.google.gson.annotations.SerializedName;
 public class NearByVo {
 
     @SerializedName("dispensaries")
-    private Dispensaries[] dispensaries;
+    private com.ilsa.grassis.apivo.Dispensaries[] dispensaries;
     @SerializedName("strands")
     private Strands[] strands;
     @SerializedName("products")
@@ -18,11 +19,11 @@ public class NearByVo {
     public NearByVo() {
     }
 
-    public Dispensaries[] getDispensaries() {
+    public com.ilsa.grassis.apivo.Dispensaries[] getDispensaries() {
         return dispensaries;
     }
 
-    public void setDispensaries(Dispensaries[] dispensaries) {
+    public void setDispensaries(com.ilsa.grassis.apivo.Dispensaries[] dispensaries) {
         this.dispensaries = dispensaries;
     }
 

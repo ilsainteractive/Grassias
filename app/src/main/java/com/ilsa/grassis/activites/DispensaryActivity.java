@@ -31,7 +31,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.ilsa.grassis.R;
-import com.ilsa.grassis.apivo.NearByVo;
+import com.ilsa.grassis.rootvo.NearByVo;
 import com.ilsa.grassis.library.Constants;
 import com.ilsa.grassis.library.RegularTextView;
 import com.ilsa.grassis.utils.Dailogs;

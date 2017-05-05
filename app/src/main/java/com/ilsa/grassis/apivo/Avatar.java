@@ -1,4 +1,4 @@
-package com.ilsa.grassis.loginApi;
+package com.ilsa.grassis.apivo;
 
 import com.google.gson.annotations.SerializedName;
 
@@ -6,7 +6,7 @@ import com.google.gson.annotations.SerializedName;
  * Created by Zeeshan Ali Basbasah on 5/4/2017.
  */
 
-public class Background {
+public class Avatar {
 
     @SerializedName("small")
     private String small;

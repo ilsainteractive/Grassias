@@ -1,6 +1,7 @@
-package com.ilsa.grassis.loginApi;
+package com.ilsa.grassis.apivo;
 
 import com.google.gson.annotations.SerializedName;
+import com.ilsa.grassis.unknow.Dispensaries;
 
 /**
  * Created by Zeeshan Ali Basbasah on 5/4/2017.
@@ -10,7 +11,7 @@ import com.google.gson.annotations.SerializedName;
 public class Favorites
 {
     @SerializedName("dispensaries")
-    private Dispensaries[] dispensaries;
+    private com.ilsa.grassis.unknow.Dispensaries[] dispensaries;
     @SerializedName("strands")
     private String[] strands;
 

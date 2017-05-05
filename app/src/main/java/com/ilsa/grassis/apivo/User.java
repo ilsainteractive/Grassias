@@ -1,6 +1,8 @@
-package com.ilsa.grassis.loginApi;
+package com.ilsa.grassis.apivo;
 
 import com.google.gson.annotations.SerializedName;
+import com.ilsa.grassis.apivo.Avatar;
+import com.ilsa.grassis.apivo.Favorites;
 
 /**
  * Created by Zeeshan Ali Basbasah on 5/4/2017.

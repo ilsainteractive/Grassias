@@ -17,7 +17,7 @@ import com.ilsa.grassis.library.BoldTextView;
 import com.ilsa.grassis.library.Constants;
 import com.ilsa.grassis.library.CustomEditText;
 import com.ilsa.grassis.library.RegularTextView;
-import com.ilsa.grassis.loginApi.LoginVO;
+import com.ilsa.grassis.rootvo.LoginVO;
 import com.ilsa.grassis.utils.Dailogs;
 import com.ilsa.grassis.utils.Helper;
 
