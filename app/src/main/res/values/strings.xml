@@ -28,6 +28,7 @@
     <string name="invalid_first_name">Invalid first name</string>
     <string name="invalid_last_name">Invalid last name</string>
     <string name="invalid_user_name">Invalid user name</string>
+    <string name="invalid_email">Invalid email Address</string>
     <string name="invalid_phone_no">Invalid phone no</string>
     <string name="loading_dispensaries">Finding near by dispensaries ...</string>
 

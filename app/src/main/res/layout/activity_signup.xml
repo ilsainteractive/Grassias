@@ -60,8 +60,6 @@
                         android:id="@+id/signup_et_first_name"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_toLeftOf="@+id/signup_img_first_name"
-                        android:layout_toStartOf="@+id/signup_img_first_name"
                         android:background="@android:color/transparent"
                         android:ems="10"
                         android:hint="@string/first_name"
@@ -70,7 +68,10 @@
                         android:textColor="@color/lightGrey"
                         android:textColorHint="@color/lightGrey"
                         android:textCursorDrawable="@color/black"
-                        android:textSize="@dimen/_16sdp" />
+                        android:textSize="@dimen/_16sdp"
+                        android:layout_alignParentTop="true"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true" />
 
                     <ImageView
                         android:id="@+id/signup_img_first_name"
@@ -107,9 +108,6 @@
                         android:id="@+id/signup_et_last_name"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_alignParentTop="true"
-                        android:layout_toLeftOf="@+id/signup_img_last_name"
-                        android:layout_toStartOf="@+id/signup_img_last_name"
                         android:background="@android:color/transparent"
                         android:ems="10"
                         android:hint="@string/last_name"
@@ -118,7 +116,10 @@
                         android:textColor="@color/lightGrey"
                         android:textColorHint="@color/lightGrey"
                         android:textCursorDrawable="@color/black"
-                        android:textSize="@dimen/_16sdp" />
+                        android:textSize="@dimen/_16sdp"
+                        android:layout_alignParentTop="true"
+                        android:layout_toLeftOf="@+id/signup_img_last_name"
+                        android:layout_toStartOf="@+id/signup_img_last_name" />
 
                     <ImageView
                         android:id="@+id/signup_img_last_name"
@@ -221,6 +222,7 @@
                         android:background="@android:color/transparent"
                         android:hint="@string/company_email"
                         android:maxLines="1"
+                        android:inputType="textEmailAddress"
                         android:textColor="@color/lightGrey"
                         android:textColorHint="@color/lightGrey"
                         android:textSize="@dimen/_16sdp" />
@@ -234,7 +236,7 @@
                         android:layout_alignParentRight="true"
                         android:layout_alignTop="@+id/signup_txt_email"
                         android:layout_marginLeft="15dp"
-                        android:visibility="visible"
+                        android:visibility="invisible"
                         app:srcCompat="@mipmap/signup_tick" />
                 </RelativeLayout>
 
@@ -315,6 +317,7 @@
                         android:layout_toLeftOf="@+id/signup_img_password"
                         android:layout_toStartOf="@+id/signup_img_password"
                         android:background="@android:color/transparent"
+                        android:ellipsize="end"
                         android:ems="10"
                         android:hint="@string/password"
                         android:inputType="textPassword"

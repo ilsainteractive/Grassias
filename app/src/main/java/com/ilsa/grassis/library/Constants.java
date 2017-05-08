@@ -23,7 +23,11 @@ public class Constants {
      */
     public static final int SIGNUP_LAST_NAME = 2;
     /**
-     * The constant SIGNUP_LAST_NAME.
+     * The constant SIGNUP_EMAIL.
+     */
+    public static final int SIGNUP_EMAIL_VALIDATION = 6;
+    /**
+     * The constant SIGNUP_USER_NAME.
      */
     public static final int SIGNUP_USER_NAME = 22;
     /**

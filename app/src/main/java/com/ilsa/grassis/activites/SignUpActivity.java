@@ -21,6 +21,9 @@ import com.ilsa.grassis.utils.Dailogs;
 import com.ilsa.grassis.utils.Helper;
 import com.ilsa.grassis.vo.SignUpVO;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 /**
  * Sign up activity.
  */
@@ -33,7 +36,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
 
     private RegularTextView mtxtNext;
     private CustomEditText mtxtEmail, metFirstName, metLastName, metUserName, metPhoneNo, metPassword;
-    private ImageView mImgFirstName, mImgLastName, mImgUserName, mImgPhoneNo, mImgPassword;
+    private ImageView mImgFirstName, mImgLastName, mImgUserName, mImgEmail, mImgPhoneNo, mImgPassword;
     private LinearLayout mTopLayout, mFirstNameLayout, mLastNameLayout,
             mEmailLayout, mPhoneNoLayout, mPasswordLayout, mNextLayout;
 
@@ -113,6 +116,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
         mImgFirstName = (ImageView) findViewById(R.id.signup_img_first_name);
         mImgLastName = (ImageView) findViewById(R.id.signup_img_last_name);
         mImgUserName = (ImageView) findViewById(R.id.signup_img_user_name);
+        mImgEmail = (ImageView) findViewById(R.id.imageView3);
         mImgPhoneNo = (ImageView) findViewById(R.id.signup_img_phone_question);
         mImgPassword = (ImageView) findViewById(R.id.signup_img_password);
     }
@@ -127,12 +131,14 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
         metFirstName.addTextChangedListener(this);
         metLastName.addTextChangedListener(this);
         metUserName.addTextChangedListener(this);
+        mtxtEmail.addTextChangedListener(this);
         metPhoneNo.addTextChangedListener(this);
         metPassword.addTextChangedListener(this);
 
         metFirstName.setOnFocusChangeListener(this);
         metLastName.setOnFocusChangeListener(this);
         metUserName.setOnFocusChangeListener(this);
+        mtxtEmail.setOnFocusChangeListener(this);
         metPhoneNo.setOnFocusChangeListener(this);
         metPassword.setOnFocusChangeListener(this);
     }
@@ -148,6 +154,9 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
                 break;
             case R.id.signup_et_user_name:
                 whoHasFocus = Constants.SIGNUP_USER_NAME;
+                break;
+            case R.id.signup_txt_email:
+                whoHasFocus = Constants.SIGNUP_EMAIL_VALIDATION;
                 break;
             case R.id.signup_et_phone_no:
                 whoHasFocus = Constants.SIGNUP_PHONE_VALIDATION;
@@ -180,6 +189,13 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
                     mImgUserName.setVisibility(View.VISIBLE);
                 } else {
                     mImgUserName.setVisibility(View.GONE);
+                }
+                break;
+            case Constants.SIGNUP_EMAIL_VALIDATION:
+                if (IsFieldValid(s, whoHasFocus)) {
+                    mImgEmail.setVisibility(View.VISIBLE);
+                } else {
+                    mImgEmail.setVisibility(View.INVISIBLE);
                 }
                 break;
             case Constants.SIGNUP_PHONE_VALIDATION:
@@ -228,6 +244,14 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
                 } else {
                     return false;
                 }
+            case Constants.SIGNUP_EMAIL_VALIDATION:
+
+                if (!editable.toString().equalsIgnoreCase("")) {
+
+                    return emailValidator(editable.toString());
+                } else {
+                    return false;
+                }
             case Constants.SIGNUP_PHONE_VALIDATION:
                 if (!editable.toString().equalsIgnoreCase("")) {
                     if (editable.length() > Constants.FIELD_PHONE_VALIDATION_LENGTH_MIN && editable.length() < Constants.FIELD_PHONE_VALIDATION_LENGTH_MAX)
@@ -248,6 +272,15 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
                 }
         }
         return false;
+    }
+
+    public boolean emailValidator(String email) {
+        Pattern pattern;
+        Matcher matcher;
+        final String EMAIL_PATTERN = "^[_A-Za-z0-9-]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
+        pattern = Pattern.compile(EMAIL_PATTERN);
+        matcher = pattern.matcher(email);
+        return matcher.matches();
     }
 
     @Override
@@ -273,20 +306,23 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
                 }
                 break;
             case R.id.signup_txt_next:
-
                 if (IsFieldValid(metFirstName.getEditableText(), Constants.SIGNUP_FIRST_NAME)) {
                     if (IsFieldValid(metLastName.getEditableText(), Constants.SIGNUP_LAST_NAME)) {
                         if (IsFieldValid(metUserName.getEditableText(), Constants.SIGNUP_USER_NAME)) {
-                            if (IsFieldValid(metPhoneNo.getEditableText(), Constants.SIGNUP_PHONE_VALIDATION)) {
-                                if (IsFieldValid(metPassword.getEditableText(), Constants.SIGNUP_PASSWORD_VALIDATION)) {
-                                    SigingUpOnServer(mContext, "users", metFirstName.getText().toString(),
-                                            metLastName.getText().toString(), metUserName.getText().toString(), mtxtEmail.getText().toString(), metPhoneNo.getText().toString(),
-                                            metPassword.getText().toString());
+                            if (IsFieldValid(mtxtEmail.getEditableText(), Constants.SIGNUP_EMAIL_VALIDATION)) {
+                                if (IsFieldValid(metPhoneNo.getEditableText(), Constants.SIGNUP_PHONE_VALIDATION)) {
+                                    if (IsFieldValid(metPassword.getEditableText(), Constants.SIGNUP_PASSWORD_VALIDATION)) {
+                                        SigingUpOnServer(mContext, "users", metFirstName.getText().toString(),
+                                                metLastName.getText().toString(), metUserName.getText().toString(), mtxtEmail.getText().toString(), metPhoneNo.getText().toString(),
+                                                metPassword.getText().toString());
+                                    } else {
+                                        Dailogs.ShowToast(mContext, getString(R.string.invalid_password), Constants.SHORT_TIME);
+                                    }
                                 } else {
-                                    Dailogs.ShowToast(mContext, getString(R.string.invalid_password), Constants.SHORT_TIME);
+                                    Dailogs.ShowToast(mContext, getString(R.string.invalid_phone_no), Constants.SHORT_TIME);
                                 }
                             } else {
-                                Dailogs.ShowToast(mContext, getString(R.string.invalid_phone_no), Constants.SHORT_TIME);
+                                Dailogs.ShowToast(mContext, getString(R.string.invalid_email), Constants.SHORT_TIME);
                             }
                         } else {
                             Dailogs.ShowToast(mContext, getString(R.string.invalid_user_name), Constants.SHORT_TIME);
