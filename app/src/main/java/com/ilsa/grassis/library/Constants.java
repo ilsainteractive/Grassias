@@ -68,6 +68,6 @@ public class Constants {
     public static String client_secret = "7d423d84e3859dc3d562d82733b3f3792b1f090f227a958b0cc66f9f49ebb7bf";
     public static String clientAccept = "application/vnd.kush_marketing.com; version=1";
     public static String clientToken = "977fa5b9a9e56fa2b2e4cfcad7a626b760c7752a4da9dfebb87c3cd0393f4e31";
-
+    public static final String USER_VO = "USER_VO";
 
 }

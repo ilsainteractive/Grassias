@@ -317,7 +317,7 @@
                         android:background="@android:color/transparent"
                         android:ems="10"
                         android:hint="@string/password"
-                        android:inputType="textPersonName"
+                        android:inputType="textPassword"
                         android:maxLines="1"
                         android:textColor="@color/lightGrey"
                         android:textColorHint="@color/lightGrey"

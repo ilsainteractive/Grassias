@@ -1,14 +1,15 @@
-package com.ilsa.grassis.apivo;
+package com.ilsa.grassis.rootvo;
 
 import com.google.gson.annotations.SerializedName;
 import com.ilsa.grassis.apivo.Avatar;
+import com.ilsa.grassis.apivo.Background;
 import com.ilsa.grassis.apivo.Favorites;
 
 /**
  * Created by Zeeshan Ali Basbasah on 5/4/2017.
  */
 
-public class User {
+public class UserVo {
 
     @SerializedName("id")
     private String id;

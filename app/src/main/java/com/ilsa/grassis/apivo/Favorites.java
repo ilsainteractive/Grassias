@@ -8,36 +8,30 @@ import com.ilsa.grassis.unknow.Dispensaries;
  */
 
 
-public class Favorites
-{
+public class Favorites {
     @SerializedName("dispensaries")
     private com.ilsa.grassis.unknow.Dispensaries[] dispensaries;
     @SerializedName("strands")
-    private String[] strands;
+    private Strand[] strands;
 
-    public Dispensaries[] getDispensaries ()
-    {
+    public Dispensaries[] getDispensaries() {
         return dispensaries;
     }
 
-    public void setDispensaries (Dispensaries[] dispensaries)
-    {
+    public void setDispensaries(Dispensaries[] dispensaries) {
         this.dispensaries = dispensaries;
     }
 
-    public String[] getStrands ()
-    {
+    public Strand[] getStrands() {
         return strands;
     }
 
-    public void setStrands (String[] strands)
-    {
+    public void setStrands(Strand[] strands) {
         this.strands = strands;
     }
 
     @Override
-    public String toString()
-    {
-        return "ClassPojo [dispensaries = "+dispensaries+", strands = "+strands+"]";
+    public String toString() {
+        return "ClassPojo [dispensaries = " + dispensaries + ", strands = " + strands + "]";
     }
 }

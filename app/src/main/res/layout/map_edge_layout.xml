@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ImageView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:background="@drawable/image_edge_color"
-    android:src="@mipmap/home_lv_bottom_icon">
-
-</ImageView>
+    android:id="@+id/map_image"
+    android:layout_width="24dp"
+    android:layout_height="24dp"
+    android:src="@mipmap/checked"></ImageView>

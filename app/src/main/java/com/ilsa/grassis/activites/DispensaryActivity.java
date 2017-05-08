@@ -2,12 +2,15 @@ package com.ilsa.grassis.activites;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.location.Location;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
@@ -16,11 +19,14 @@ import android.view.Menu;
 import android.view.View;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
@@ -31,17 +37,23 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.ilsa.grassis.R;
-import com.ilsa.grassis.rootvo.NearByVo;
+import com.ilsa.grassis.apivo.Dispensaries;
 import com.ilsa.grassis.library.Constants;
 import com.ilsa.grassis.library.RegularTextView;
+import com.ilsa.grassis.rootvo.NearByVo;
+import com.ilsa.grassis.rootvo.UserVo;
 import com.ilsa.grassis.utils.Dailogs;
 import com.ilsa.grassis.utils.Helper;
+import com.ilsa.grassis.utils.ShPrefsHelper;
 import com.ilsa.grassis.vo.DispensaryVO;
 import com.ilsa.grassis.vo.SignUpVO;
 
 import org.json.JSONObject;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.util.ArrayList;
 
 import butterknife.BindView;
@@ -93,6 +105,9 @@ public class DispensaryActivity extends AppCompatActivity implements OnMapReadyC
 
     private ArrayList<DispensaryVO> list;
     private NearByVo nearByVo;
+    private UserVo userVo;
+    private int mapPos = -1;
+    private LatLng latLng = null;
     //Define a request code to send to Google Play services
     private static final int REQUEST_RUNTIME_PERMISSION = 123;
     private final static int CONNECTION_FAILURE_RESOLUTION_REQUEST = 9000;
@@ -209,13 +224,15 @@ public class DispensaryActivity extends AppCompatActivity implements OnMapReadyC
      * Applying listeners to views.
      */
     private void AddListener() {
-
         mtxtBtmSecNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (Helper.checkInternetConnection(mContext)) {
                     if (!mSelectedId.equalsIgnoreCase(""))
                         HitSignUpRequest();
+                    else
+                        Dailogs.ShowToast(mContext, getString(R.string.select_dispensary), Constants.SHORT_TIME);
+
                 } else {
                     Dailogs.ShowToast(mContext, getString(R.string.no_internet_msg), Constants.SHORT_TIME);
                 }
@@ -225,6 +242,12 @@ public class DispensaryActivity extends AppCompatActivity implements OnMapReadyC
 
     private void HitSignUpRequest() {
         try {
+
+            final ProgressDialog pd = new ProgressDialog(mContext);
+            pd.setMessage(getString(R.string.signing_up_msg));
+            pd.setCancelable(false);
+            pd.show();
+
             OkHttpClient client = new OkHttpClient();
 
             MediaType mediaType = MediaType.parse("application/json");
@@ -237,10 +260,8 @@ public class DispensaryActivity extends AppCompatActivity implements OnMapReadyC
                     .addHeader("authorization", "Bearer 977fa5b9a9e56fa2b2e4cfcad7a626b760c7752a4da9dfebb87c3cd0393f4e31")
                     .addHeader("x-dispensary-id", mSelectedId)
                     .addHeader("cache-control", "no-cache")
-                    //.addHeader("postman-token", "2ed679ee-9c6d-e4cc-4875-005e12e8e3b7")
                     .build();
 
-            //Response response = client.newCall(request).execute();
             client.newCall(request).enqueue(new Callback() {
                 @Override
                 public void onFailure(Call call, IOException e) {
@@ -248,70 +269,62 @@ public class DispensaryActivity extends AppCompatActivity implements OnMapReadyC
                     mActivity.runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            Dailogs.ShowToast(mContext, getString(R.string.Something_went_wrong_ry_again), Constants.LONG_TIME);
+                            pd.dismiss();
+                            Dailogs.ShowToast(mContext, getString(R.string.something_went_wrong_ry_again), Constants.LONG_TIME);
                         }
                     });
                 }
 
                 @Override
                 public void onResponse(Call call, final Response response) throws IOException {
+                    Log.i("signup respnse", response.body().string().toString());
                     if (!response.isSuccessful()) {
                         mActivity.runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
                                 try {
+                                    pd.dismiss();
+                                    Log.i("signup respnse", response.body().string().toString());
+                                    Log.i("signup respnse", response.body().string());
                                     JSONObject jsonObject = new JSONObject(response.body().string().toString());
                                     JSONObject error = jsonObject.getJSONObject("error");
                                     String message = error.get("message").toString();
                                     Dailogs.ShowToast(mContext, "Email id " + message, Constants.LONG_TIME);
                                 } catch (Exception e) {
+                                    Log.i("problem", e.toString());
                                 }
                             }
                         });
                     } else {
                         try {
-                            //Gson gson = new GsonBuilder().create();
-                            //nearByVo = gson.fromJson(response.body().string().toString(), NearByVo.class);
-                            mActivity.runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    Dailogs.ShowToast(mContext, "Successfully sign up", Constants.LONG_TIME);
-                                    Intent i = new Intent(mContext, HomeActivity.class);
-                                    startActivity(i);
-                                }
-                            });
+                            Gson gson = new GsonBuilder().create();
+                            userVo = gson.fromJson(response.body().string().toString(), UserVo.class);
+                            if (userVo != null) {
+                                ShPrefsHelper.setSharedPreferenceString(mContext, Constants.USER_VO, userVo.toString());
+                                mActivity.runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        pd.dismiss();
+                                        if (userVo.getState_change().equalsIgnoreCase("registered")) {
+                                            Intent i = new Intent(mContext, HomeActivity.class);
+                                            startActivity(i);
+                                        } else {
+                                            Dailogs.ShowToast(mContext, getString(R.string.something_went_wrong_ry_again), Constants.LONG_TIME);
+                                        }
+                                    }
+                                });
+                            }
                         } catch (Exception e) {
+                            pd.dismiss();
                             Log.i("problem", e.toString());
                         }
                     }
                 }
             });
         } catch (Exception e) {
+            Log.i("problem", e.toString());
         }
     }
-
-//    @Override
-//    public void onMapReady(GoogleMap googleMap) {
-//        mMap = googleMap;
-//        LatLng latLng = null;
-//        for (int i = 0; i < list.size(); i++) {
-//            latLng = new LatLng(list.get(i).getLat(), list.get(i).getLog());
-//            MarkerOptions marker = new MarkerOptions().position(new LatLng(list.get(i).getLat(), list.get(i).getLog()))
-//                    .title(list.get(i).getTitle()).snippet(list.get(i).getDesc());
-//            marker.icon(BitmapDescriptorFactory.fromResource(R.mipmap.home_lv_bottom_icon))
-//                    .icon(BitmapDescriptorFactory.fromResource(R.mipmap.home_lv_bottom_icon));
-//            Marker marker1 = mMap.addMarker(marker);
-//            mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
-//                @Override
-//                public boolean onMarkerClick(Marker marker) {
-//
-//                    marker.getTag();
-//                    return false;
-//                }
-//            });
-//        }
-//        googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 13.0f));
-//    }
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
@@ -398,13 +411,18 @@ public class DispensaryActivity extends AppCompatActivity implements OnMapReadyC
             currentLatitude = location.getLatitude();
             currentLongitude = location.getLongitude();
             getDispensaryList(location);
-            Toast.makeText(this, currentLatitude + " WORKS " + currentLongitude + "", Toast.LENGTH_LONG).show();
         }
     }
 
     private void getDispensaryList(Location location) {
 
+        final ProgressDialog pd = new ProgressDialog(mContext);
+        pd.setMessage(getString(R.string.loading_dispensaries));
+        pd.setCancelable(false);
+        pd.show();
+
         list = new ArrayList<>();
+
         try {
             OkHttpClient client = new OkHttpClient();
             Request request = new Request.Builder()
@@ -418,6 +436,12 @@ public class DispensaryActivity extends AppCompatActivity implements OnMapReadyC
                 @Override
                 public void onFailure(Call call, IOException e) {
                     e.printStackTrace();
+                    mActivity.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Dailogs.ShowToast(mContext, getString(R.string.something_went_wrong_ry_again), Constants.LONG_TIME);
+                        }
+                    });
                 }
 
                 @Override
@@ -426,48 +450,122 @@ public class DispensaryActivity extends AppCompatActivity implements OnMapReadyC
                         mActivity.runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                Dailogs.ShowToast(mContext, getString(R.string.Something_went_wrong_ry_again), Constants.LONG_TIME);
+                                pd.dismiss();
+                                Dailogs.ShowToast(mContext, getString(R.string.something_went_wrong_ry_again), Constants.LONG_TIME);
                             }
                         });
                     } else {
                         try {
                             Gson gson = new GsonBuilder().create();
                             nearByVo = gson.fromJson(response.body().string().toString(), NearByVo.class);
-                            mActivity.runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    if (mMap != null) {
-                                        LatLng latLng = null;
-                                        for (int i = 0; i < nearByVo.getDispensaries().length; i++) {
-                                            latLng = new LatLng(nearByVo.getDispensaries()[i].getDispensaries().getLocation().getCoords().getLatitude(), nearByVo.getDispensaries()[i].getDispensaries().getLocation().getCoords().getLongitude());
-                                            MarkerOptions marker = new MarkerOptions().position(latLng);
+                            try {
+                                if (mMap != null) {
 
-                                            marker.icon(BitmapDescriptorFactory.fromResource(R.mipmap.map_dailog_popup_img));
-                                            marker.snippet(nearByVo.getDispensaries()[i].getDispensaries().getId());
-                                            Marker marker1 = mMap.addMarker(marker);
-                                        }
-                                        mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+                                    for (int i = 0; i < nearByVo.getDispensaries().length; i++) {
+                                        mapPos = i;
+                                        final Bitmap theBitmap = Glide.
+                                                with(mContext).
+                                                load(nearByVo.getDispensaries()[mapPos].getDispensaries().getLogo().getSmall()).
+                                                asBitmap().diskCacheStrategy(DiskCacheStrategy.ALL).
+                                                into(100, 100). // Width and height
+                                                get();
+                                        //savebitmap(theBitmap, nearByVo.getDispensaries()[mapPos]);
+                                        mActivity.runOnUiThread(new Runnable() {
                                             @Override
-                                            public boolean onMarkerClick(Marker marker) {
-
-                                                marker.getTag();
-                                                mSelectedId = marker.getSnippet();
-                                                return false;
+                                            public void run() {
+                                                latLng = new LatLng(nearByVo.getDispensaries()[mapPos].getDispensaries().getLocation().getCoords().getLatitude(), nearByVo.getDispensaries()[mapPos].getDispensaries().getLocation().getCoords().getLongitude());
+                                                MarkerOptions marker = new MarkerOptions().position(latLng);
+                                                marker.icon(BitmapDescriptorFactory.fromBitmap(theBitmap));
+                                                //marker.icon(BitmapDescriptorFactory.fromBitmap(BitmapFactory.decodeStream(new URL(nearByVo.getDispensaries()[i].getDispensaries().getLogo().getSmall()).openConnection().getInputStream())));
+                                                marker.snippet(mapPos + "");
+                                                Marker marker1 = mMap.addMarker(marker);
+                                                Log.i("added", mapPos + "");
                                             }
                                         });
+                                        Thread.sleep(200);
                                     }
+                                    mActivity.runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 13.0f));
+                                            mMap.setInfoWindowAdapter(new GoogleMap.InfoWindowAdapter() {
+
+                                                @Override
+                                                public View getInfoWindow(Marker marker) {
+                                                    View v = mActivity.getLayoutInflater().inflate(R.layout.map_edge_layout, null);
+                                                    return v;
+                                                }
+
+                                                // Defines the contents of the InfoWindow
+                                                @Override
+                                                public View getInfoContents(Marker marker) {
+                                                    View v = mActivity.getLayoutInflater().inflate(R.layout.map_edge_layout, null);
+                                                    //Getting reference to the TextView to set title
+//                                            ImageView imageView = (ImageView) v.findViewById(R.id.map_image);
+//                                            Glide.with(mContext)
+//                                                    .load(marker.getSnippet())
+//                                                    .placeholder(R.mipmap.home_lv_bottom_icon)
+//                                                    .error(R.mipmap.home_lv_bottom_icon)
+//                                                    .into(imageView);
+                                                    // Returning the view containing InfoWindow contents
+                                                    return v;
+                                                }
+                                            });
+                                            mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+                                                @Override
+                                                public boolean onMarkerClick(final Marker marker) {
+//                                                    marker.getTag();
+//                                                    View v = mActivity.getLayoutInflater().inflate(R.layout.map_edge_layout, null);
+//                                                    final ImageView imageView = (ImageView) v.findViewById(R.id.map_image);
+//                                                    Glide.with(mContext).
+//                                                            load(marker.getSnippet()).
+//                                                            asBitmap().diskCacheStrategy(DiskCacheStrategy.ALL).into(imageView);
+                                                    mSelectedId = marker.getSnippet();
+                                                    return false;
+                                                }
+                                            });
+                                        }
+                                    });
+                                    pd.dismiss();
                                 }
-                            });
+                            } catch (Exception e) {
+                                pd.dismiss();
+                                Log.i("problem", e.toString());
+                            }
                         } catch (Exception e) {
+                            pd.dismiss();
                             Log.i("problem", e.toString());
                         }
                     }
                 }
             });
-
-
         } catch (Exception e) {
         }
+    }
+
+    private File savebitmap(Bitmap bitmap, Dispensaries filename) {
+        String extStorageDirectory = Environment.getExternalStorageDirectory().toString();
+        OutputStream outStream = null;
+
+        File file = new File(filename.getDispensaries().getId() + ".png");
+        if (file.exists()) {
+            file.delete();
+            file = new File(extStorageDirectory, filename + ".png");
+            Log.e("file exist", "" + file + ",Bitmap= " + filename);
+        }
+        try {
+            // make a new bitmap from your file
+            //Bitmap bitmap = BitmapFactory.decodeFile(file.getName());
+            outStream = new FileOutputStream(file);
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, outStream);
+            outStream.flush();
+            outStream.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        Log.e("file", "" + file);
+        filename.getDispensaries().setDescription(file.getAbsolutePath());
+        return file;
     }
 
     @Override

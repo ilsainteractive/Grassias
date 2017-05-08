@@ -98,8 +98,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 // startActivity(new Intent(mContext, HomeActivity.class));
                 if (!metUserName.getText().toString().equalsIgnoreCase("")) { // any length validation on user or passwords add them below
                     if (!metPassword.getText().toString().equalsIgnoreCase("")) {
-                        // Dailogs.ShowToast(mContext, "Service is not ready yet?", Constants.LONG_TIME);
-
                         if (Helper.checkInternetConnection(mContext))
                             RequestLogin(metUserName.getText().toString(), metPassword.getText().toString(), mContext);
                         else

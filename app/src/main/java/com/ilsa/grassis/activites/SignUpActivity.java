@@ -279,7 +279,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
                             if (IsFieldValid(metPhoneNo.getEditableText(), Constants.SIGNUP_PHONE_VALIDATION)) {
                                 if (IsFieldValid(metPassword.getEditableText(), Constants.SIGNUP_PASSWORD_VALIDATION)) {
                                     SigingUpOnServer(mContext, "users", metFirstName.getText().toString(),
-                                            metLastName.getText().toString(),metUserName.getText().toString(), mtxtEmail.getText().toString(), metPhoneNo.getText().toString(),
+                                            metLastName.getText().toString(), metUserName.getText().toString(), mtxtEmail.getText().toString(), metPhoneNo.getText().toString(),
                                             metPassword.getText().toString());
                                 } else {
                                     Dailogs.ShowToast(mContext, getString(R.string.invalid_password), Constants.SHORT_TIME);
@@ -300,7 +300,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
         }
     }
 
-    public void SigingUpOnServer(Context context, String service, String firstName, String LastName,String UserName, String email, String phone, String password) {
+    public void SigingUpOnServer(Context context, String service, String firstName, String LastName, String UserName, String email, String phone, String password) {
 
         SignUpVO signUpVO = new SignUpVO();
         signUpVO.setEmail(email);
