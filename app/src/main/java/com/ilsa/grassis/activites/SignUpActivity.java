@@ -273,6 +273,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
                 }
                 break;
             case R.id.signup_txt_next:
+
                 if (IsFieldValid(metFirstName.getEditableText(), Constants.SIGNUP_FIRST_NAME)) {
                     if (IsFieldValid(metLastName.getEditableText(), Constants.SIGNUP_LAST_NAME)) {
                         if (IsFieldValid(metUserName.getEditableText(), Constants.SIGNUP_USER_NAME)) {

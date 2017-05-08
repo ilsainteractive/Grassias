@@ -10,13 +10,14 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.location.Location;
 import android.os.Bundle;
-import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
@@ -37,9 +38,9 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.ilsa.grassis.R;
-import com.ilsa.grassis.apivo.Dispensaries;
 import com.ilsa.grassis.library.Constants;
 import com.ilsa.grassis.library.RegularTextView;
+import com.ilsa.grassis.library.SFUITextBold;
 import com.ilsa.grassis.rootvo.NearByVo;
 import com.ilsa.grassis.rootvo.UserVo;
 import com.ilsa.grassis.utils.Dailogs;
@@ -50,10 +51,7 @@ import com.ilsa.grassis.vo.SignUpVO;
 
 import org.json.JSONObject;
 
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.util.ArrayList;
 
 import butterknife.BindView;
@@ -97,11 +95,17 @@ public class DispensaryActivity extends AppCompatActivity implements OnMapReadyC
     //@BindView(R.id.dispensary_map_btm_section_sub_title)
     //ThinTextView mtxtBtmSecSubTitle;
 
-    //@BindView(R.id.home_lv_bottom_section_2_title)
-    //SFUITextBold mtxtSelecTitle;
+    @BindView(R.id.home_lv_bottom_section_2)
+    LinearLayout mLayoutBottomSection;
 
-    //@BindView(R.id.home_lv_bottom_section_2_subTitle)
-    //RegularTextView mtxtSelecAddresse;
+    @BindView(R.id.home_lv_bottom_section_2_img)
+    ImageView mImageSelectDispensory;
+
+    @BindView(R.id.home_lv_bottom_section_2_title)
+    SFUITextBold mtxtSelecTitle;
+
+    @BindView(R.id.home_lv_bottom_section_2_subTitle)
+    RegularTextView mtxtSelecAddresse;
 
     private ArrayList<DispensaryVO> list;
     private NearByVo nearByVo;
@@ -157,21 +161,6 @@ public class DispensaryActivity extends AppCompatActivity implements OnMapReadyC
         }
     }
 
-    @Override
-    public void onRequestPermissionsResult(int permsRequestCode, String[] permissions, int[] grantResults) {
-        switch (permsRequestCode) {
-            case REQUEST_RUNTIME_PERMISSION: {
-                if (grantResults.length > 0
-                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    recreate();
-                } else {
-                    Helper.ShowToast(mContext, getString(R.string.no_permission_msg));
-                }
-                return;
-            }
-        }
-    }
-
     /**
      * Init toolbar.
      */
@@ -207,8 +196,11 @@ public class DispensaryActivity extends AppCompatActivity implements OnMapReadyC
         //mtxtBtmSecTitle.setTextSize(Helper.getFontSize(mContext.getResources(), 6));
         //mtxtBtmSecSubTitle.setTextSize(Helper.getFontSize(mContext.getResources(), 3.0));
 
-        //mtxtSelecTitle.setTextSize(Helper.getFontSize(mContext.getResources(), 6.2)); //6.5 psd
-        //mtxtSelecAddresse.setTextSize(Helper.getFontSize(mContext.getResources(), 3.6));
+
+        //Bottom Section
+        mLayoutBottomSection.setVisibility(View.INVISIBLE);
+        mtxtSelecTitle.setTextSize(Helper.getFontSize(mContext.getResources(), 6.2)); //6.5 psd
+        mtxtSelecAddresse.setTextSize(Helper.getFontSize(mContext.getResources(), 3.6));
 
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
@@ -414,6 +406,46 @@ public class DispensaryActivity extends AppCompatActivity implements OnMapReadyC
         }
     }
 
+    @Override
+    public void onConnectionSuspended(int i) {
+    }
+
+    @Override
+    public void onConnectionFailed(ConnectionResult connectionResult) {
+            /*
+             * Google Play services can resolve some errors it detects.
+             * If the error has a resolution, try sending an Intent to
+             * start a Google Play services activity that can resolve
+             * error.
+             */
+        if (connectionResult.hasResolution()) {
+            try {
+                // Start an Activity that tries to resolve the error
+                connectionResult.startResolutionForResult(this, CONNECTION_FAILURE_RESOLUTION_REQUEST);
+                    /*
+                     * Thrown if Google Play services canceled the original
+                     * PendingIntent
+                     */
+            } catch (IntentSender.SendIntentException e) {
+                // Log the error
+                e.printStackTrace();
+            }
+        } else {
+                /*
+                 * If no resolution is available, display a dialog to the
+                 * user with the error.
+                 */
+            Log.e("Error", "Location services connection failed with code " + connectionResult.getErrorCode());
+        }
+    }
+
+    @Override
+    public void onLocationChanged(Location location) {
+        currentLatitude = location.getLatitude();
+        currentLongitude = location.getLongitude();
+        Toast.makeText(this, currentLatitude + " WORKS " + currentLongitude + "", Toast.LENGTH_LONG).show();
+    }
+
     private void getDispensaryList(Location location) {
 
         final ProgressDialog pd = new ProgressDialog(mContext);
@@ -521,6 +553,7 @@ public class DispensaryActivity extends AppCompatActivity implements OnMapReadyC
 //                                                            load(marker.getSnippet()).
 //                                                            asBitmap().diskCacheStrategy(DiskCacheStrategy.ALL).into(imageView);
                                                     mSelectedId = marker.getSnippet();
+                                                    UpdateBannerSection(Integer.valueOf(mSelectedId));
                                                     return false;
                                                 }
                                             });
@@ -543,68 +576,32 @@ public class DispensaryActivity extends AppCompatActivity implements OnMapReadyC
         }
     }
 
-    private File savebitmap(Bitmap bitmap, Dispensaries filename) {
-        String extStorageDirectory = Environment.getExternalStorageDirectory().toString();
-        OutputStream outStream = null;
+    private void UpdateBannerSection(int id) {
 
-        File file = new File(filename.getDispensaries().getId() + ".png");
-        if (file.exists()) {
-            file.delete();
-            file = new File(extStorageDirectory, filename + ".png");
-            Log.e("file exist", "" + file + ",Bitmap= " + filename);
-        }
-        try {
-            // make a new bitmap from your file
-            //Bitmap bitmap = BitmapFactory.decodeFile(file.getName());
-            outStream = new FileOutputStream(file);
-            bitmap.compress(Bitmap.CompressFormat.PNG, 100, outStream);
-            outStream.flush();
-            outStream.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        Log.e("file", "" + file);
-        filename.getDispensaries().setDescription(file.getAbsolutePath());
-        return file;
+        Glide.with(mContext)
+                .load(nearByVo.getDispensaries()[id].getDispensaries().getLogo().getMedium())
+                .override(200, 200).crossFade().diskCacheStrategy(DiskCacheStrategy.ALL)
+                .into(mImageSelectDispensory);
+
+        mtxtSelecTitle.setText(nearByVo.getDispensaries()[id].getDispensaries().getName());
+        mtxtSelecAddresse.setText(nearByVo.getDispensaries()[id].getDispensaries().getLocation().getAddress());
+
+        mLayoutBottomSection.setVisibility(View.VISIBLE);
     }
 
     @Override
-    public void onConnectionSuspended(int i) {
-    }
-
-    @Override
-    public void onConnectionFailed(ConnectionResult connectionResult) {
-            /*
-             * Google Play services can resolve some errors it detects.
-             * If the error has a resolution, try sending an Intent to
-             * start a Google Play services activity that can resolve
-             * error.
-             */
-        if (connectionResult.hasResolution()) {
-            try {
-                // Start an Activity that tries to resolve the error
-                connectionResult.startResolutionForResult(this, CONNECTION_FAILURE_RESOLUTION_REQUEST);
-                    /*
-                     * Thrown if Google Play services canceled the original
-                     * PendingIntent
-                     */
-            } catch (IntentSender.SendIntentException e) {
-                // Log the error
-                e.printStackTrace();
+    public void onRequestPermissionsResult(int permsRequestCode, String[] permissions, int[] grantResults) {
+        switch (permsRequestCode) {
+            case REQUEST_RUNTIME_PERMISSION: {
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    recreate();
+                } else {
+                    Helper.ShowToast(mContext, getString(R.string.no_permission_msg));
+                }
+                return;
             }
-        } else {
-                /*
-                 * If no resolution is available, display a dialog to the
-                 * user with the error.
-                 */
-            Log.e("Error", "Location services connection failed with code " + connectionResult.getErrorCode());
         }
     }
 
-    @Override
-    public void onLocationChanged(Location location) {
-        currentLatitude = location.getLatitude();
-        currentLongitude = location.getLongitude();
-        Toast.makeText(this, currentLatitude + " WORKS " + currentLongitude + "", Toast.LENGTH_LONG).show();
-    }
 }
