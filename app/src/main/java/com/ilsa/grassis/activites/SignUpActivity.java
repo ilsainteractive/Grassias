@@ -319,22 +319,28 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
                                                 metLastName.getText().toString(), metUserName.getText().toString(), mtxtEmail.getText().toString(), metPhoneNo.getText().toString(),
                                                 metPassword.getText().toString());
                                     } else {
-                                        Dailogs.ShowToast(mContext, getString(R.string.invalid_password), Constants.SHORT_TIME);
+                                        // Dailogs.ShowToast(mContext, getString(R.string.invalid_password), Constants.SHORT_TIME);
+                                        metPassword.setError("Length must be between 8 to 11 character");
                                     }
                                 } else {
-                                    Dailogs.ShowToast(mContext, getString(R.string.invalid_phone_no), Constants.SHORT_TIME);
+                                    // Dailogs.ShowToast(mContext, getString(R.string.invalid_phone_no), Constants.SHORT_TIME);
+                                    metPhoneNo.setError("Length must be between 8 to 11 character");
                                 }
                             } else {
-                                Dailogs.ShowToast(mContext, getString(R.string.invalid_email), Constants.SHORT_TIME);
+                                //Dailogs.ShowToast(mContext, getString(R.string.invalid_email), Constants.SHORT_TIME);
+                                mtxtEmail.setError(getString(R.string.invalid_email));
                             }
                         } else {
-                            Dailogs.ShowToast(mContext, getString(R.string.invalid_user_name), Constants.SHORT_TIME);
+                            // Dailogs.ShowToast(mContext, getString(R.string.invalid_user_name), Constants.SHORT_TIME);
+                            metUserName.setError("Length must be between 5 to 14 character");
                         }
                     } else {
-                        Dailogs.ShowToast(mContext, getString(R.string.invalid_last_name), Constants.SHORT_TIME);
+                        // Dailogs.ShowToast(mContext, getString(R.string.invalid_last_name), Constants.SHORT_TIME);
+                        metLastName.setError("Length must be between 3 to 9 character");
                     }
                 } else {
-                    Dailogs.ShowToast(mContext, getString(R.string.invalid_first_name), Constants.SHORT_TIME);
+                    // Dailogs.ShowToast(mContext, getString(R.string.invalid_first_name), Constants.SHORT_TIME);
+                    metFirstName.setError("Length must be between 3 to 9 character");
                 }
                 break;
         }

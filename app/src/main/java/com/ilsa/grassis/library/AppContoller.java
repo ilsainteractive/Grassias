@@ -5,10 +5,13 @@ import android.content.Context;
 import android.support.multidex.MultiDex;
 import android.support.multidex.MultiDexApplication;
 
+import com.crashlytics.android.Crashlytics;
 import com.ilsa.grassis.apivo.UserVo;
 import com.ilsa.grassis.rootvo.UserDataVO;
 
 import java.util.ArrayList;
+
+import io.fabric.sdk.android.Fabric;
 
 /**
  * App contoller class to mange application lifecycle
@@ -26,6 +29,7 @@ public class AppContoller extends MultiDexApplication {
     @Override
     public void onCreate() {
         super.onCreate();
+        Fabric.with(this, new Crashlytics());
         DeadActivities = new ArrayList<>();
     }
 
