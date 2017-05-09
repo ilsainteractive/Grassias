@@ -21,6 +21,7 @@ import android.widget.ImageView;
 
 import com.ilsa.grassis.R;
 import com.ilsa.grassis.adapters.MenuGalleryAdapter;
+import com.ilsa.grassis.library.AppContoller;
 import com.ilsa.grassis.library.BoldSFTextView;
 import com.ilsa.grassis.library.Constants;
 import com.ilsa.grassis.library.RegularTextView;
@@ -93,6 +94,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         mtxtToolbarTitle = (BoldSFTextView) toolbar.findViewById(R.id.toolbar_title);
         mtxtToolbarTitleDump = (RegularTextView) toolbar.findViewById(R.id.toolbar_title_dump);
         toolbar.setTitle("");
+        mtxtToolbarTitle.setText(AppContoller.userData.getUser().getUsername());
         setSupportActionBar(toolbar);
     }
 

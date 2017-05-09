@@ -1,12 +1,13 @@
 package com.ilsa.grassis.rootvo;
 
 import com.google.gson.annotations.SerializedName;
+import com.ilsa.grassis.apivo.UserVo;
 
 /**
  * Created by Zeeshan Ali Basbasah on 5/4/2017.
  */
 
-public class LoginVO
+public class UserDataVO
 {
     @SerializedName("user")
     private UserVo user;

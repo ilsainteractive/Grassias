@@ -1,15 +1,22 @@
 package com.ilsa.grassis.activites;
 
 import android.Manifest;
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
+import android.database.MatrixCursor;
 import android.graphics.Bitmap;
 import android.location.Location;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
+import android.support.v4.widget.CursorAdapter;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
@@ -22,6 +29,9 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.load.resource.drawable.GlideDrawable;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
@@ -38,21 +48,23 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.ilsa.grassis.R;
+import com.ilsa.grassis.adapters.SearchAdapter;
+import com.ilsa.grassis.library.AppContoller;
 import com.ilsa.grassis.library.Constants;
 import com.ilsa.grassis.library.RegularTextView;
 import com.ilsa.grassis.library.SFUITextBold;
 import com.ilsa.grassis.rootvo.NearByVo;
-import com.ilsa.grassis.rootvo.UserVo;
+import com.ilsa.grassis.rootvo.UserDataVO;
 import com.ilsa.grassis.utils.Dailogs;
 import com.ilsa.grassis.utils.Helper;
 import com.ilsa.grassis.utils.ShPrefsHelper;
-import com.ilsa.grassis.vo.DispensaryVO;
 import com.ilsa.grassis.vo.SignUpVO;
 
 import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -63,6 +75,8 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
+
+import static com.ilsa.grassis.library.AppContoller.DeadActivities;
 
 /**
  * Dispensary activity contains map view of locations.
@@ -107,9 +121,8 @@ public class DispensaryActivity extends AppCompatActivity implements OnMapReadyC
     @BindView(R.id.home_lv_bottom_section_2_subTitle)
     RegularTextView mtxtSelecAddresse;
 
-    private ArrayList<DispensaryVO> list;
     private NearByVo nearByVo;
-    private UserVo userVo;
+    //private UserDataVO userVo;
     private int mapPos = -1;
     private LatLng latLng = null;
     //Define a request code to send to Google Play services
@@ -120,6 +133,10 @@ public class DispensaryActivity extends AppCompatActivity implements OnMapReadyC
     private double currentLatitude;
     private double currentLongitude;
     private SignUpVO signUpVO;
+    private SearchView searchView;
+    private CursorAdapter cursorAdapter;
+    private Menu menu;
+    private List<String> items;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -129,6 +146,7 @@ public class DispensaryActivity extends AppCompatActivity implements OnMapReadyC
 
         mActivity = this;
         mContext = this;
+        DeadActivities.add(this);
         signUpVO = (SignUpVO) getIntent().getExtras().get("SignUp_info");
 
         if (Helper.checkInternetConnection(mContext)) {
@@ -269,16 +287,15 @@ public class DispensaryActivity extends AppCompatActivity implements OnMapReadyC
 
                 @Override
                 public void onResponse(Call call, final Response response) throws IOException {
-                    Log.i("signup respnse", response.body().string().toString());
+                    final String res = response.body().string().toString();
+                    Log.i("signup respnse", res);
                     if (!response.isSuccessful()) {
                         mActivity.runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
                                 try {
                                     pd.dismiss();
-                                    Log.i("signup respnse", response.body().string().toString());
-                                    Log.i("signup respnse", response.body().string());
-                                    JSONObject jsonObject = new JSONObject(response.body().string().toString());
+                                    JSONObject jsonObject = new JSONObject(res);
                                     JSONObject error = jsonObject.getJSONObject("error");
                                     String message = error.get("message").toString();
                                     Dailogs.ShowToast(mContext, "Email id " + message, Constants.LONG_TIME);
@@ -290,16 +307,20 @@ public class DispensaryActivity extends AppCompatActivity implements OnMapReadyC
                     } else {
                         try {
                             Gson gson = new GsonBuilder().create();
-                            userVo = gson.fromJson(response.body().string().toString(), UserVo.class);
-                            if (userVo != null) {
-                                ShPrefsHelper.setSharedPreferenceString(mContext, Constants.USER_VO, userVo.toString());
+                            AppContoller.userData = gson.fromJson(res, UserDataVO.class);
+                            if (AppContoller.userData.getUser() != null) {
+                                ShPrefsHelper.setSharedPreferenceString(mContext, Constants.USER_VO, res);
                                 mActivity.runOnUiThread(new Runnable() {
                                     @Override
                                     public void run() {
                                         pd.dismiss();
-                                        if (userVo.getState_change().equalsIgnoreCase("registered")) {
+                                        if (AppContoller.userData.getUser().getState_change().equalsIgnoreCase("registered")) {
                                             Intent i = new Intent(mContext, HomeActivity.class);
                                             startActivity(i);
+                                            for (Activity activity : DeadActivities) {
+                                                activity.finish();
+                                            }
+                                            Dailogs.ShowToast(mContext, getString(R.string.successfully_sign_up), Constants.LONG_TIME);
                                         } else {
                                             Dailogs.ShowToast(mContext, getString(R.string.something_went_wrong_ry_again), Constants.LONG_TIME);
                                         }
@@ -370,8 +391,77 @@ public class DispensaryActivity extends AppCompatActivity implements OnMapReadyC
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        //getMenuInflater().inflate(R.menu.menu_home, menu);
         getMenuInflater().inflate(R.menu.menu_home, menu);
+        this.menu = menu;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+            SearchManager manager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+            SearchView search = (SearchView) menu.findItem(R.id.action_search).getActionView();
+            search.setSearchableInfo(manager.getSearchableInfo(getComponentName()));
+            search.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+                @Override
+                public boolean onQueryTextSubmit(String query) {
+                    return false;
+                }
+
+                @Override
+                public boolean onQueryTextChange(String query) {
+                    loadHistory(query);
+                    return true;
+                }
+            });
+        }
         return true;
+    }
+
+    // History
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
+    private void loadHistory(String query) {
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+
+            String[] columns = new String[]{"_id", "text"};
+            Object[] temp = new Object[]{0, "default"};
+
+            MatrixCursor cursor = new MatrixCursor(columns);
+            items = new ArrayList<String>();
+
+            for (int i = 0; i < nearByVo.getDispensaries().length; i++) {
+
+                if (nearByVo.getDispensaries()[i].getDispensaries().getName().toLowerCase().contains(query)) {
+                    temp[0] = nearByVo.getDispensaries()[i].getDispensaries().getId();
+                    temp[1] = nearByVo.getDispensaries()[i].getDispensaries().getName();
+                    items.add((String) temp[1]);
+                    cursor.addRow(temp);
+                }
+            }
+            //SearchManager manager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+            final SearchView search = (SearchView) menu.findItem(R.id.action_search).getActionView();
+            search.setSuggestionsAdapter(new SearchAdapter(this, cursor, items));
+            search.setOnSuggestionListener(new SearchView.OnSuggestionListener() {
+                @Override
+                public boolean onSuggestionSelect(int position) {
+                    return false;
+                }
+
+                @Override
+                public boolean onSuggestionClick(int position) {
+                    Cursor cursor = search.getSuggestionsAdapter().getCursor();
+                    if (cursor.moveToPosition(position)) {
+                        String selectedItem = cursor.getString(0);
+                        for (int i = 0; i < nearByVo.getDispensaries().length; i++) {
+                            if (nearByVo.getDispensaries()[i].getDispensaries().getId().equalsIgnoreCase(selectedItem)) {
+                                latLng = new LatLng(nearByVo.getDispensaries()[i].getDispensaries().getLocation().getCoords().getLatitude(), nearByVo.getDispensaries()[i].getDispensaries().getLocation().getCoords().getLongitude());
+                                UpdateBannerSection(nearByVo.getDispensaries()[i].getDispensaries().getId());
+                                if (mMap != null)
+                                    mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 13.0f));
+                            }
+                        }
+                    }
+                    return false;
+                }
+            });
+        }
     }
 
     @Override
@@ -393,16 +483,17 @@ public class DispensaryActivity extends AppCompatActivity implements OnMapReadyC
 
     @Override
     public void onConnected(Bundle bundle) {
-        Location location = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
-
-        if (location == null) {
-            LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);
-
-        } else {
-            //If everything went fine lets get latitude and longitude
-            currentLatitude = location.getLatitude();
-            currentLongitude = location.getLongitude();
-            getDispensaryList(location);
+        if (ContextCompat.checkSelfPermission(mContext,
+                Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            Location location = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+            if (location == null) {
+                LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);
+            } else {
+                //If everything went fine lets get latitude and longitude
+                currentLatitude = location.getLatitude();
+                currentLongitude = location.getLongitude();
+                getDispensaryList(location);
+            }
         }
     }
 
@@ -448,14 +539,12 @@ public class DispensaryActivity extends AppCompatActivity implements OnMapReadyC
 
     private void getDispensaryList(Location location) {
 
-        final ProgressDialog pd = new ProgressDialog(mContext);
-        pd.setMessage(getString(R.string.loading_dispensaries));
-        pd.setCancelable(false);
-        pd.show();
-
-        list = new ArrayList<>();
-
         try {
+            final ProgressDialog pd = new ProgressDialog(mContext);
+            pd.setMessage(getString(R.string.loading_dispensaries));
+            pd.setCancelable(false);
+            pd.show();
+
             OkHttpClient client = new OkHttpClient();
             Request request = new Request.Builder()
                     .url("http://kushmarketing.herokuapp.com/api/search?q=&limit=10&lat=" + location.getLatitude() + "&lng= " + location.getLongitude() + "&distance=20000&type=storefront")
@@ -492,25 +581,24 @@ public class DispensaryActivity extends AppCompatActivity implements OnMapReadyC
                             nearByVo = gson.fromJson(response.body().string().toString(), NearByVo.class);
                             try {
                                 if (mMap != null) {
-
                                     for (int i = 0; i < nearByVo.getDispensaries().length; i++) {
                                         mapPos = i;
                                         final Bitmap theBitmap = Glide.
                                                 with(mContext).
                                                 load(nearByVo.getDispensaries()[mapPos].getDispensaries().getLogo().getSmall()).
                                                 asBitmap().diskCacheStrategy(DiskCacheStrategy.ALL).
-                                                into(100, 100). // Width and height
-                                                get();
-                                        //savebitmap(theBitmap, nearByVo.getDispensaries()[mapPos]);
+                                                into(100, 100).get();
                                         mActivity.runOnUiThread(new Runnable() {
                                             @Override
                                             public void run() {
                                                 latLng = new LatLng(nearByVo.getDispensaries()[mapPos].getDispensaries().getLocation().getCoords().getLatitude(), nearByVo.getDispensaries()[mapPos].getDispensaries().getLocation().getCoords().getLongitude());
+                                                mSelectedId = nearByVo.getDispensaries()[mapPos].getDispensaries().getId();
                                                 MarkerOptions marker = new MarkerOptions().position(latLng);
                                                 marker.icon(BitmapDescriptorFactory.fromBitmap(theBitmap));
                                                 //marker.icon(BitmapDescriptorFactory.fromBitmap(BitmapFactory.decodeStream(new URL(nearByVo.getDispensaries()[i].getDispensaries().getLogo().getSmall()).openConnection().getInputStream())));
-                                                marker.snippet(mapPos + "");
-                                                Marker marker1 = mMap.addMarker(marker);
+                                                //marker.snippet(mapPos + "");
+                                                marker.snippet(nearByVo.getDispensaries()[mapPos].getDispensaries().getId());
+                                                mMap.addMarker(marker);
                                                 Log.i("added", mapPos + "");
                                             }
                                         });
@@ -520,6 +608,7 @@ public class DispensaryActivity extends AppCompatActivity implements OnMapReadyC
                                         @Override
                                         public void run() {
                                             mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 13.0f));
+                                            UpdateBannerSection(mSelectedId);
                                             mMap.setInfoWindowAdapter(new GoogleMap.InfoWindowAdapter() {
 
                                                 @Override
@@ -546,14 +635,8 @@ public class DispensaryActivity extends AppCompatActivity implements OnMapReadyC
                                             mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
                                                 @Override
                                                 public boolean onMarkerClick(final Marker marker) {
-//                                                    marker.getTag();
-//                                                    View v = mActivity.getLayoutInflater().inflate(R.layout.map_edge_layout, null);
-//                                                    final ImageView imageView = (ImageView) v.findViewById(R.id.map_image);
-//                                                    Glide.with(mContext).
-//                                                            load(marker.getSnippet()).
-//                                                            asBitmap().diskCacheStrategy(DiskCacheStrategy.ALL).into(imageView);
                                                     mSelectedId = marker.getSnippet();
-                                                    UpdateBannerSection(Integer.valueOf(mSelectedId));
+                                                    UpdateBannerSection(mSelectedId);
                                                     return false;
                                                 }
                                             });
@@ -576,21 +659,36 @@ public class DispensaryActivity extends AppCompatActivity implements OnMapReadyC
         }
     }
 
-    private void UpdateBannerSection(int id) {
+    private void UpdateBannerSection(String id) {
 
-        Glide.with(mContext)
-                .load(nearByVo.getDispensaries()[id].getDispensaries().getLogo().getMedium())
-                .override(200, 200).crossFade().diskCacheStrategy(DiskCacheStrategy.ALL)
-                .into(mImageSelectDispensory);
+        for (int i = 0; i < nearByVo.getDispensaries().length; i++) {
+            if (nearByVo.getDispensaries()[i].getDispensaries().getId().equalsIgnoreCase(id)) {
+                Glide.with(mContext)
+                        .load(nearByVo.getDispensaries()[i].getDispensaries().getLogo().getMedium())
+                        .override(200, 200).crossFade().diskCacheStrategy(DiskCacheStrategy.ALL)
+                        .listener(new RequestListener<String, GlideDrawable>() {
+                            @Override
+                            public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
+                                return false;
+                            }
 
-        mtxtSelecTitle.setText(nearByVo.getDispensaries()[id].getDispensaries().getName());
-        mtxtSelecAddresse.setText(nearByVo.getDispensaries()[id].getDispensaries().getLocation().getAddress());
+                            @Override
+                            public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
 
-        mLayoutBottomSection.setVisibility(View.VISIBLE);
+                                return false;
+                            }
+                        }).placeholder(R.mipmap.flower1).into(mImageSelectDispensory);
+
+                mtxtSelecTitle.setText(nearByVo.getDispensaries()[i].getDispensaries().getName());
+                mtxtSelecAddresse.setText(nearByVo.getDispensaries()[i].getDispensaries().getLocation().getAddress());
+                mLayoutBottomSection.setVisibility(View.VISIBLE);
+            }
+        }
     }
 
     @Override
-    public void onRequestPermissionsResult(int permsRequestCode, String[] permissions, int[] grantResults) {
+    public void onRequestPermissionsResult(int permsRequestCode, String[] permissions,
+                                           int[] grantResults) {
         switch (permsRequestCode) {
             case REQUEST_RUNTIME_PERMISSION: {
                 if (grantResults.length > 0
@@ -603,5 +701,4 @@ public class DispensaryActivity extends AppCompatActivity implements OnMapReadyC
             }
         }
     }
-
 }

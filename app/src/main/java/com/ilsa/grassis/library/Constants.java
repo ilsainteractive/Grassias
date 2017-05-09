@@ -61,10 +61,12 @@ public class Constants {
      * The constant FIELD_PASSWORD_VALIDATION_LENGTH_MIN.
      */
     public static final int FIELD_PASSWORD_VALIDATION_LENGTH_MIN = 7;
+    public static final int FIELD_USER_NAME_VALIDATION_LENGTH_MIN = 4;
     /**
      * The constant FIELD_PASSWORD_VALIDATION_LENGTH_MAX.
      */
     public static final int FIELD_PASSWORD_VALIDATION_LENGTH_MAX = 20;
+    public static final int FIELD_USER_NAME_VALIDATION_LENGTH_MAX = 15;
 
     public static String baseUrl = "http://kushmarketing.herokuapp.com/api/";
     public static String grant_type = "client_credentials";

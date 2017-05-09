@@ -20,6 +20,12 @@ import android.text.TextUtils;
 import android.util.TypedValue;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.ilsa.grassis.library.AppContoller;
+import com.ilsa.grassis.library.Constants;
+import com.ilsa.grassis.rootvo.UserDataVO;
+
 /**
  * The type Helper.
  */
@@ -185,6 +191,24 @@ public class Helper {
                 ActivityCompat.requestPermissions(thisActivity,
                         new String[]{Permission},
                         Code);
+            }
+        }
+    }
+
+    public static boolean IsUserRegistered(Context mContext) {
+        String user = ShPrefsHelper.getSharedPreferenceString(mContext, Constants.USER_VO, null);
+        if (user == null) {
+            return false;
+        } else {
+            try {
+                Gson gson = new GsonBuilder().create();
+                AppContoller.userData = gson.fromJson(user, UserDataVO.class);
+                if (!AppContoller.userData.getUser().getAccess_token().equalsIgnoreCase(""))
+                    return true;
+                else
+                    return false;
+            } catch (Exception e) {
+                return false;
             }
         }
     }

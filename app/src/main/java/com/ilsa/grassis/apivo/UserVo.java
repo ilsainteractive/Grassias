@@ -1,15 +1,15 @@
-package com.ilsa.grassis.rootvo;
+package com.ilsa.grassis.apivo;
 
 import com.google.gson.annotations.SerializedName;
-import com.ilsa.grassis.apivo.Avatar;
-import com.ilsa.grassis.apivo.Background;
-import com.ilsa.grassis.apivo.Favorites;
 
 /**
  * Created by Zeeshan Ali Basbasah on 5/4/2017.
  */
 
 public class UserVo {
+
+    @SerializedName("user")
+    private UserVo user;
 
     @SerializedName("id")
     private String id;
@@ -213,8 +213,4 @@ public class UserVo {
         this.access_token = access_token;
     }
 
-    @Override
-    public String toString() {
-        return "ClassPojo [issued_at = " + issued_at + ", phone_number = " + phone_number + ", born_at = " + born_at + ", dispensary_id = " + dispensary_id + ", favorites = " + favorites + ", avatar = " + avatar + ", card_id = " + card_id + ", doctor = " + doctor + ", id = " + id + ", first_name = " + first_name + ", username = " + username + ", expires_at = " + expires_at + ", state_change = " + state_change + ", token = " + token + ", points_balance = " + points_balance + ", email = " + email + ", verified = " + verified + ", background = " + background + ", last_name = " + last_name + ", access_token = " + access_token + "]";
-    }
 }

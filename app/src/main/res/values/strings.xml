@@ -9,6 +9,7 @@
     <!--Login Screen-->
     <string name="username">Username</string>
     <string name="password">Password</string>
+    <string name="login_email">Email</string>
     <string name="get_started">Get Started</string>
     <string name="create_account">Create Account</string>
     <string name="skip_for_now">Skip for now</string>
@@ -44,4 +45,5 @@
     <string name="no_internet_msg">No active internet connection</string>
     <string name="no_permission_msg">Permission needed to perform this task</string>
     <string name="something_went_wrong_ry_again">Something went wrong. Try again</string>
+    <string name="successfully_sign_up">User registered.</string>
 </resources>

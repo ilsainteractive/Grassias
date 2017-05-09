@@ -24,6 +24,8 @@ import com.ilsa.grassis.vo.SignUpVO;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import static com.ilsa.grassis.library.AppContoller.DeadActivities;
+
 /**
  * Sign up activity.
  */
@@ -49,6 +51,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
 
         mContext = this;
         mActivity = this;
+        DeadActivities.add(this);
         initToolBar();
         InitComponents();
         AddListener();
@@ -237,7 +240,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
                 }
             case Constants.SIGNUP_USER_NAME:
                 if (!editable.toString().equalsIgnoreCase("")) {
-                    if (editable.length() > Constants.FIELD_PASSWORD_VALIDATION_LENGTH_MIN && editable.length() < Constants.FIELD_PASSWORD_VALIDATION_LENGTH_MAX)
+                    if (editable.length() > Constants.FIELD_USER_NAME_VALIDATION_LENGTH_MIN && editable.length() < Constants.FIELD_USER_NAME_VALIDATION_LENGTH_MAX)
                         return true;
                     else
                         return false;

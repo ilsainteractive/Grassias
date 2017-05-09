@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 
 import com.google.gson.Gson;
@@ -17,7 +18,7 @@ import com.ilsa.grassis.library.BoldTextView;
 import com.ilsa.grassis.library.Constants;
 import com.ilsa.grassis.library.CustomEditText;
 import com.ilsa.grassis.library.RegularTextView;
-import com.ilsa.grassis.rootvo.LoginVO;
+import com.ilsa.grassis.rootvo.UserDataVO;
 import com.ilsa.grassis.utils.Dailogs;
 import com.ilsa.grassis.utils.Helper;
 
@@ -44,15 +45,24 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
-
         mContext = this;
         mActivity = this;
-        InitComponents();
-        //ActionBarConfigs();
-        AddListener();
 
+        if (Helper.IsUserRegistered(mContext)) {
+            AppContoller.IsLoggedIn = true;
+            Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
+            startActivity(intent);
+            finish();
+        } else {
+            AppContoller.IsLoggedIn = false;
+
+            setContentView(R.layout.activity_login);
+            InitComponents();
+            //ActionBarConfigs();
+            AddListener();
+        }
     }
+
 
     private void InitComponents() {
         mTxtCreateAccount = (RegularTextView) findViewById(R.id.login_txt_create_account);
@@ -144,28 +154,29 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             @Override
             public void onResponse(Call call, final Response response) throws IOException {
                 pd.dismiss();
-
+                final String res = response.body().string().toString();
+                Log.i("response", res);
                 if (!response.isSuccessful()) {
                     mActivity.runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
                             try {
-                                JSONObject jsonObject = new JSONObject(response.body().string().toString());
+                                JSONObject jsonObject = new JSONObject(res);
                                 JSONObject error = jsonObject.getJSONObject("error");
                                 String message = error.get("message").toString();
                                 Dailogs.ShowToast(mContext, message, Constants.LONG_TIME);
                             } catch (Exception e) {
                             }
-
                         }
                     });
-
                 } else {
                     Gson gson = new GsonBuilder().create();
-                    LoginVO loginVO = gson.fromJson(response.body().string().toString(), LoginVO.class);
+                    UserDataVO loginVO = gson.fromJson(res, UserDataVO.class);
 
-                    if (loginVO != null) {
+                    if (loginVO.getUser() != null) {
                         Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
+                        intent.putExtra("first_name", loginVO.getUser().getFirst_name());
+                        intent.putExtra("last_name", loginVO.getUser().getLast_name());
                         startActivity(intent);
                     }
                 }
