@@ -122,23 +122,23 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MyViewHolder> 
 
         RegularTextView bottomTitle = (RegularTextView) v.findViewById(R.id.home_lv_bottom_txt);
         ImageView imageView = (ImageView) v.findViewById(R.id.home_lv_bottom_img);
-        final ProgressBar progressBar = (ProgressBar) v.findViewById(R.id.progress);
+        //final ProgressBar progressBar = (ProgressBar) v.findViewById(R.id.progress);
 
         bottomTitle.setText(product.getName());
-        Glide.with(mContext).load(product.getBackground().getUrl())
+        Glide.with(mContext).load(product.getBackground().getBackground().getUrl())
                 .thumbnail(0.5f)
                 .crossFade()
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .listener(new RequestListener<String, GlideDrawable>() {
                     @Override
                     public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
-                        progressBar.setVisibility(View.GONE);
+                        // progressBar.setVisibility(View.GONE);
                         return false;
                     }
 
                     @Override
                     public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
-                        progressBar.setVisibility(View.GONE);
+                        //progressBar.setVisibility(View.GONE);
                         return false;
                     }
                 }).into(imageView);
@@ -179,7 +179,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MyViewHolder> 
             mDespensoryDetail = (ImageView) view.findViewById(R.id.home_list_box_detail);
             mDespensoryTitle = (RegularTextView) view.findViewById(R.id.home_list_top_title);
             mDespensoryAddresse = (RegularTextView) view.findViewById(R.id.home_list_top_sub_title);
-            progressBar = (ProgressBar) view.findViewById(R.id.progress);
+            //progressBar = (ProgressBar) view.findViewById(R.id.progress);
             pager = (ViewPager) view.findViewById(R.id.viewPager);
         }
     }

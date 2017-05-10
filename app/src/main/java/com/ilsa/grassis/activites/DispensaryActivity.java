@@ -17,7 +17,6 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
-import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.location.Location;
@@ -87,6 +86,7 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 
 import static com.ilsa.grassis.library.AppContoller.DeadActivities;
+import static com.ilsa.grassis.library.AppContoller.nearByVo;
 
 /**
  * Dispensary activity contains map view of locations.
@@ -384,11 +384,11 @@ public class DispensaryActivity extends AppCompatActivity implements OnMapReadyC
             MatrixCursor cursor = new MatrixCursor(columns);
             items = new ArrayList<String>();
 
-            for (int i = 0; i < AppContoller.nearByVo.getDispensaries().size(); i++) {
+            for (int i = 0; i < nearByVo.getDispensaries().size(); i++) {
 
-                if (AppContoller.nearByVo.getDispensaries().get(i).getDispensary().getName().toLowerCase().contains(query)) {
-                    temp[0] = AppContoller.nearByVo.getDispensaries().get(i).getDispensary().getId();
-                    temp[1] = AppContoller.nearByVo.getDispensaries().get(i).getDispensary().getName();
+                if (nearByVo.getDispensaries().get(i).getDispensary().getName().toLowerCase().contains(query)) {
+                    temp[0] = nearByVo.getDispensaries().get(i).getDispensary().getId();
+                    temp[1] = nearByVo.getDispensaries().get(i).getDispensary().getName();
                     items.add((String) temp[1]);
                     cursor.addRow(temp);
                 }
@@ -407,10 +407,10 @@ public class DispensaryActivity extends AppCompatActivity implements OnMapReadyC
                     Cursor cursor = search.getSuggestionsAdapter().getCursor();
                     if (cursor.moveToPosition(position)) {
                         String selectedItem = cursor.getString(0);
-                        for (int i = 0; i < AppContoller.nearByVo.getDispensaries().size(); i++) {
-                            if (AppContoller.nearByVo.getDispensaries().get(i).getDispensary().getId().equalsIgnoreCase(selectedItem)) {
-                                latLng = new LatLng(AppContoller.nearByVo.getDispensaries().get(i).getDispensary().getLocation().getCoords().getLatitude(), AppContoller.nearByVo.getDispensaries().get(i).getDispensary().getLocation().getCoords().getLongitude());
-                                UpdateBannerSection(AppContoller.nearByVo.getDispensaries().get(i).getDispensary().getId());
+                        for (int i = 0; i < nearByVo.getDispensaries().size(); i++) {
+                            if (nearByVo.getDispensaries().get(i).getDispensary().getId().equalsIgnoreCase(selectedItem)) {
+                                latLng = new LatLng(nearByVo.getDispensaries().get(i).getDispensary().getLocation().getCoords().getLatitude(), nearByVo.getDispensaries().get(i).getDispensary().getLocation().getCoords().getLongitude());
+                                UpdateBannerSection(nearByVo.getDispensaries().get(i).getDispensary().getId());
                                 if (mMap != null)
                                     mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 13.0f));
                             }
@@ -536,36 +536,30 @@ public class DispensaryActivity extends AppCompatActivity implements OnMapReadyC
                     } else {
                         try {
                             Gson gson = new GsonBuilder().create();
-                            AppContoller.nearByVo = gson.fromJson(response.body().string().toString(), NearByVo.class);
+                            nearByVo = gson.fromJson(response.body().string().toString(), NearByVo.class);
                             try {
                                 if (mMap != null) {
-                                    for (int i = 0; i < AppContoller.nearByVo.getDispensaries().size(); i++) {
+                                    for (int i = 0; i < nearByVo.getDispensaries().size(); i++) {
                                         mapPos = i;
                                         final GlideDrawable theBitmap = Glide.
                                                 with(mContext).
-                                                load(AppContoller.nearByVo.getDispensaries().get(mapPos).getDispensary().getLogo().getSmall()).
-                                                asBitmap().diskCacheStrategy(DiskCacheStrategy.ALL).
-                                                into(100, 100).get();
-                                                load(nearByVo.getDispensaries()[mapPos].getDispensaries().getLogo().getSmall())
+                                                load(nearByVo.getDispensaries().get(mapPos).getDispensary().getLogo().getSmall())
                                                 .bitmapTransform(new CropCircleTransformation(DispensaryActivity.this))
-                                                // .asBitmap().diskCacheStrategy(DiskCacheStrategy.ALL).
+                                                .diskCacheStrategy(DiskCacheStrategy.ALL)
                                                 .into(100, 100).get();
                                         mActivity.runOnUiThread(new Runnable() {
                                             @Override
                                             public void run() {
-                                                latLng = new LatLng(AppContoller.nearByVo.getDispensaries().get(mapPos).getDispensary().getLocation().getCoords().getLatitude(), AppContoller.nearByVo.getDispensaries().get(mapPos).getDispensary().getLocation().getCoords().getLongitude());
-                                                mSelectedId = AppContoller.nearByVo.getDispensaries().get(mapPos).getDispensary().getId();
+
+                                                latLng = new LatLng(nearByVo.getDispensaries().get(mapPos).getDispensary().getLocation().getCoords().getLatitude(), nearByVo.getDispensaries().get(mapPos).getDispensary().getLocation().getCoords().getLongitude());
+                                                mSelectedId = nearByVo.getDispensaries().get(mapPos).getDispensary().getId();
                                                 MarkerOptions marker = new MarkerOptions().position(latLng);
                                                 // Bitmap mBitmap = addBorderToBitmap(drawableToBitmap(theBitmap));
 
                                                 BitmapDescriptor markerIcon = getMarkerIconFromDrawable(theBitmap);
-                                                // marker.icon(BitmapDescriptorFactory.fromBitmap(mBitmap));
                                                 marker.icon(markerIcon);
-                                                marker.snippet(nearByVo.getDispensaries()[mapPos].getDispensaries().getId());
-                                                marker.icon(BitmapDescriptorFactory.fromBitmap(theBitmap));
-                                                //marker.icon(BitmapDescriptorFactory.fromBitmap(BitmapFactory.decodeStream(new URL(nearByVo.getDispensaries()[i].getDispensaries().getLogo().getSmall()).openConnection().getInputStream())));
-                                                //marker.snippet(mapPos + "");
-                                                marker.snippet(AppContoller.nearByVo.getDispensaries().get(mapPos).getDispensary().getId());
+                                                marker.snippet(nearByVo.getDispensaries().get(mapPos).getDispensary().getId());
+                                                marker.snippet(nearByVo.getDispensaries().get(mapPos).getDispensary().getId());
                                                 mMap.addMarker(marker);
                                                 Log.i("added", mapPos + "");
                                             }
@@ -577,31 +571,6 @@ public class DispensaryActivity extends AppCompatActivity implements OnMapReadyC
                                         public void run() {
                                             mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 13.0f));
                                             UpdateBannerSection(mSelectedId);
-                                           /* mMap.setInfoWindowAdapter(new GoogleMap.InfoWindowAdapter() {
-
-                                                @Override
-                                                public View getInfoWindow(Marker marker) {
-                                                    View v = mActivity.getLayoutInflater().inflate(R.layout.map_edge_layout, null);
-                                                    return v;
-                                                }
-
-                                                // Defines the contents of the InfoWindow
-                                                @Override
-                                                public View getInfoContents(Marker marker) {
-                                                    View v = mActivity.getLayoutInflater().inflate(R.layout.map_edge_layout, null);
-
-
-                                                    //Getting reference to the TextView to set title
-//                                            ImageView imageView = (ImageView) v.findViewById(R.id.map_image);
-//                                            Glide.with(mContext)
-//                                                    .load(marker.getSnippet())
-//                                                    .placeholder(R.mipmap.home_lv_bottom_icon)
-//                                                    .error(R.mipmap.home_lv_bottom_icon)
-//                                                    .into(imageView);
-                                                    // Returning the view containing InfoWindow contents
-                                                    return v;
-                                                }
-                                            });*/
                                             mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
                                                 @Override
                                                 public boolean onMarkerClick(final Marker marker) {
@@ -699,8 +668,8 @@ public class DispensaryActivity extends AppCompatActivity implements OnMapReadyC
 
 
     private void addBorderArroundMarker(final String id) throws ExecutionException, InterruptedException {
-        for (int i = 0; i < nearByVo.getDispensaries().length; i++) {
-            if (nearByVo.getDispensaries()[i].getDispensaries().getId().equalsIgnoreCase(id)) {
+        for (int i = 0; i < nearByVo.getDispensaries().size(); i++) {
+            if (AppContoller.nearByVo.getDispensaries().get(i).getDispensary().getId().equalsIgnoreCase(id)) {
                 mapPos = i;
 
                 Runnable runnable = new Runnable() {
@@ -709,7 +678,7 @@ public class DispensaryActivity extends AppCompatActivity implements OnMapReadyC
                         try {
                             GlideDrawable theBitmap = Glide.
                                     with(mContext).
-                                    load(nearByVo.getDispensaries()[mapPos].getDispensaries().getLogo().getSmall())
+                                    load(AppContoller.nearByVo.getDispensaries().get(mapPos).getDispensary().getLogo().getSmall())
                                     .bitmapTransform(new CropCircleTransformation(DispensaryActivity.this))
                                     .diskCacheStrategy(DiskCacheStrategy.ALL)
                                     // .asBitmap().diskCacheStrategy(DiskCacheStrategy.ALL).
@@ -717,8 +686,8 @@ public class DispensaryActivity extends AppCompatActivity implements OnMapReadyC
 
                             Bitmap mBitmap = addBorderToBitmap(drawableToBitmap(theBitmap));
 
-                            latLng = new LatLng(nearByVo.getDispensaries()[mapPos].getDispensaries().getLocation().getCoords().getLatitude(), nearByVo.getDispensaries()[mapPos].getDispensaries().getLocation().getCoords().getLongitude());
-                            mSelectedId = nearByVo.getDispensaries()[mapPos].getDispensaries().getId();
+                            latLng = new LatLng(AppContoller.nearByVo.getDispensaries().get(mapPos).getDispensary().getLocation().getCoords().getLatitude(), AppContoller.nearByVo.getDispensaries().get(mapPos).getDispensary().getLocation().getCoords().getLongitude());
+                            mSelectedId = AppContoller.nearByVo.getDispensaries().get(mapPos).getDispensary().getId();
                             final MarkerOptions marker = new MarkerOptions().position(latLng);
 
                             marker.icon(BitmapDescriptorFactory.fromBitmap(mBitmap));
@@ -746,10 +715,10 @@ public class DispensaryActivity extends AppCompatActivity implements OnMapReadyC
 
     private void UpdateBannerSection(String id) {
 
-        for (int i = 0; i < AppContoller.nearByVo.getDispensaries().size(); i++) {
-            if (AppContoller.nearByVo.getDispensaries().get(i).getDispensary().getId().equalsIgnoreCase(id)) {
+        for (int i = 0; i < nearByVo.getDispensaries().size(); i++) {
+            if (nearByVo.getDispensaries().get(i).getDispensary().getId().equalsIgnoreCase(id)) {
                 Glide.with(mContext)
-                        .load(AppContoller.nearByVo.getDispensaries().get(i).getDispensary().getLogo().getMedium())
+                        .load(nearByVo.getDispensaries().get(i).getDispensary().getLogo().getMedium())
                         .override(200, 200).crossFade().diskCacheStrategy(DiskCacheStrategy.ALL)
                         .listener(new RequestListener<String, GlideDrawable>() {
                             @Override
@@ -764,8 +733,8 @@ public class DispensaryActivity extends AppCompatActivity implements OnMapReadyC
                             }
                         }).placeholder(R.mipmap.flower1).into(mImageSelectDispensory);
 
-                mtxtSelecTitle.setText(AppContoller.nearByVo.getDispensaries().get(i).getDispensary().getName());
-                mtxtSelecAddresse.setText(AppContoller.nearByVo.getDispensaries().get(i).getDispensary().getLocation().getAddress());
+                mtxtSelecTitle.setText(nearByVo.getDispensaries().get(i).getDispensary().getName());
+                mtxtSelecAddresse.setText(nearByVo.getDispensaries().get(i).getDispensary().getLocation().getAddress());
                 mLayoutBottomSection.setVisibility(View.VISIBLE);
             }
         }

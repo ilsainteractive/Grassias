@@ -23,7 +23,7 @@ public class Products {
 
     private String dispensary_id;
 
-    private String created_at,name,cbn;
+    private String created_at, name, cbn;
 
     private String product_category_id;
 
