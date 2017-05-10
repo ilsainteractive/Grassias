@@ -104,6 +104,11 @@
         <activity
             android:name=".activites.CodeScanner"
             android:theme="@style/HomeTheme"></activity>
+
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="35b8e72ebeb47857a63d0b1abd19645a8e486408"
+            />
     </application>
 
 </manifest>

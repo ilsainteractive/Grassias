@@ -12,6 +12,14 @@ import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.database.MatrixCursor;
 import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffXfermode;
+import android.graphics.Rect;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
@@ -40,6 +48,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
@@ -64,9 +73,11 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import jp.wasabeef.glide.transformations.CropCircleTransformation;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.MediaType;
@@ -185,10 +196,11 @@ public class DispensaryActivity extends AppCompatActivity implements OnMapReadyC
         mToolbar.setTitle("");
         mToolbar.setNavigationIcon(R.mipmap.signup_back_arrow);
         setSupportActionBar(mToolbar);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
         mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onBackPressed();
+                finish();
             }
         });
     }
@@ -220,11 +232,6 @@ public class DispensaryActivity extends AppCompatActivity implements OnMapReadyC
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
-
-        mToolbar = (Toolbar) findViewById(R.id.toolbar);
-        mToolbar.setNavigationIcon(R.mipmap.signup_back_arrow);
-        setSupportActionBar(mToolbar);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
     }
 
     /**
@@ -343,7 +350,6 @@ public class DispensaryActivity extends AppCompatActivity implements OnMapReadyC
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        //getMenuInflater().inflate(R.menu.menu_home, menu);
         getMenuInflater().inflate(R.menu.menu_home, menu);
         this.menu = menu;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
@@ -535,17 +541,27 @@ public class DispensaryActivity extends AppCompatActivity implements OnMapReadyC
                                 if (mMap != null) {
                                     for (int i = 0; i < AppContoller.nearByVo.getDispensaries().size(); i++) {
                                         mapPos = i;
-                                        final Bitmap theBitmap = Glide.
+                                        final GlideDrawable theBitmap = Glide.
                                                 with(mContext).
                                                 load(AppContoller.nearByVo.getDispensaries().get(mapPos).getDispensary().getLogo().getSmall()).
                                                 asBitmap().diskCacheStrategy(DiskCacheStrategy.ALL).
                                                 into(100, 100).get();
+                                                load(nearByVo.getDispensaries()[mapPos].getDispensaries().getLogo().getSmall())
+                                                .bitmapTransform(new CropCircleTransformation(DispensaryActivity.this))
+                                                // .asBitmap().diskCacheStrategy(DiskCacheStrategy.ALL).
+                                                .into(100, 100).get();
                                         mActivity.runOnUiThread(new Runnable() {
                                             @Override
                                             public void run() {
                                                 latLng = new LatLng(AppContoller.nearByVo.getDispensaries().get(mapPos).getDispensary().getLocation().getCoords().getLatitude(), AppContoller.nearByVo.getDispensaries().get(mapPos).getDispensary().getLocation().getCoords().getLongitude());
                                                 mSelectedId = AppContoller.nearByVo.getDispensaries().get(mapPos).getDispensary().getId();
                                                 MarkerOptions marker = new MarkerOptions().position(latLng);
+                                                // Bitmap mBitmap = addBorderToBitmap(drawableToBitmap(theBitmap));
+
+                                                BitmapDescriptor markerIcon = getMarkerIconFromDrawable(theBitmap);
+                                                // marker.icon(BitmapDescriptorFactory.fromBitmap(mBitmap));
+                                                marker.icon(markerIcon);
+                                                marker.snippet(nearByVo.getDispensaries()[mapPos].getDispensaries().getId());
                                                 marker.icon(BitmapDescriptorFactory.fromBitmap(theBitmap));
                                                 //marker.icon(BitmapDescriptorFactory.fromBitmap(BitmapFactory.decodeStream(new URL(nearByVo.getDispensaries()[i].getDispensaries().getLogo().getSmall()).openConnection().getInputStream())));
                                                 //marker.snippet(mapPos + "");
@@ -561,7 +577,7 @@ public class DispensaryActivity extends AppCompatActivity implements OnMapReadyC
                                         public void run() {
                                             mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 13.0f));
                                             UpdateBannerSection(mSelectedId);
-                                            mMap.setInfoWindowAdapter(new GoogleMap.InfoWindowAdapter() {
+                                           /* mMap.setInfoWindowAdapter(new GoogleMap.InfoWindowAdapter() {
 
                                                 @Override
                                                 public View getInfoWindow(Marker marker) {
@@ -573,6 +589,8 @@ public class DispensaryActivity extends AppCompatActivity implements OnMapReadyC
                                                 @Override
                                                 public View getInfoContents(Marker marker) {
                                                     View v = mActivity.getLayoutInflater().inflate(R.layout.map_edge_layout, null);
+
+
                                                     //Getting reference to the TextView to set title
 //                                            ImageView imageView = (ImageView) v.findViewById(R.id.map_image);
 //                                            Glide.with(mContext)
@@ -583,11 +601,18 @@ public class DispensaryActivity extends AppCompatActivity implements OnMapReadyC
                                                     // Returning the view containing InfoWindow contents
                                                     return v;
                                                 }
-                                            });
+                                            });*/
                                             mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
                                                 @Override
                                                 public boolean onMarkerClick(final Marker marker) {
                                                     mSelectedId = marker.getSnippet();
+                                                    try {
+                                                        addBorderArroundMarker(mSelectedId);
+                                                    } catch (ExecutionException e) {
+                                                        e.printStackTrace();
+                                                    } catch (InterruptedException e) {
+                                                        e.printStackTrace();
+                                                    }
                                                     UpdateBannerSection(mSelectedId);
                                                     return false;
                                                 }
@@ -608,6 +633,114 @@ public class DispensaryActivity extends AppCompatActivity implements OnMapReadyC
                 }
             });
         } catch (Exception e) {
+        }
+    }
+
+    // Custom method to add a border around bitmap
+    protected Bitmap addBorderToBitmap(Bitmap bitmap) {
+        int w = bitmap.getWidth();
+        int h = bitmap.getHeight();
+
+        int radius = Math.min(h / 2, w / 2);
+        Bitmap output = Bitmap.createBitmap(w + 8, h + 8, Bitmap.Config.ARGB_8888);
+
+        Paint p = new Paint();
+        p.setAntiAlias(true);
+
+        Canvas c = new Canvas(output);
+        c.drawARGB(1, 1, 1, 1);
+        p.setStyle(Paint.Style.FILL);
+
+        c.drawCircle((w / 2) + 4, (h / 2) + 4, radius, p);
+
+        p.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
+
+        c.drawBitmap(bitmap, 4, 4, p);
+        p.setXfermode(null);
+        p.setStyle(Paint.Style.STROKE);
+        p.setColor(Color.GRAY);
+        p.setStrokeWidth(3);
+        c.drawCircle((w / 2) + 4, (h / 2) + 4, radius, p);
+
+        return output;
+    }
+
+    private BitmapDescriptor getMarkerIconFromDrawable(Drawable drawable) {
+        Canvas canvas = new Canvas();
+        Bitmap bitmap = Bitmap.createBitmap(drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
+        canvas.setBitmap(bitmap);
+        drawable.setBounds(0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight());
+        drawable.draw(canvas);
+        return BitmapDescriptorFactory.fromBitmap(bitmap);
+    }
+
+
+    public static Bitmap drawableToBitmap(Drawable drawable) {
+        Bitmap bitmap = null;
+
+        if (drawable instanceof BitmapDrawable) {
+            BitmapDrawable bitmapDrawable = (BitmapDrawable) drawable;
+            if (bitmapDrawable.getBitmap() != null) {
+                return bitmapDrawable.getBitmap();
+            }
+        }
+
+        if (drawable.getIntrinsicWidth() <= 0 || drawable.getIntrinsicHeight() <= 0) {
+            bitmap = Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_8888); // Single color bitmap will be created of 1x1 pixel
+        } else {
+            bitmap = Bitmap.createBitmap(drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
+        }
+
+        Canvas canvas = new Canvas(bitmap);
+        drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
+        drawable.draw(canvas);
+        return bitmap;
+    }
+
+
+    private void addBorderArroundMarker(final String id) throws ExecutionException, InterruptedException {
+        for (int i = 0; i < nearByVo.getDispensaries().length; i++) {
+            if (nearByVo.getDispensaries()[i].getDispensaries().getId().equalsIgnoreCase(id)) {
+                mapPos = i;
+
+                Runnable runnable = new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            GlideDrawable theBitmap = Glide.
+                                    with(mContext).
+                                    load(nearByVo.getDispensaries()[mapPos].getDispensaries().getLogo().getSmall())
+                                    .bitmapTransform(new CropCircleTransformation(DispensaryActivity.this))
+                                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                                    // .asBitmap().diskCacheStrategy(DiskCacheStrategy.ALL).
+                                    .into(100, 100).get();
+
+                            Bitmap mBitmap = addBorderToBitmap(drawableToBitmap(theBitmap));
+
+                            latLng = new LatLng(nearByVo.getDispensaries()[mapPos].getDispensaries().getLocation().getCoords().getLatitude(), nearByVo.getDispensaries()[mapPos].getDispensaries().getLocation().getCoords().getLongitude());
+                            mSelectedId = nearByVo.getDispensaries()[mapPos].getDispensaries().getId();
+                            final MarkerOptions marker = new MarkerOptions().position(latLng);
+
+                            marker.icon(BitmapDescriptorFactory.fromBitmap(mBitmap));
+                            marker.snippet(id);
+
+                            mActivity.runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    mMap.addMarker(marker);
+                                }
+                            });
+
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        } catch (ExecutionException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                };
+                new Thread(runnable).start();
+
+            }
         }
     }
 
