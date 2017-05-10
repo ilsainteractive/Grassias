@@ -12,4 +12,7 @@
     <color name="login_status_color">#D3D9EF</color>
     <color name="txt_psd_color">#252b2b</color>
     <color name="txt_psd_coloras">#232323</color>
+
+    <color name="selected">#a7a7a7</color>
+    <color name="un_selected">#bebebe</color>
 </resources>

@@ -2,12 +2,14 @@ package com.ilsa.grassis.apivo;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.util.ArrayList;
+
 /**
  * Created by SohailZahid on 5/4/2017.
  */
 
 public class Products {
-    private Pricing[] pricing;
+    private ArrayList<Pricing> pricing;
 
     private String id;
 
@@ -27,11 +29,11 @@ public class Products {
 
     private String product_category_id;
 
-    public Pricing[] getPricing() {
+    public ArrayList<Pricing> getPricing() {
         return pricing;
     }
 
-    public void setPricing(Pricing[] pricing) {
+    public void setPricing(ArrayList<Pricing> pricing) {
         this.pricing = pricing;
     }
 

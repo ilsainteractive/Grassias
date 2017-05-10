@@ -1,13 +1,13 @@
 package com.ilsa.grassis.adapters;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 
 import com.bumptech.glide.Glide;
@@ -16,13 +16,17 @@ import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.ilsa.grassis.R;
+import com.ilsa.grassis.apivo.Dispensaries;
 import com.ilsa.grassis.apivo.Dispensary;
 import com.ilsa.grassis.apivo.Products;
 import com.ilsa.grassis.library.RegularTextView;
 import com.ilsa.grassis.rootvo.NearByVo;
 
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Collections;
+import java.util.Comparator;
+
+import me.relex.circleindicator.CircleIndicator;
 
 /**
  * The type Menu item adapter.
@@ -41,6 +45,12 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MyViewHolder> 
     public HomeAdapter(Context mContext, NearByVo dataList) {
         this.dataList = dataList;
         this.mContext = mContext;
+        Collections.sort(dataList.getDispensaries(), new Comparator<Dispensaries>() {
+            @Override
+            public int compare(Dispensaries o1, Dispensaries o2) {
+                return o2.getDispensary().getId().compareTo(o1.getDispensary().getId());
+            }
+        });
     }
 
     @Override
@@ -85,64 +95,36 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MyViewHolder> 
 
     private void setTexts(MyViewHolder mHolder, Dispensary dispensary) {
         mHolder.mDespensoryTitle.setText(dispensary.getName());
-        mHolder.mDespensoryAddresse.setText(dispensary.getLocation().getAddress());
+        if (dispensary.getSchedule().getMon_open() != null)
+            mHolder.mDespensoryAddresse.setText((Integer.parseInt(dispensary.getLocation().getNearby_radius()) / 1000)
+                    + " miles | OPEN till " + dispensary.getSchedule().getMon_open().substring(dispensary.getSchedule().getMon_open().indexOf("T") + 1, dispensary.getSchedule().getMon_open().indexOf("T") + 6));
+        else {
+            mHolder.mDespensoryAddresse.setText((Integer.parseInt(dispensary.getLocation().getNearby_radius()) / 1000)
+                    + " miles");
+        }
     }
 
     private void initViews(MyViewHolder mHolder, NearByVo nearByVo, int pos) {
 
         ArrayList<Products> list = new ArrayList<>();
-        List<View> pageList = new ArrayList<>();
-
         for (Products product : nearByVo.getProducts()) {
-            if (nearByVo.getDispensaries().get(pos).getDispensary().getId().equalsIgnoreCase(product.getId())) {
+            if (nearByVo.getDispensaries().get(pos).getDispensary().getId().equalsIgnoreCase(product.getDispensary_id())) {
                 list.add(product);
             }
         }
-        MenuGalleryAdapter adapter = new MenuGalleryAdapter(mContext);
-        //adapter.setData(list);
-        adapter.setData(createPageList(pageList, list));
-        mHolder.pager.setAdapter(adapter);
-    }
+        if (list.size() > 0) {
+            mHolder.mProductPagerLayout.setVisibility(View.VISIBLE);
+            mHolder.mNoProductLayout.setVisibility(View.GONE);
+            MenuGalleryAdapter adapter = new MenuGalleryAdapter(mContext);
+            adapter.setData(list);
+            mHolder.pager.setAdapter(adapter);
 
-    @NonNull
-    private List<View> createPageList(List<View> pageList, ArrayList<Products> list) {
-
-        for (Products product : list) {
-            pageList.add(createPageView(product));
+            mHolder.pageIndicatorView.setViewPager(mHolder.pager);
+            adapter.registerDataSetObserver(mHolder.pageIndicatorView.getDataSetObserver());
+        } else {
+            mHolder.mNoProductLayout.setVisibility(View.VISIBLE);
+            mHolder.mProductPagerLayout.setVisibility(View.GONE);
         }
-        return pageList;
-    }
-
-    @NonNull
-    private View createPageView(Products product) {
-
-        LayoutInflater inflater = (LayoutInflater) mContext
-                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View v = inflater.inflate(R.layout.activity_home_lv_slider_item, null, false);
-
-        RegularTextView bottomTitle = (RegularTextView) v.findViewById(R.id.home_lv_bottom_txt);
-        ImageView imageView = (ImageView) v.findViewById(R.id.home_lv_bottom_img);
-        //final ProgressBar progressBar = (ProgressBar) v.findViewById(R.id.progress);
-
-        bottomTitle.setText(product.getName());
-        Glide.with(mContext).load(product.getBackground().getBackground().getUrl())
-                .thumbnail(0.5f)
-                .crossFade()
-                .diskCacheStrategy(DiskCacheStrategy.ALL)
-                .listener(new RequestListener<String, GlideDrawable>() {
-                    @Override
-                    public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
-                        // progressBar.setVisibility(View.GONE);
-                        return false;
-                    }
-
-                    @Override
-                    public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
-                        //progressBar.setVisibility(View.GONE);
-                        return false;
-                    }
-                }).into(imageView);
-        return v;
     }
 
     @Override
@@ -162,8 +144,10 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MyViewHolder> 
         RegularTextView mDespensoryTitle;
         RegularTextView mDespensoryAddresse;
 
+        LinearLayout mProductPagerLayout, mNoProductLayout;
         ProgressBar progressBar;
 
+        CircleIndicator pageIndicatorView;
         ViewPager pager;
 
         /**
@@ -179,8 +163,11 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MyViewHolder> 
             mDespensoryDetail = (ImageView) view.findViewById(R.id.home_list_box_detail);
             mDespensoryTitle = (RegularTextView) view.findViewById(R.id.home_list_top_title);
             mDespensoryAddresse = (RegularTextView) view.findViewById(R.id.home_list_top_sub_title);
-            //progressBar = (ProgressBar) view.findViewById(R.id.progress);
+            progressBar = (ProgressBar) view.findViewById(R.id.progress);
             pager = (ViewPager) view.findViewById(R.id.viewPager);
+            mProductPagerLayout = (LinearLayout) view.findViewById(R.id.home_lv_bottom_pager);
+            mNoProductLayout = (LinearLayout) view.findViewById(R.id.home_lv_bottom_pager_no_item);
+            pageIndicatorView = (CircleIndicator) view.findViewById(R.id.indicator);
         }
     }
 }

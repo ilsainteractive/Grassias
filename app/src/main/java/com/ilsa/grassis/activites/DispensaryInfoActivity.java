@@ -159,7 +159,7 @@ public class DispensaryInfoActivity extends AppCompatActivity implements OnMapRe
 
     private void initViews() {
         MenuGalleryAdapter adapter = new MenuGalleryAdapter(mContext);
-        adapter.setData(createPageList());
+        //adapter.setData(createPageList());
 
         ViewPager pager = (ViewPager) findViewById(R.id.viewPager);
         pager.setAdapter(adapter);
