@@ -3,6 +3,7 @@ package com.ilsa.grassis.adapters;
 import android.content.Context;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,14 +19,18 @@ import com.bumptech.glide.request.target.Target;
 import com.ilsa.grassis.R;
 import com.ilsa.grassis.apivo.Dispensaries;
 import com.ilsa.grassis.apivo.Dispensary;
+import com.ilsa.grassis.apivo.Features;
 import com.ilsa.grassis.apivo.Products;
+import com.ilsa.grassis.library.BoldSFTextView;
 import com.ilsa.grassis.library.RegularTextView;
+import com.ilsa.grassis.library.ThinTextView;
 import com.ilsa.grassis.rootvo.NearByVo;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
+import jp.wasabeef.glide.transformations.CropCircleTransformation;
 import me.relex.circleindicator.CircleIndicator;
 
 /**
@@ -91,6 +96,50 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MyViewHolder> 
                         }
                     }).into(mHolder.mDespensoryPhoto);
         }
+        if (dispensary.getFeatures() != null && dispensary.getFeatures().size() > 0) {
+            for (Features feature : dispensary.getFeatures()) {
+                if (feature.getDeal() != null && feature.getDeal().getDeal_type() != null) {
+                    mHolder.offerProgress.setVisibility(View.VISIBLE);
+                    Log.i("offer_image", feature.getDeal().getBackground().getLarge());
+
+                    mHolder.mOfferOff.setText(feature.getDeal().getDeal_type());
+                    //mHolder.mOfferNo.setText(feature.getDeal().getDeal_type().substring(0, feature.getDeal().getDeal_type().indexOf("%")));
+                    //mHolder.mOfferOff.setText(feature.getDeal().getDeal_type().substring(feature.getDeal().getDeal_type().indexOf("%") + 1, feature.getDeal().getDeal_type().length()));
+                    mHolder.mOfferName.setText(feature.getDeal().getTitle());
+
+                    Glide.with(mContext).load(feature.getDeal().getBackground().getLarge())
+                            .thumbnail(0.5f)
+                            .crossFade()
+                            .diskCacheStrategy(DiskCacheStrategy.ALL)
+                            .listener(new RequestListener<String, GlideDrawable>() {
+                                @Override
+                                public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
+                                    mHolder.offerProgress.setVisibility(View.GONE);
+                                    return false;
+                                }
+
+                                @Override
+                                public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
+                                    mHolder.offerProgress.setVisibility(View.GONE);
+                                    return false;
+                                }
+                            }).into(mHolder.mOfferPhoto);
+                } else {
+                    //mHolder.mOfferOff.setVisibility(View.INVISIBLE);
+                    //mHolder.mOfferName.setText("No offer available.");
+                }
+            }
+        } else {
+            mHolder.mOfferOff.setVisibility(View.INVISIBLE);
+            mHolder.mOfferName.setText("No offer available.");
+        }
+        Glide.with(mContext).load(dispensary.getLogo().getMedium())
+                .bitmapTransform(new CropCircleTransformation(mContext))
+                .thumbnail(0.5f)
+                .crossFade()
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .into(mHolder.mDespensoryLogo);
+
     }
 
     private void setTexts(MyViewHolder mHolder, Dispensary dispensary) {
@@ -145,10 +194,17 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MyViewHolder> 
         RegularTextView mDespensoryAddresse;
 
         LinearLayout mProductPagerLayout, mNoProductLayout;
-        ProgressBar progressBar;
+        ProgressBar progressBar, offerProgress;
 
         CircleIndicator pageIndicatorView;
         ViewPager pager;
+
+        ImageView mDespensoryLogo;
+        ImageView mOfferPhoto;
+
+        BoldSFTextView mOfferNo;
+        ThinTextView mOfferOff, mOfferName;
+
 
         /**
          * Instantiates a new My view holder.
@@ -161,13 +217,21 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MyViewHolder> 
             mDespensoryPhoto = (ImageView) view.findViewById(R.id.home_lv_top_section_img);
             mDespensoryCart = (ImageView) view.findViewById(R.id.home_list_box_cart);
             mDespensoryDetail = (ImageView) view.findViewById(R.id.home_list_box_detail);
+            mDespensoryLogo = (ImageView) view.findViewById(R.id.home_lv_bottom_section_2_img);
+            mOfferPhoto = (ImageView) view.findViewById(R.id.home_lv_bottom_section_offer_img);
+
             mDespensoryTitle = (RegularTextView) view.findViewById(R.id.home_list_top_title);
             mDespensoryAddresse = (RegularTextView) view.findViewById(R.id.home_list_top_sub_title);
             progressBar = (ProgressBar) view.findViewById(R.id.progress);
+            offerProgress = (ProgressBar) view.findViewById(R.id.progress_offer);
             pager = (ViewPager) view.findViewById(R.id.viewPager);
             mProductPagerLayout = (LinearLayout) view.findViewById(R.id.home_lv_bottom_pager);
             mNoProductLayout = (LinearLayout) view.findViewById(R.id.home_lv_bottom_pager_no_item);
             pageIndicatorView = (CircleIndicator) view.findViewById(R.id.indicator);
+
+            mOfferNo = (BoldSFTextView) view.findViewById(R.id.home_lv_bottom_section_2_txt_per);
+            mOfferOff = (ThinTextView) view.findViewById(R.id.home_lv_bottom_section_2_txt_off);
+            mOfferName = (ThinTextView) view.findViewById(R.id.home_lv_bottom_section_2_txt_products);
         }
     }
 }

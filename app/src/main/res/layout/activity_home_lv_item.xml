@@ -211,12 +211,12 @@
             android:weightSum="10">
 
             <ImageView
+                android:id="@+id/home_lv_bottom_section_2_img"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="2.5"
                 android:padding="15dp"
                 android:src="@mipmap/home_lv_bottom_icon" />
-
 
             <LinearLayout
                 android:layout_width="0dp"
@@ -258,19 +258,35 @@
             android:layout_height="wrap_content">
 
             <ImageView
+                android:id="@+id/home_lv_bottom_section_offer_img"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_285sdp"
                 android:background="#f7f7f7"
-                android:scaleType="centerCrop"
-                android:src="@mipmap/home_list_bottom_back" />
+                android:scaleType="centerCrop" />
 
+            <RelativeLayout
+                android:id="@+id/progress_layout"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_285sdp"
+                android:layout_centerInParent="true"
+                android:orientation="vertical"
+                android:visibility="invisible">
+
+                <ProgressBar
+                    android:id="@+id/progress_offer"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:visibility="invisible" />
+            </RelativeLayout>
 
             <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_vertical|center_horizontal"
+                android:background="@drawable/gradient_bg_text"
+                android:gravity="center"
                 android:orientation="vertical">
-
 
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -286,7 +302,8 @@
                         android:gravity="bottom"
                         android:text="30%"
                         android:textColor="@color/white"
-                        android:textSize="@dimen/_60sdp" />
+                        android:textSize="@dimen/_60sdp"
+                        android:visibility="gone" />
 
                     <com.ilsa.grassis.library.ThinTextView
                         android:id="@+id/home_lv_bottom_section_2_txt_off"
@@ -296,7 +313,8 @@
                         android:gravity="bottom"
                         android:text="OFF"
                         android:textColor="@color/white"
-                        android:textSize="@dimen/_60sdp" />
+                        android:textSize="@dimen/_60sdp"
+                        android:visibility="visible" />
                 </LinearLayout>
 
                 <com.ilsa.grassis.library.ThinTextView
@@ -304,7 +322,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center|top"
-                    android:gravity="top"
+                    android:gravity="top|center"
                     android:text="Kiva Products"
                     android:textColor="@color/white"
                     android:textSize="@dimen/_30sdp" />

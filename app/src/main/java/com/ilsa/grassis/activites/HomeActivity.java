@@ -330,13 +330,15 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
                         } catch (Exception e) {
                             pd.dismiss();
-                            Log.i("problem", e.toString());
+                            e.printStackTrace();
+                            Log.i("problem", e.getMessage());
                         }
                     }
                 }
             });
         } catch (Exception e) {
             pd.dismiss();
+            e.printStackTrace();
             Log.i("problem", e.toString());
         }
     }

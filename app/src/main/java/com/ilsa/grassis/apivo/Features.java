@@ -7,7 +7,16 @@ package com.ilsa.grassis.apivo;
 public class Features {
     private Pricing[] pricing;
 
+    private Deal deal;
     private String id;
+
+    public Deal getDeal() {
+        return deal;
+    }
+
+    public void setDeal(Deal deal) {
+        this.deal = deal;
+    }
 
     private String cbd;
 
@@ -17,7 +26,7 @@ public class Features {
 
     private String description;
 
-    private Background background;
+    private Background2 background;
 
     private String name;
 
@@ -77,11 +86,11 @@ public class Features {
         this.description = description;
     }
 
-    public Background getBackground() {
+    public Background2 getBackground() {
         return background;
     }
 
-    public void setBackground(Background background) {
+    public void setBackground(Background2 background) {
         this.background = background;
     }
 

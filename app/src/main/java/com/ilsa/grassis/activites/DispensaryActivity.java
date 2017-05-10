@@ -559,7 +559,6 @@ public class DispensaryActivity extends AppCompatActivity implements OnMapReadyC
                                                 BitmapDescriptor markerIcon = getMarkerIconFromDrawable(theBitmap);
                                                 marker.icon(markerIcon);
                                                 marker.snippet(nearByVo.getDispensaries().get(mapPos).getDispensary().getId());
-                                                marker.snippet(nearByVo.getDispensaries().get(mapPos).getDispensary().getId());
                                                 mMap.addMarker(marker);
                                                 Log.i("added", mapPos + "");
                                             }
