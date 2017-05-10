@@ -3,4 +3,4 @@
     android:id="@+id/map_image"
     android:layout_width="24dp"
     android:layout_height="24dp"
-    android:src="@mipmap/checked"></ImageView>
+    android:src="@mipmap/checked1"></ImageView>

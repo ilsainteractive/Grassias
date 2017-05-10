@@ -16,8 +16,7 @@
         android:layout_gravity="center"
         android:text="Hi,"
         android:textColor="@color/black"
-        android:textSize="@dimen/_16sdp"
-        android:visibility="invisible" />
+        android:textSize="@dimen/_16sdp" />
 
     <com.ilsa.grassis.library.BoldSFTextView
         android:id="@+id/toolbar_title"
@@ -27,7 +26,6 @@
         android:paddingLeft="1dp"
         android:text="Cheryl."
         android:textColor="@color/black"
-        android:textSize="@dimen/_16sdp"
-        android:visibility="invisible" />
+        android:textSize="@dimen/_16sdp" />
 
 </android.support.v7.widget.Toolbar>

@@ -2,6 +2,8 @@ package com.ilsa.grassis.apivo;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.util.ArrayList;
+
 /**
  * Created by SohailZahid on 5/4/2017.
  */
@@ -31,7 +33,7 @@ public class Dispensary {
 
     private String youtube;
 
-    private Features[] features;
+    private ArrayList<Features> features;
 
     private String apple_app_store_url;
 
@@ -55,7 +57,7 @@ public class Dispensary {
 
     private String url;
 
-    private Photos[] photos;
+    private ArrayList<Photos> photos;
 
     private Schedule schedule;
 
@@ -160,11 +162,11 @@ public class Dispensary {
         this.youtube = youtube;
     }
 
-    public Features[] getFeatures() {
+    public ArrayList<Features> getFeatures() {
         return features;
     }
 
-    public void setFeatures(Features[] features) {
+    public void setFeatures(ArrayList<Features> features) {
         this.features = features;
     }
 
@@ -256,11 +258,11 @@ public class Dispensary {
         this.url = url;
     }
 
-    public Photos[] getPhotos() {
+    public ArrayList<Photos> getPhotos() {
         return photos;
     }
 
-    public void setPhotos(Photos[] photos) {
+    public void setPhotos(ArrayList<Photos> photos) {
         this.photos = photos;
     }
 
