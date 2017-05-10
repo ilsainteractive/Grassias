@@ -5,7 +5,7 @@ import android.content.Context;
 import android.support.multidex.MultiDex;
 import android.support.multidex.MultiDexApplication;
 
-import com.ilsa.grassis.apivo.UserVo;
+import com.ilsa.grassis.rootvo.NearByVo;
 import com.ilsa.grassis.rootvo.UserDataVO;
 
 import java.util.ArrayList;
@@ -20,6 +20,7 @@ public class AppContoller extends MultiDexApplication {
      */
     public static boolean IsLoggedIn;
     public static UserDataVO userData;
+    public static NearByVo nearByVo;
 
     public static ArrayList<Activity> DeadActivities;
 

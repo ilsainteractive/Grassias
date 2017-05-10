@@ -11,11 +11,11 @@ public class Dispensaries {
     @SerializedName("dispensary")
     private Dispensary dispensary;
 
-    public Dispensary getDispensaries() {
+    public Dispensary getDispensary() {
         return dispensary;
     }
 
-    public void setDispensaries(Dispensary dispensaries) {
-        this.dispensary = dispensaries;
+    public void setDispensary(Dispensary dispensary) {
+        this.dispensary = dispensary;
     }
 }

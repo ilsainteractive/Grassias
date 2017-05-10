@@ -1,7 +1,11 @@
 package com.ilsa.grassis.rootvo;
 
 import com.google.gson.annotations.SerializedName;
-import com.ilsa.grassis.apivo.*;
+import com.ilsa.grassis.apivo.Dispensaries;
+import com.ilsa.grassis.apivo.Products;
+import com.ilsa.grassis.apivo.Strands;
+
+import java.util.ArrayList;
 
 /**
  * Created by SohailZahid on 5/4/2017.
@@ -9,37 +13,40 @@ import com.ilsa.grassis.apivo.*;
 
 public class NearByVo {
 
+
     @SerializedName("dispensaries")
-    private com.ilsa.grassis.apivo.Dispensaries[] dispensaries;
+    private ArrayList<Dispensaries> dispensaries;
+
     @SerializedName("strands")
-    private Strands[] strands;
+    private ArrayList<Strands> strands;
+
     @SerializedName("products")
-    private Products[] products;
+    private ArrayList<Products> products;
 
     public NearByVo() {
     }
 
-    public com.ilsa.grassis.apivo.Dispensaries[] getDispensaries() {
+    public ArrayList<Dispensaries> getDispensaries() {
         return dispensaries;
     }
 
-    public void setDispensaries(com.ilsa.grassis.apivo.Dispensaries[] dispensaries) {
-        this.dispensaries = dispensaries;
+    public void setDispensaries(ArrayList<Dispensaries> dispensariess) {
+        this.dispensaries = dispensariess;
     }
 
-    public Strands[] getStrands() {
+    public ArrayList<Strands> getStrands() {
         return strands;
     }
 
-    public void setStrands(Strands[] strands) {
+    public void setStrands(ArrayList<Strands> strands) {
         this.strands = strands;
     }
 
-    public Products[] getProductses() {
+    public ArrayList<Products> getProducts() {
         return products;
     }
 
-    public void setProductses(Products[] productses) {
+    public void setProducts(ArrayList<Products> productses) {
         this.products = productses;
     }
 }
