@@ -52,6 +52,7 @@ dependencies {
     compile('com.github.KingsMentor:MobileVisionBarcodeScanner:1.2') { transitive = true; }
     compile 'com.squareup.okhttp3:okhttp:3.7.0'
     compile 'com.google.code.gson:gson:2.8.0'
+    compile 'jp.wasabeef:glide-transformations:2.0.2'
     compile('com.crashlytics.sdk.android:crashlytics:2.6.8@aar') {
         transitive = true;
     }
