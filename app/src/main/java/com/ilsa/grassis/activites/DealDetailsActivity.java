@@ -10,11 +10,11 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.ScrollView;
 
+import com.bumptech.glide.Glide;
 import com.ilsa.grassis.R;
 import com.ilsa.grassis.library.BoldSFTextView;
 import com.ilsa.grassis.library.MediumTextView;
 import com.ilsa.grassis.library.RegularTextView;
-import com.ilsa.grassis.utils.Helper;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -55,6 +55,7 @@ public class DealDetailsActivity extends AppCompatActivity {
         mActivity = this;
         initToolBar();
         InitComponents();
+
     }
 
     /**
@@ -76,7 +77,10 @@ public class DealDetailsActivity extends AppCompatActivity {
      * Layout components initializing and bridging here.
      */
     private void InitComponents() {
-
+        mtxtToolbarTitle.setText(getIntent().getStringExtra("TITLE"));
+        mtxtToolbarSubTitle.setText(getIntent().getStringExtra("DEAL_TYPE"));
+        Glide.with(mContext).load(getIntent().getStringExtra("PATH")).into(mTopBanner);
+        mtxtDetails.setText(getIntent().getStringExtra("DESCRIPTION"));
     }
 
     @Override

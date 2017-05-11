@@ -46,4 +46,8 @@
     <string name="no_permission_msg">Permission needed to perform this task</string>
     <string name="something_went_wrong_ry_again">Something went wrong. Try again</string>
     <string name="successfully_sign_up">User registered.</string>
+
+    <!--Deal-->
+    <string name="getting_users">Getting deals...</string>
+
 </resources>

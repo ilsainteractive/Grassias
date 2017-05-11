@@ -9,33 +9,31 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
+import com.bumptech.glide.Glide;
 import com.ilsa.grassis.R;
 import com.ilsa.grassis.activites.DealDetailsActivity;
 import com.ilsa.grassis.activites.DealsRewardActivity;
 import com.ilsa.grassis.library.BoldSFTextView;
 import com.ilsa.grassis.library.MediumTextView;
 import com.ilsa.grassis.library.RegularTextView;
-import com.ilsa.grassis.utils.Helper;
-import com.ilsa.grassis.vo.DealsVO;
-
-import java.util.List;
+import com.ilsa.grassis.rootvo.DealsVO;
 
 /**
  * The type Menu item adapter.
  */
 public class DealsAdapter extends RecyclerView.Adapter<DealsAdapter.MyViewHolder> {
 
-    private List<DealsVO> menuList;
+    private DealsVO[] multipleDealses;
     private Context mContext;
 
     /**
      * Instantiates a new Menu item adapter.
      *
-     * @param mContext the mContext
-     * @param menuList the menu list
+     * @param mContext        the mContext
+     * @param multipleDealses the menu list
      */
-    public DealsAdapter(Context mContext, List<DealsVO> menuList) {
-        this.menuList = menuList;
+    public DealsAdapter(Context mContext, DealsVO[] multipleDealses) {
+        this.multipleDealses = multipleDealses;
         this.mContext = mContext;
     }
 
@@ -47,15 +45,20 @@ public class DealsAdapter extends RecyclerView.Adapter<DealsAdapter.MyViewHolder
     }
 
     @Override
-    public void onBindViewHolder(MyViewHolder holder, int position) {
-        DealsVO movie = menuList.get(position);
-        holder.title.setText(movie.getTitle());
-        holder.Off.setText(movie.getOff());
+    public void onBindViewHolder(MyViewHolder holder, final int position) {
+        holder.title.setText(multipleDealses[position].getDeal().getTitle());
+        holder.Off.setText(multipleDealses[position].getDeal().getDeal_type());
+        Glide.with(mContext).load(multipleDealses[position].getDeal().getBackground().getLarge()).into(holder.icon);
         holder.ViewDeal.setText("VIEW DEALS");
         holder.ViewDeal.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mContext.startActivity(new Intent(mContext, DealDetailsActivity.class));
+                Intent intent = new Intent(mContext, DealDetailsActivity.class);
+                intent.putExtra("TITLE", multipleDealses[position].getDeal().getTitle());
+                intent.putExtra("DEAL_TYPE", multipleDealses[position].getDeal().getDeal_type());
+                intent.putExtra("PATH", multipleDealses[position].getDeal().getBackground().getLarge());
+                intent.putExtra("DESCRIPTION", multipleDealses[position].getDeal().getDescription());
+                mContext.startActivity(intent);
             }
         });
         holder.topLayout.setOnClickListener(new View.OnClickListener() {
@@ -64,20 +67,11 @@ public class DealsAdapter extends RecyclerView.Adapter<DealsAdapter.MyViewHolder
                 DealsRewardActivity.mtxtRewads.performClick();
             }
         });
-        if (position == 0) {
-            holder.icon.setImageResource(R.mipmap.deals_frag_img);
-        }
-        if (position == 1) {
-            holder.icon.setImageResource(R.mipmap.deals_frag_img2);
-        }
-        if (position == 2) {
-            holder.icon.setImageResource(R.mipmap.deals_frag_img3);
-        }
     }
 
     @Override
     public int getItemCount() {
-        return menuList.size();
+        return multipleDealses.length;
     }
 
     /**

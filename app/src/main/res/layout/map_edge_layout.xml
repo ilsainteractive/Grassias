@@ -2,5 +2,4 @@
 <ImageView xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/map_image"
     android:layout_width="24dp"
-    android:layout_height="24dp"
-    android:src="@mipmap/checked1"></ImageView>
+    android:layout_height="24dp"></ImageView>

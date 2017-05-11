@@ -171,12 +171,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     });
                 } else {
                     Gson gson = new GsonBuilder().create();
-                    UserDataVO loginVO = gson.fromJson(res, UserDataVO.class);
+                    AppContoller.userData = gson.fromJson(res, UserDataVO.class);
 
-                    if (loginVO.getUser() != null) {
+                    if (AppContoller.userData.getUser() != null) {
                         Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
-                        intent.putExtra("first_name", loginVO.getUser().getFirst_name());
-                        intent.putExtra("last_name", loginVO.getUser().getLast_name());
+                        intent.putExtra("first_name", AppContoller.userData.getUser().getFirst_name());
+                        intent.putExtra("last_name", AppContoller.userData.getUser().getLast_name());
                         startActivity(intent);
                     }
                 }

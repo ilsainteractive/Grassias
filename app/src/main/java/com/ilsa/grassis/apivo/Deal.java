@@ -1,5 +1,7 @@
 package com.ilsa.grassis.apivo;
 
+import com.google.gson.annotations.SerializedName;
+
 /**
  * Created by SohailZahid on 5/4/2017.
  */
@@ -14,7 +16,8 @@ public class Deal {
 
     private String description;
 
-    private Background background;
+    @SerializedName("background")
+    private Background2 background;
 
     private String dispensary_id;
 
@@ -61,12 +64,12 @@ public class Deal {
         this.description = description;
     }
 
-    public Background getBackground ()
+    public Background2 getBackground ()
     {
         return background;
     }
 
-    public void setBackground (Background background)
+    public void setBackground (Background2 background)
     {
         this.background = background;
     }

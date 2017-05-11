@@ -1,24 +1,41 @@
 package com.ilsa.grassis.activites;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.ilsa.grassis.R;
+import com.ilsa.grassis.apivo.UserVo;
 import com.ilsa.grassis.library.BoldSFTextView;
 import com.ilsa.grassis.library.Constants;
 import com.ilsa.grassis.library.MediumTextView;
 import com.ilsa.grassis.library.RoundedImageView;
+import com.ilsa.grassis.rootvo.UserDataVO;
 import com.ilsa.grassis.utils.Dailogs;
+
+import org.json.JSONObject;
+
+import java.io.IOException;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 
 /**
  * Menu activity contains list of items.
@@ -75,6 +92,65 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         isScrolled = false;
         InitComponents();
         AddListener();
+        GetProfileInfo();
+    }
+
+    private void GetProfileInfo() {
+
+        final ProgressDialog pd = new ProgressDialog(ProfileActivity.this);
+        pd.setMessage(getString(R.string.Verifying_msg));
+        pd.setCancelable(false);
+        pd.show();
+
+        OkHttpClient client = new OkHttpClient();
+
+        Request request = new Request.Builder()
+                .url("http://kushmarketing.herokuapp.com/api/users/me")
+                .get()
+                .addHeader("accept", "application/vnd.kush_marketing.com; version=1")
+                .addHeader("authorization", "Bearer ea71aa91e2d8c7c05254c8aea9211bc4dcbb945f72a187088f86cf4a3a45ef0b")
+                .addHeader("x-client-email", "zeeshan@gmail.com")
+                .addHeader("cache-control", "no-cache")
+                .addHeader("postman-token", "448e7c10-320d-0b72-899c-1adc5a8785fc")
+                .build();
+
+        //  Response response = client.newCall(request).execute();
+        client.newCall(request).enqueue(new Callback() {
+
+            @Override
+            public void onFailure(Call call, IOException e) {
+                e.printStackTrace();
+                pd.dismiss();
+            }
+
+            @Override
+            public void onResponse(Call call, final Response response) throws IOException {
+                pd.dismiss();
+                final String res = response.body().string().toString();
+                Log.i("response", res);
+                if (!response.isSuccessful()) {
+                    mActivity.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            try {
+                                JSONObject jsonObject = new JSONObject(res);
+                                JSONObject error = jsonObject.getJSONObject("error");
+                                String message = error.get("message").toString();
+                                Dailogs.ShowToast(mContext, message, Constants.LONG_TIME);
+                            } catch (Exception e) {
+                            }
+                        }
+                    });
+                } else {
+                    Gson gson = new GsonBuilder().create();
+                    UserVo userVo = gson.fromJson(res, UserVo.class);
+
+                    if (userVo != null) {
+
+                    }
+                }
+            }
+        });
     }
 
     /**
