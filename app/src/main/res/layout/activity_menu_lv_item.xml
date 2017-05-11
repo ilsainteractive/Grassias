@@ -2,19 +2,32 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="@dimen/_130sdp"
     android:background="@color/white"
     android:orientation="horizontal"
     android:padding="30dp"
     tools:context="com.ilsa.grassis.activites.MenuActivity">
 
-    <ImageView
-        android:id="@+id/menu_home_lv_image"
+    <RelativeLayout
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:paddingRight="30dp"
-        android:src="@mipmap/menu_lv_item_img" />
+        android:layout_weight="1">
+
+        <ImageView
+            android:id="@+id/menu_home_lv_image"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingRight="30dp"
+            android:scaleType="centerCrop" />
+
+        <ProgressBar
+            android:id="@+id/progress_offer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:visibility="invisible" />
+
+    </RelativeLayout>
 
     <com.ilsa.grassis.library.RegularTextView
         android:id="@+id/menu_home_lv_title"

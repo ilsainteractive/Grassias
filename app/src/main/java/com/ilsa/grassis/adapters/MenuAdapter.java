@@ -6,11 +6,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.load.resource.drawable.GlideDrawable;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
 import com.ilsa.grassis.R;
+import com.ilsa.grassis.apivo.Products;
 import com.ilsa.grassis.library.RegularTextView;
-import com.ilsa.grassis.utils.Helper;
-import com.ilsa.grassis.vo.MenuListVO;
 
 import java.util.List;
 
@@ -19,7 +24,7 @@ import java.util.List;
  */
 public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.MyViewHolder> {
 
-    private List<MenuListVO> menuList;
+    private List<Products> menuList;
     private Context mContext;
 
     /**
@@ -28,6 +33,7 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.MyViewHolder> 
     public class MyViewHolder extends RecyclerView.ViewHolder {
         private RegularTextView title;
         private ImageView imageView;
+        ProgressBar progressBar;
 
         /**
          * Instantiates a new My view holder.
@@ -37,8 +43,8 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.MyViewHolder> 
         public MyViewHolder(View view) {
             super(view);
             title = (RegularTextView) view.findViewById(R.id.menu_home_lv_title);
-            //title.setTextSize(Helper.getFontSize(mContext.getResources(), 6));
             imageView = (ImageView) view.findViewById(R.id.menu_home_lv_image);
+            progressBar = (ProgressBar) view.findViewById(R.id.progress_offer);
         }
     }
 
@@ -48,7 +54,7 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.MyViewHolder> 
      * @param mContext the mContext
      * @param menuList the menu list
      */
-    public MenuAdapter(Context mContext, List<MenuListVO> menuList) {
+    public MenuAdapter(Context mContext, List<Products> menuList) {
         this.menuList = menuList;
         this.mContext = mContext;
     }
@@ -62,10 +68,27 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.MyViewHolder> 
     }
 
     @Override
-    public void onBindViewHolder(MyViewHolder holder, int position) {
-        MenuListVO movie = menuList.get(position);
-        holder.title.setText(movie.getTitle());
-        holder.imageView.setImageResource(R.mipmap.menu_lv_item_img);
+    public void onBindViewHolder(final MyViewHolder holder, int position) {
+        Products product = menuList.get(position);
+        holder.title.setText(product.getName());
+        holder.progressBar.setVisibility(View.VISIBLE);
+        Glide.with(mContext).load(product.getBackground().getBackground().getLarge().getUrl())
+                .thumbnail(0.5f)
+                .crossFade()
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .listener(new RequestListener<String, GlideDrawable>() {
+                    @Override
+                    public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
+                        holder.progressBar.setVisibility(View.GONE);
+                        return false;
+                    }
+
+                    @Override
+                    public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
+                        holder.progressBar.setVisibility(View.GONE);
+                        return false;
+                    }
+                }).into(holder.imageView);
     }
 
     @Override

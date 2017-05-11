@@ -215,8 +215,7 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="2.5"
-                android:padding="15dp"
-                android:src="@mipmap/home_lv_bottom_icon" />
+                android:padding="15dp" />
 
             <LinearLayout
                 android:layout_width="0dp"

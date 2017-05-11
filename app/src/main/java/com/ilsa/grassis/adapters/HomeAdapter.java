@@ -1,15 +1,16 @@
 package com.ilsa.grassis.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -17,6 +18,7 @@ import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.ilsa.grassis.R;
+import com.ilsa.grassis.activites.MenuActivity;
 import com.ilsa.grassis.apivo.Dispensaries;
 import com.ilsa.grassis.apivo.Dispensary;
 import com.ilsa.grassis.apivo.Features;
@@ -25,6 +27,7 @@ import com.ilsa.grassis.library.BoldSFTextView;
 import com.ilsa.grassis.library.RegularTextView;
 import com.ilsa.grassis.library.ThinTextView;
 import com.ilsa.grassis.rootvo.NearByVo;
+import com.ilsa.grassis.utils.Dailogs;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -71,7 +74,32 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MyViewHolder> 
 
         LoadImages(holder, dispensary);
         setTexts(holder, dispensary);
+        AddListeners(holder, dispensary, dataList);
         initViews(holder, dataList, position);
+    }
+
+    private void AddListeners(MyViewHolder mHolder, final Dispensary dispensary, final NearByVo nearByVo) {
+        mHolder.mProductsDetail.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (CheckIfProductsExist(dispensary, nearByVo)) {
+                    Intent i = new Intent(mContext, MenuActivity.class);
+                    i.putExtra("dispensary_id", dispensary.getId());
+                    i.putExtra("dispensary_photo", dispensary.getPhotos().get(0).getPhoto().getLarge());
+                    mContext.startActivity(i);
+                } else {
+                    Dailogs.ShowToast(mContext, "No products found for this denpensory", Toast.LENGTH_LONG);
+                }
+            }
+        });
+    }
+
+    private boolean CheckIfProductsExist(Dispensary dispensary, NearByVo nearByVo) {
+        for (Products product : nearByVo.getProducts()) {
+            if (dispensary.getId().equalsIgnoreCase(product.getDispensary_id()))
+                return true;
+        }
+        return false;
     }
 
     private void LoadImages(final MyViewHolder mHolder, Dispensary dispensary) {
@@ -99,9 +127,8 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MyViewHolder> 
         if (dispensary.getFeatures() != null && dispensary.getFeatures().size() > 0) {
             for (Features feature : dispensary.getFeatures()) {
                 if (feature.getDeal() != null && feature.getDeal().getDeal_type() != null) {
-                    mHolder.offerProgress.setVisibility(View.VISIBLE);
-                    Log.i("offer_image", feature.getDeal().getBackground().getLarge());
 
+                    mHolder.offerProgress.setVisibility(View.VISIBLE);
                     mHolder.mOfferOff.setText(feature.getDeal().getDeal_type());
                     //mHolder.mOfferNo.setText(feature.getDeal().getDeal_type().substring(0, feature.getDeal().getDeal_type().indexOf("%")));
                     //mHolder.mOfferOff.setText(feature.getDeal().getDeal_type().substring(feature.getDeal().getDeal_type().indexOf("%") + 1, feature.getDeal().getDeal_type().length()));
@@ -131,7 +158,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MyViewHolder> 
             }
         } else {
             mHolder.mOfferOff.setVisibility(View.INVISIBLE);
-            mHolder.mOfferName.setText("No offer available.");
+            mHolder.mOfferName.setText(R.string.no_offer_ava);
         }
         Glide.with(mContext).load(dispensary.getLogo().getMedium())
                 .bitmapTransform(new CropCircleTransformation(mContext))
@@ -139,7 +166,6 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MyViewHolder> 
                 .crossFade()
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .into(mHolder.mDespensoryLogo);
-
     }
 
     private void setTexts(MyViewHolder mHolder, Dispensary dispensary) {
@@ -189,6 +215,9 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MyViewHolder> 
         ImageView mDespensoryPhoto;
         ImageView mDespensoryCart;
         ImageView mDespensoryDetail;
+        ImageView mDespensoryLogo;
+        ImageView mOfferPhoto;
+        ImageView mProductsDetail;
 
         RegularTextView mDespensoryTitle;
         RegularTextView mDespensoryAddresse;
@@ -199,8 +228,6 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MyViewHolder> 
         CircleIndicator pageIndicatorView;
         ViewPager pager;
 
-        ImageView mDespensoryLogo;
-        ImageView mOfferPhoto;
 
         BoldSFTextView mOfferNo;
         ThinTextView mOfferOff, mOfferName;
@@ -219,6 +246,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MyViewHolder> 
             mDespensoryDetail = (ImageView) view.findViewById(R.id.home_list_box_detail);
             mDespensoryLogo = (ImageView) view.findViewById(R.id.home_lv_bottom_section_2_img);
             mOfferPhoto = (ImageView) view.findViewById(R.id.home_lv_bottom_section_offer_img);
+            mProductsDetail = (ImageView) view.findViewById(R.id.home_list_box_detail);
 
             mDespensoryTitle = (RegularTextView) view.findViewById(R.id.home_list_top_title);
             mDespensoryAddresse = (RegularTextView) view.findViewById(R.id.home_list_top_sub_title);

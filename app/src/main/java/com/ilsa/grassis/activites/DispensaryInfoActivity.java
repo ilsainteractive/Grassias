@@ -122,16 +122,6 @@ public class DispensaryInfoActivity extends AppCompatActivity implements OnMapRe
      */
     private void InitComponents() {
 
-//        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
-//                Math.round(Helper.getFontSize(mContext.getResources(), 90)));
-//        params.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
-//        mBtmSec.setLayoutParams(params);
-
-        // int padding = Math.round(Helper.getFontSize(mContext.getResources(), 19));
-        //int paddingTopBtm = Math.round(Helper.getFontSize(mContext.getResources(), 19));
-        // mBtmSecNext.setPadding(0, paddingTopBtm, 0, paddingTopBtm);
-        // mtxtSelecTitle.setTextSize(Helper.getFontSize(mContext.getResources(), 6.2)); //6.5 psd
-
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
@@ -180,31 +170,12 @@ public class DispensaryInfoActivity extends AppCompatActivity implements OnMapRe
     private View createPageView(int color) {
         View view = new View(this);
         view.setBackgroundColor(getResources().getColor(color));
-
         return view;
     }
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-//        LatLng latLng = null;
-//        for (int i = 0; i < list.size(); i++) {
-//            latLng = new LatLng(list.get(i).getLat(), list.get(i).getLog());
-//            MarkerOptions marker = new MarkerOptions().position(new LatLng(list.get(i).getLat(), list.get(i).getLog()))
-//                    .title(list.get(i).getTitle()).snippet(list.get(i).getDesc());
-//            marker.icon(BitmapDescriptorFactory.fromResource(R.mipmap.home_lv_bottom_icon))
-//                    .icon(BitmapDescriptorFactory.fromResource(R.mipmap.home_lv_bottom_icon));
-//            Marker marker1 = mMap.addMarker(marker);
-//            mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
-//                @Override
-//                public boolean onMarkerClick(Marker marker) {
-//
-//                    marker.getTag();
-//                    return false;
-//                }
-//            });
-//        }
-//        googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 13.0f));
     }
 
     @Override

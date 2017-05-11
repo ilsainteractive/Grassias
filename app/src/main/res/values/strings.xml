@@ -54,4 +54,6 @@
 
     <!--Rewards-->
     <string name="getting_Rewards">Getting rewards...</string>
+    <string name="no_offer_ava">No offer available.</string>
+
 </resources>

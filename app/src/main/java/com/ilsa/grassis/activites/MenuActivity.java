@@ -15,18 +15,25 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.ScrollView;
+import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.load.resource.drawable.GlideDrawable;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
 import com.ilsa.grassis.R;
 import com.ilsa.grassis.adapters.MenuAdapter;
+import com.ilsa.grassis.apivo.Products;
+import com.ilsa.grassis.library.AppContoller;
 import com.ilsa.grassis.library.Constants;
 import com.ilsa.grassis.library.ExpandedRecyclerView;
 import com.ilsa.grassis.library.MediumTextView;
 import com.ilsa.grassis.library.MenuItemClickListener;
 import com.ilsa.grassis.library.RecyclerTouchListener;
 import com.ilsa.grassis.utils.Dailogs;
-import com.ilsa.grassis.utils.Helper;
-import com.ilsa.grassis.vo.MenuListVO;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -52,7 +59,8 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
     private ExpandedRecyclerView recyclerView;
     private MenuAdapter mMenuAdapter;
 
-    private List<MenuListVO> menuListVOs;
+    private List<Products> menuListVOs;
+    private ProgressBar progress;
 
     // Dummy data for inflation
     private String[] titles = {"Exctracts", "Indica", "Sativa", "Hybrid", "Edibles", "Topicals", "Grow"};
@@ -89,7 +97,8 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
         isScrolled = false;
         initToolBar();
         InitComponents();
-        syncData();
+        if (getIntent().getStringExtra("dispensary_id") != null)
+            syncData(getIntent().getStringExtra("dispensary_id"));
         AddListener();
     }
 
@@ -116,16 +125,15 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
      */
     private void InitComponents() {
 
+        progress = (ProgressBar) findViewById(R.id.progress);
         mTopBanner = (ImageView) findViewById(R.id.menu_bottom_banner);
         mScrollView = (ScrollView) findViewById(R.id.scrollView);
-//        LinearLayout.LayoutParams paramsTexts = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
-//                Math.round(Helper.getFontSize(mContext.getResources(), 190)));
-//        mTopBanner.setLayoutParams(paramsTexts);
         recyclerView = (ExpandedRecyclerView) findViewById(R.id.recycler_view);
         listener = new RecyclerTouchListener(mContext, recyclerView, new MenuItemClickListener() {
             @Override
             public void onClick(View view, int position) {
-                startActivity(new Intent(mContext, MenuItemActivity.class));
+                //startActivity(new Intent(mContext, MenuItemActivity.class));
+                Toast.makeText(mContext, "Not working yet", Toast.LENGTH_LONG).show();
             }
 
             @Override
@@ -133,13 +141,31 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
             }
         });
         recyclerView.addOnItemTouchListener(listener);
-    }
 
+        progress.setVisibility(View.VISIBLE);
+        Glide.with(mContext).load(getIntent().getStringExtra("dispensary_photo"))
+                .thumbnail(0.5f)
+                .crossFade()
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .listener(new RequestListener<String, GlideDrawable>() {
+                    @Override
+                    public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
+                        progress.setVisibility(View.GONE);
+                        return false;
+                    }
+
+                    @Override
+                    public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
+                        progress.setVisibility(View.GONE);
+                        return false;
+                    }
+                }).into(mTopBanner);
+    }
 
     /**
      * Syncing data from server to inflate on listview.
      */
-    private void syncData() {
+    private void syncData(String id) {
         menuListVOs = new ArrayList<>();
         mMenuAdapter = new MenuAdapter(mContext, menuListVOs);
 
@@ -150,13 +176,11 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(mMenuAdapter);
         recyclerView.setNestedScrollingEnabled(false);
-        for (int i = 0; i < 7; i++) {
-            MenuListVO listVO = new MenuListVO();
-            listVO.setId(i + "");
-            listVO.setTitle(titles[i]);
-            listVO.setImg(images[i] + "");
 
-            menuListVOs.add(listVO);
+        for (Products product : AppContoller.nearByVo.getProducts()) {
+            if (id.equalsIgnoreCase(product.getDispensary_id())) {
+                menuListVOs.add(product);
+            }
         }
         mMenuAdapter.notifyDataSetChanged();
     }
