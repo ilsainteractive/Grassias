@@ -221,7 +221,10 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                 startActivity(new Intent(mContext, ProfileActivity.class));
                 break;
             case R.id.home_btn_deals:
-                startActivity(new Intent(mContext, DealsRewardActivity.class));
+                if (AppContoller.IsLoggedIn && AppContoller.userData != null)
+                    startActivity(new Intent(mContext, DealsRewardActivity.class));
+                else
+                    Dailogs.ShowToast(mContext, "You need to sign in or sign up before continuing", Constants.SHORT_TIME);
                 break;
             case R.id.home_btn_home:
                 //startActivity(new Intent(mContext, DealsRewardActivity.class));

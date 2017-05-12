@@ -14,6 +14,7 @@ import android.view.WindowManager;
 import android.widget.FrameLayout;
 
 import com.ilsa.grassis.R;
+import com.ilsa.grassis.library.AppContoller;
 import com.ilsa.grassis.library.BoldTextView;
 import com.ilsa.grassis.library.UltraThinTextView;
 import com.ilsa.grassis.utils.Helper;
@@ -46,7 +47,10 @@ public class SplashActivity extends AppCompatActivity {
 
             public void onFinish() {
                 finish();
-                mContext.startActivity(new Intent(mContext, LoginActivity.class));
+                if (AppContoller.IsLoggedIn && AppContoller.userData != null)
+                    mContext.startActivity(new Intent(mContext, HomeActivity.class));
+                else
+                    mContext.startActivity(new Intent(mContext, LoginActivity.class));
             }
         }.start();
     }

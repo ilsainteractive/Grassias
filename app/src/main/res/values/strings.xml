@@ -16,6 +16,8 @@
     <string name="invalid_username">Invalid username</string>
     <string name="invalid_password">Invalid password</string>
     <string name="Verifying_msg">Verifing...</string>
+    <string name="Logging_Out">Logging Out...</string>
+
 
     <!--Signup Screen-->
     <string name="first_name">First Name</string>
@@ -50,4 +52,6 @@
     <!--Deal-->
     <string name="getting_users">Getting deals...</string>
 
+    <!--Rewards-->
+    <string name="getting_Rewards">Getting rewards...</string>
 </resources>

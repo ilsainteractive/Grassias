@@ -174,10 +174,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     AppContoller.userData = gson.fromJson(res, UserDataVO.class);
 
                     if (AppContoller.userData.getUser() != null) {
+                        AppContoller.IsLoggedIn = true;
                         Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
                         intent.putExtra("first_name", AppContoller.userData.getUser().getFirst_name());
                         intent.putExtra("last_name", AppContoller.userData.getUser().getLast_name());
                         startActivity(intent);
+                        finish();
                     }
                 }
             }

@@ -85,15 +85,15 @@ public class RewardFrag extends Fragment {
         mContext = getContext();
         mActivity = getActivity();
 
-       // GetRewards();
+        GetRewardsFromWeb();
         return rootView;
     }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        getDispensaryList();
-        rewardAdapter = new RewardAdapter(mContext, list);
+        // getDispensaryList();
+        //rewardAdapter = new RewardAdapter(mContext, list);
         recyclerView = (ExpandedRecyclerView) view.findViewById(R.id.recycler_view);
         listener = new RecyclerTouchListener(mContext, recyclerView, new MenuItemClickListener() {
             @Override
@@ -133,10 +133,10 @@ public class RewardFrag extends Fragment {
         }
     }
 
-    private void GetRewards() {
+    private void GetRewardsFromWeb() {
 
         final ProgressDialog pd = new ProgressDialog(getContext());
-        pd.setMessage(getString(R.string.Verifying_msg));
+        pd.setMessage(getString(R.string.getting_Rewards));
         pd.setCancelable(false);
         pd.show();
 
@@ -183,9 +183,13 @@ public class RewardFrag extends Fragment {
                     Gson gson = new GsonBuilder().create();
                     GetAllRewards[] getAllRewardses = gson.fromJson(res, GetAllRewards[].class);
 
-                    if (getAllRewardses != null) {
-
-                    }
+                    rewardAdapter = new RewardAdapter(mContext, getAllRewardses);
+                    mActivity.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            recyclerView.setAdapter(rewardAdapter);
+                        }
+                    });
                 }
             }
         });

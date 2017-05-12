@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
@@ -16,9 +17,11 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.ilsa.grassis.R;
 import com.ilsa.grassis.apivo.UserVo;
+import com.ilsa.grassis.library.AppContoller;
 import com.ilsa.grassis.library.BoldSFTextView;
 import com.ilsa.grassis.library.Constants;
 import com.ilsa.grassis.library.MediumTextView;
+import com.ilsa.grassis.library.RegularTextView;
 import com.ilsa.grassis.library.RoundedImageView;
 import com.ilsa.grassis.rootvo.UserDataVO;
 import com.ilsa.grassis.utils.Dailogs;
@@ -80,6 +83,9 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
 
     @BindView(R.id.home_btn_qr)
     ImageView mQr;
+
+    @BindView(R.id.logOut)
+    RegularTextView logOut;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -169,6 +175,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         mDeals.setOnClickListener(this);
         mHome.setOnClickListener(this);
         mQr.setOnClickListener(this);
+        logOut.setOnClickListener(this);
         mProfile.setImageResource(R.mipmap.profile_icon1);
     }
 
@@ -194,6 +201,63 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
                 //startActivity(new Intent(mContext, DealsRewardActivity.class));
                 Dailogs.ShowToast(mContext, "QR Scan is not integrated.", Constants.SHORT_TIME);
                 break;
+            case R.id.logOut:
+                LogOut();
+                break;
         }
     }
+
+    private void LogOut() {
+
+        final ProgressDialog pd = new ProgressDialog(ProfileActivity.this);
+        pd.setMessage(getString(R.string.Logging_Out));
+        pd.setCancelable(false);
+        pd.show();
+
+        OkHttpClient client = new OkHttpClient();
+
+        Request request = new Request.Builder()
+                .url("http://kushmarketing.herokuapp.com/api/logout")
+                .get()
+                .addHeader("accept", "application/vnd.kush_marketing.com; version=1")
+                .addHeader("authorization", "Bearer "+ AppContoller.userData.getUser().getAccess_token())
+                .addHeader("x-client-email", AppContoller.userData.getUser().getEmail())
+                .addHeader("cache-control", "no-cache")
+                .addHeader("postman-token", "a9ca61ff-909c-766a-1862-46503cabbe4e")
+                .build();
+
+        //Response response = client.newCall(request).execute();
+        client.newCall(request).enqueue(new Callback() {
+
+            @Override
+            public void onFailure(Call call, IOException e) {
+                e.printStackTrace();
+                pd.dismiss();
+            }
+
+            @Override
+            public void onResponse(Call call, final Response response) throws IOException {
+                pd.dismiss();
+                final String res = response.body().string().toString();
+                Log.i("response", res);
+                if (!response.isSuccessful()) {
+                    mActivity.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            try {
+                                JSONObject jsonObject = new JSONObject(res);
+                                JSONObject error = jsonObject.getJSONObject("error");
+                                String message = error.get("message").toString();
+                                Dailogs.ShowToast(mContext, message, Constants.LONG_TIME);
+                            } catch (Exception e) {
+                            }
+                        }
+                    });
+                } else {
+
+                }
+            }
+        });
+    }
+
 }

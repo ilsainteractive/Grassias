@@ -12,7 +12,7 @@ public class Product
     private String id;
 
     @SerializedName("icon")
-    private Icon2 icon;
+    private Icon2 icon2;
 
     private String title;
 
@@ -30,12 +30,12 @@ public class Product
 
     public Icon2 getIcon ()
     {
-        return icon;
+        return icon2;
     }
 
     public void setIcon (Icon2 icon)
     {
-        this.icon = icon;
+        this.icon2 = icon;
     }
 
     public String getTitle ()
@@ -61,6 +61,6 @@ public class Product
     @Override
     public String toString()
     {
-        return "ClassPojo [id = "+id+", icon = "+icon+", title = "+title+", points = "+points+"]";
+        return "ClassPojo [id = "+id+", icon = "+icon2+", title = "+title+", points = "+points+"]";
     }
 }

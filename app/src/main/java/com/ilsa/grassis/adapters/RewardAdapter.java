@@ -8,31 +8,29 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.bumptech.glide.Glide;
 import com.ilsa.grassis.R;
 import com.ilsa.grassis.library.BoldSFTextView;
 import com.ilsa.grassis.library.MediumTextView;
 import com.ilsa.grassis.library.RegularTextView;
-import com.ilsa.grassis.utils.Helper;
-import com.ilsa.grassis.vo.DealsVO;
-
-import java.util.List;
+import com.ilsa.grassis.rootvo.GetAllRewards;
 
 /**
  * The type Menu item adapter.
  */
 public class RewardAdapter extends RecyclerView.Adapter<RewardAdapter.MyViewHolder> {
 
-    private List<DealsVO> menuList;
+    private GetAllRewards[] getAllRewardList;
     private Context mContext;
 
     /**
      * Instantiates a new Menu item adapter.
      *
      * @param mContext the mContext
-     * @param menuList the menu list
+     * @param getAllRewardList the menu list
      */
-    public RewardAdapter(Context mContext, List<DealsVO> menuList) {
-        this.menuList = menuList;
+    public RewardAdapter(Context mContext, GetAllRewards[] getAllRewardList) {
+        this.getAllRewardList = getAllRewardList;
         this.mContext = mContext;
     }
 
@@ -46,15 +44,16 @@ public class RewardAdapter extends RecyclerView.Adapter<RewardAdapter.MyViewHold
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
 
-        GradientDrawable background = (GradientDrawable) holder.circle.getBackground();
+       /* GradientDrawable background = (GradientDrawable) holder.circle.getBackground();
         if (position % 2 == 0) {
             background.setColor(mContext.getResources().getColor(R.color.baseColor));
         } else {
             background.setColor(mContext.getResources().getColor(R.color.txt_psd_coloras));
-        }
-//        DealsVO movie = menuList.get(position);
-//        holder.title.setText(movie.getTitle());
-//        holder.Off.setText(movie.getOff());
+        }*/
+//        DealsVO movie = getAllRewardList.get(position);
+        holder.title.setText(getAllRewardList[position].getProduct().getTitle());
+        holder.subTitle.setText(getAllRewardList[position].getProduct().getPoints());
+        Glide.with(mContext).load(getAllRewardList[position].getProduct().getIcon().getLarge()).into(holder.icon);
 //        holder.ViewDeal.setText("VIEW DEALS");
 //        holder.ViewDeal.setOnClickListener(new View.OnClickListener() {
 //            @Override
@@ -81,7 +80,7 @@ public class RewardAdapter extends RecyclerView.Adapter<RewardAdapter.MyViewHold
 
     @Override
     public int getItemCount() {
-        return menuList.size();
+        return getAllRewardList.length;
     }
 
     /**
