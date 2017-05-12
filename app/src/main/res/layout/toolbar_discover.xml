@@ -11,13 +11,13 @@
     <!--app:layout_scrollFlags="scroll|enterAlways"-->
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="?attr/actionBarSize"
         android:orientation="horizontal">
 
         <com.ilsa.grassis.library.BoldSFTextView
             android:id="@+id/toolbar_store_front"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_gravity="center"
             android:layout_weight="1"
             android:gravity="center"
@@ -28,7 +28,7 @@
         <com.ilsa.grassis.library.RegularTextView
             android:id="@+id/toolbar_delivery"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_gravity="center"
             android:layout_weight="1"
             android:gravity="center"

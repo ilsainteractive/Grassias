@@ -68,6 +68,9 @@ public class Constants {
     public static final int FIELD_PASSWORD_VALIDATION_LENGTH_MAX = 20;
     public static final int FIELD_USER_NAME_VALIDATION_LENGTH_MAX = 15;
 
+    public static final String STORE_FRONT = "storefront";
+    public static final String DELIVERY = "delivery";
+
     public static String baseUrl = "http://kushmarketing.herokuapp.com/api/";
     public static String grant_type = "client_credentials";
     public static String client_id = "156508433a3c2f402e64c2acf95dfda2e4a0bc51d55e12608d5fb982b8fb9e33";

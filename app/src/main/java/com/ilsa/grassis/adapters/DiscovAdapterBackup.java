@@ -8,21 +8,20 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.ilsa.grassis.R;
-import com.ilsa.grassis.apivo.Dispensary;
 import com.ilsa.grassis.library.BoldSFTextView;
 import com.ilsa.grassis.library.RegularTextView;
 import com.ilsa.grassis.utils.Helper;
+import com.ilsa.grassis.vo.DispensaryVO;
 
-import java.util.ArrayList;
+import java.util.List;
 
 /**
  * The type Menu item adapter.
  */
-public class DiscovAdapter extends RecyclerView.Adapter<DiscovAdapter.MyViewHolder> {
+public class DiscovAdapterBackup extends RecyclerView.Adapter<DiscovAdapterBackup.MyViewHolder> {
 
-    private ArrayList<Dispensary> menuList;
+    private List<DispensaryVO> menuList;
     private Context mContext;
-    private String mType;
 
     /**
      * Instantiates a new Menu item adapter.
@@ -30,10 +29,9 @@ public class DiscovAdapter extends RecyclerView.Adapter<DiscovAdapter.MyViewHold
      * @param mContext the mContext
      * @param menuList the menu list
      */
-    public DiscovAdapter(Context mContext, ArrayList<Dispensary> menuList, String type) {
+    public DiscovAdapterBackup(Context mContext, List<DispensaryVO> menuList) {
         this.menuList = menuList;
         this.mContext = mContext;
-        this.mType = type;
     }
 
     @Override
@@ -45,13 +43,11 @@ public class DiscovAdapter extends RecyclerView.Adapter<DiscovAdapter.MyViewHold
 
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
-        Dispensary dispensary = menuList.get(position);
-        if (dispensary.getChannels().contains(mType)) {
-            holder.title.setText(dispensary.getName());
-            holder.add.setText(dispensary.getDescription());
-            holder.timing.setText(dispensary.getId());
-            holder.timing.setText(Helper.getBoldedText("2.3 miles  |  OPEN till 8:00pm", 14, 19));
-        }
+        DispensaryVO movie = menuList.get(position);
+        holder.title.setText(movie.getTitle());
+        holder.add.setText(movie.getDesc());
+        holder.timing.setText(movie.getId());
+        holder.timing.setText(Helper.getBoldedText("2.3 miles  |  OPEN till 8:00pm", 14, 19));
     }
 
     @Override

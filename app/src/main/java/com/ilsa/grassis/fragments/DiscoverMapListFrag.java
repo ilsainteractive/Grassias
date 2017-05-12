@@ -92,7 +92,7 @@ public class DiscoverMapListFrag extends Fragment implements OnMapReadyCallback 
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         getDispensaryList();
-        discovAdapter = new DiscovAdapter(mContext, list);
+        //discovAdapter = new DiscovAdapter(mContext, list);
         recyclerView = (ExpandedRecyclerView) view.findViewById(R.id.recycler_view);
         listener = new RecyclerTouchListener(mContext, recyclerView, new MenuItemClickListener() {
             @Override

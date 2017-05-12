@@ -13,13 +13,13 @@ import android.database.Cursor;
 import android.database.MatrixCursor;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.location.Location;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
@@ -56,6 +56,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.ilsa.grassis.R;
 import com.ilsa.grassis.adapters.SearchAdapter;
+import com.ilsa.grassis.apivo.Dispensary;
 import com.ilsa.grassis.library.AppContoller;
 import com.ilsa.grassis.library.Constants;
 import com.ilsa.grassis.library.RegularTextView;
@@ -71,6 +72,8 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
@@ -145,6 +148,7 @@ public class DispensaryActivity extends AppCompatActivity implements OnMapReadyC
     private SignUpVO signUpVO;
     private Menu menu;
     private List<String> items;
+    private HashMap<String, Bitmap> markersBitmaps;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -539,54 +543,11 @@ public class DispensaryActivity extends AppCompatActivity implements OnMapReadyC
                             nearByVo = gson.fromJson(response.body().string().toString(), NearByVo.class);
                             try {
                                 if (mMap != null) {
+                                    markersBitmaps = new LinkedHashMap<String, Bitmap>();
                                     for (int i = 0; i < nearByVo.getDispensaries().size(); i++) {
                                         mapPos = i;
-                                        final GlideDrawable theBitmap = Glide.
-                                                with(mContext).
-                                                load(nearByVo.getDispensaries().get(mapPos).getDispensary().getLogo().getSmall())
-                                                .bitmapTransform(new CropCircleTransformation(DispensaryActivity.this))
-                                                .diskCacheStrategy(DiskCacheStrategy.ALL)
-                                                .into(100, 100).get();
-                                        mActivity.runOnUiThread(new Runnable() {
-                                            @Override
-                                            public void run() {
-
-                                                latLng = new LatLng(nearByVo.getDispensaries().get(mapPos).getDispensary().getLocation().getCoords().getLatitude(), nearByVo.getDispensaries().get(mapPos).getDispensary().getLocation().getCoords().getLongitude());
-                                                mSelectedId = nearByVo.getDispensaries().get(mapPos).getDispensary().getId();
-                                                MarkerOptions marker = new MarkerOptions().position(latLng);
-                                                // Bitmap mBitmap = addBorderToBitmap(drawableToBitmap(theBitmap));
-
-                                                BitmapDescriptor markerIcon = getMarkerIconFromDrawable(theBitmap);
-                                                marker.icon(markerIcon);
-                                                marker.snippet(nearByVo.getDispensaries().get(mapPos).getDispensary().getId());
-                                                mMap.addMarker(marker);
-                                                Log.i("added", mapPos + "");
-                                            }
-                                        });
-                                        Thread.sleep(200);
+                                        LoadView(nearByVo.getDispensaries().get(i).getDispensary(), mapPos);
                                     }
-                                    mActivity.runOnUiThread(new Runnable() {
-                                        @Override
-                                        public void run() {
-                                            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 13.0f));
-                                            UpdateBannerSection(mSelectedId);
-                                            mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
-                                                @Override
-                                                public boolean onMarkerClick(final Marker marker) {
-                                                    mSelectedId = marker.getSnippet();
-                                                    try {
-                                                        addBorderArroundMarker(mSelectedId);
-                                                    } catch (ExecutionException e) {
-                                                        e.printStackTrace();
-                                                    } catch (InterruptedException e) {
-                                                        e.printStackTrace();
-                                                    }
-                                                    UpdateBannerSection(mSelectedId);
-                                                    return false;
-                                                }
-                                            });
-                                        }
-                                    });
                                     pd.dismiss();
                                 }
                             } catch (Exception e) {
@@ -604,8 +565,89 @@ public class DispensaryActivity extends AppCompatActivity implements OnMapReadyC
         }
     }
 
+    private void LoadView(final Dispensary dispensary, final int mapPos) {
+
+        new AsyncTask<Void, Void, Bitmap>() {
+
+            @Override
+            protected Bitmap doInBackground(Void... params) {
+                try {
+                    return Glide.
+                            with(mContext).
+                            load(dispensary.getLogo().getSmall()).asBitmap()
+                            .diskCacheStrategy(DiskCacheStrategy.ALL)
+                            .into(100, 100).get();
+
+//                    Glide.with(mContext).load(dispensary.getLogo().getSmall()).asBitmap().centerCrop().into(new BitmapImageViewTarget(imageView) {
+//                        @Override
+//                        protected void setResource(Bitmap resource) {
+//                            RoundedBitmapDrawable circularBitmapDrawable =
+//                                    RoundedBitmapDrawableFactory.create(context.getResources(), resource);
+//                            circularBitmapDrawable.setCircular(true);
+//                            imageView.setImageDrawable(circularBitmapDrawable);
+//                        }
+//                    });
+                } catch (Exception e) {
+                    return null;
+                }
+            }
+
+            @Override
+            protected void onPostExecute(Bitmap theBitmap) {
+                super.onPostExecute(theBitmap);
+
+                latLng = new LatLng(dispensary.getLocation().getCoords().getLatitude(), dispensary.getLocation().getCoords().getLongitude());
+                mSelectedId = dispensary.getId();
+
+                MarkerOptions marker = new MarkerOptions().position(latLng);
+                markersBitmaps.put(dispensary.getId(), theBitmap);
+                Bitmap mBitmap = addBorderToBitmap(theBitmap, getColor(R.color.selected));
+                marker.icon(BitmapDescriptorFactory.fromBitmap(mBitmap));
+                marker.snippet(dispensary.getId());
+                mMap.addMarker(marker);
+
+                mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+                    @Override
+                    public boolean onMarkerClick(final Marker marker) {
+
+                        mMap.clear();
+                        for (int i = 0; i < nearByVo.getDispensaries().size(); i++) {
+                            Dispensary dispensary1 = nearByVo.getDispensaries().get(i).getDispensary();
+
+                            latLng = new LatLng(dispensary1.getLocation().getCoords().getLatitude(), dispensary1.getLocation().getCoords().getLongitude());
+                            MarkerOptions markr = new MarkerOptions().position(latLng);
+
+                            if (dispensary1.getId().equalsIgnoreCase(marker.getSnippet())) {
+                                mSelectedId = dispensary1.getId();
+                                UpdateBannerSection(mSelectedId);
+                                Bitmap mBitmap = addBorderToBitmap(markersBitmaps.get(dispensary1.getId()), getColor(R.color.baseColor));
+                                markr.icon(BitmapDescriptorFactory.fromBitmap(mBitmap));
+                                markr.snippet(dispensary1.getId());
+                                mMap.addMarker(markr);
+
+                            } else {
+
+                                Bitmap mBitmap = addBorderToBitmap(markersBitmaps.get(dispensary1.getId()), getColor(R.color.selected));
+                                markr.icon(BitmapDescriptorFactory.fromBitmap(mBitmap));
+                                markr.snippet(dispensary1.getId());
+                                mMap.addMarker(markr);
+                            }
+                        }
+                        return false;
+                    }
+                });
+
+                if (mapPos == nearByVo.getDispensaries().size() - 1) {
+                    mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 13.0f));
+                    UpdateBannerSection(mSelectedId);
+                }
+                Log.i("added", mapPos + "");
+            }
+        }.execute();
+    }
+
     // Custom method to add a border around bitmap
-    protected Bitmap addBorderToBitmap(Bitmap bitmap) {
+    protected Bitmap addBorderToBitmap(Bitmap bitmap, int color) {
         int w = bitmap.getWidth();
         int h = bitmap.getHeight();
 
@@ -626,7 +668,8 @@ public class DispensaryActivity extends AppCompatActivity implements OnMapReadyC
         c.drawBitmap(bitmap, 4, 4, p);
         p.setXfermode(null);
         p.setStyle(Paint.Style.STROKE);
-        p.setColor(Color.GRAY);
+        p.setColor(color);
+        //p.setColor(Color.GRAY);
         p.setStrokeWidth(3);
         c.drawCircle((w / 2) + 4, (h / 2) + 4, radius, p);
 
@@ -642,6 +685,14 @@ public class DispensaryActivity extends AppCompatActivity implements OnMapReadyC
         return BitmapDescriptorFactory.fromBitmap(bitmap);
     }
 
+    private BitmapDescriptor getMarkerIconFromDrawable2(Bitmap bitmap2) {
+//        Canvas canvas = new Canvas();
+//        Bitmap bitmap = Bitmap.createBitmap(bitmap2.getWidth(), bitmap2.get(), Bitmap.Config.ARGB_8888);
+//        canvas.setBitmap(bitmap);
+//        drawable.setBounds(0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight());
+//        drawable.draw(canvas);
+        return BitmapDescriptorFactory.fromBitmap(bitmap2);
+    }
 
     public static Bitmap drawableToBitmap(Drawable drawable) {
         Bitmap bitmap = null;
@@ -665,7 +716,6 @@ public class DispensaryActivity extends AppCompatActivity implements OnMapReadyC
         return bitmap;
     }
 
-
     private void addBorderArroundMarker(final String id) throws ExecutionException, InterruptedException {
         for (int i = 0; i < nearByVo.getDispensaries().size(); i++) {
             if (AppContoller.nearByVo.getDispensaries().get(i).getDispensary().getId().equalsIgnoreCase(id)) {
@@ -683,8 +733,8 @@ public class DispensaryActivity extends AppCompatActivity implements OnMapReadyC
                                     // .asBitmap().diskCacheStrategy(DiskCacheStrategy.ALL).
                                     .into(100, 100).get();
 
-                            Bitmap mBitmap = addBorderToBitmap(drawableToBitmap(theBitmap));
-
+                            //Bitmap mBitmap = addBorderToBitmap(drawableToBitmap(theBitmap));
+                            Bitmap mBitmap = null;
                             latLng = new LatLng(AppContoller.nearByVo.getDispensaries().get(mapPos).getDispensary().getLocation().getCoords().getLatitude(), AppContoller.nearByVo.getDispensaries().get(mapPos).getDispensary().getLocation().getCoords().getLongitude());
                             mSelectedId = AppContoller.nearByVo.getDispensaries().get(mapPos).getDispensary().getId();
                             final MarkerOptions marker = new MarkerOptions().position(latLng);

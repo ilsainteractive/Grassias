@@ -51,7 +51,7 @@ public class Dispensary {
 
     private Colors colors;
 
-    private String[] channels;
+    private ArrayList<String> channels;
 
     private String android_app_store_url;
 
@@ -234,11 +234,11 @@ public class Dispensary {
         this.colors = colors;
     }
 
-    public String[] getChannels() {
+    public ArrayList<String> getChannels() {
         return channels;
     }
 
-    public void setChannels(String[] channels) {
+    public void setChannels(ArrayList<String> channels) {
         this.channels = channels;
     }
 
