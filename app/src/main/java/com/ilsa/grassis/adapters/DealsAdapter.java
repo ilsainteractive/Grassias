@@ -8,8 +8,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.drawable.GlideDrawable;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
 import com.ilsa.grassis.R;
 import com.ilsa.grassis.activites.DealDetailsActivity;
 import com.ilsa.grassis.activites.DealsRewardActivity;
@@ -25,6 +29,7 @@ public class DealsAdapter extends RecyclerView.Adapter<DealsAdapter.MyViewHolder
 
     private DealsVO[] multipleDealses;
     private Context mContext;
+
 
     /**
      * Instantiates a new Menu item adapter.
@@ -45,10 +50,23 @@ public class DealsAdapter extends RecyclerView.Adapter<DealsAdapter.MyViewHolder
     }
 
     @Override
-    public void onBindViewHolder(MyViewHolder holder, final int position) {
+    public void onBindViewHolder(final MyViewHolder holder, final int position) {
         holder.title.setText(multipleDealses[position].getDeal().getTitle());
         holder.Off.setText(multipleDealses[position].getDeal().getDeal_type());
-        Glide.with(mContext).load(multipleDealses[position].getDeal().getBackground().getLarge()).into(holder.icon);
+        holder.progress.setVisibility(View.VISIBLE);
+        Glide.with(mContext).load(multipleDealses[position].getDeal().getBackground().getLarge()).listener(new RequestListener<String, GlideDrawable>() {
+            @Override
+            public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
+                holder.progress.setVisibility(View.GONE);
+                return false;
+            }
+
+            @Override
+            public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
+                holder.progress.setVisibility(View.GONE);
+                return false;
+            }
+        }).into(holder.icon);
         holder.ViewDeal.setText("VIEW DEALS");
         holder.ViewDeal.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -83,6 +101,7 @@ public class DealsAdapter extends RecyclerView.Adapter<DealsAdapter.MyViewHolder
         private MediumTextView title;
         private RegularTextView ViewDeal;
         private LinearLayout topLayout;
+        private ProgressBar progress;
 
         /**
          * Instantiates a new My view holder.
@@ -99,6 +118,7 @@ public class DealsAdapter extends RecyclerView.Adapter<DealsAdapter.MyViewHolder
             //Off.setTextSize(Helper.getFontSize(mContext.getResources(), 8.5));
             //ViewDeal.setTextSize(Helper.getFontSize(mContext.getResources(), 6));
             icon = (ImageView) view.findViewById(R.id.deals_item_lv_img);
+            progress = (ProgressBar) view.findViewById(R.id.dealFrgProgress);
         }
     }
 }

@@ -7,8 +7,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.drawable.GlideDrawable;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
 import com.ilsa.grassis.R;
 import com.ilsa.grassis.library.BoldSFTextView;
 import com.ilsa.grassis.library.MediumTextView;
@@ -26,7 +30,7 @@ public class RewardAdapter extends RecyclerView.Adapter<RewardAdapter.MyViewHold
     /**
      * Instantiates a new Menu item adapter.
      *
-     * @param mContext the mContext
+     * @param mContext         the mContext
      * @param getAllRewardList the menu list
      */
     public RewardAdapter(Context mContext, GetAllRewards[] getAllRewardList) {
@@ -42,7 +46,7 @@ public class RewardAdapter extends RecyclerView.Adapter<RewardAdapter.MyViewHold
     }
 
     @Override
-    public void onBindViewHolder(MyViewHolder holder, int position) {
+    public void onBindViewHolder(final MyViewHolder holder, int position) {
 
        /* GradientDrawable background = (GradientDrawable) holder.circle.getBackground();
         if (position % 2 == 0) {
@@ -53,7 +57,20 @@ public class RewardAdapter extends RecyclerView.Adapter<RewardAdapter.MyViewHold
 //        DealsVO movie = getAllRewardList.get(position);
         holder.title.setText(getAllRewardList[position].getProduct().getTitle());
         holder.subTitle.setText(getAllRewardList[position].getProduct().getPoints());
-        Glide.with(mContext).load(getAllRewardList[position].getProduct().getIcon().getLarge()).into(holder.icon);
+        holder.progressBar.setVisibility(View.VISIBLE);
+        Glide.with(mContext).load(getAllRewardList[position].getProduct().getIcon().getLarge()).listener(new RequestListener<String, GlideDrawable>() {
+            @Override
+            public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
+                holder.progressBar.setVisibility(View.INVISIBLE);
+                return false;
+            }
+
+            @Override
+            public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
+                holder.progressBar.setVisibility(View.INVISIBLE);
+                return false;
+            }
+        }).into(holder.icon);
 //        holder.ViewDeal.setText("VIEW DEALS");
 //        holder.ViewDeal.setOnClickListener(new View.OnClickListener() {
 //            @Override
@@ -92,6 +109,7 @@ public class RewardAdapter extends RecyclerView.Adapter<RewardAdapter.MyViewHold
         private BoldSFTextView subTitle;
         private RegularTextView add_stamp;
         private View circle;
+        private ProgressBar progressBar;
 
         /**
          * Instantiates a new My view holder.
@@ -105,6 +123,7 @@ public class RewardAdapter extends RecyclerView.Adapter<RewardAdapter.MyViewHold
             subTitle = (BoldSFTextView) view.findViewById(R.id.frag_reward_lv_subtitle);
             add_stamp = (RegularTextView) view.findViewById(R.id.frag_reward_lv_add_stamp);
             circle = (View) view.findViewById(R.id.circle_shape);
+            progressBar = (ProgressBar) view.findViewById(R.id.rewardFrgProgress);
 
 //            title.setTextSize(Helper.getFontSize(mContext.getResources(), 5));
 //            subTitle.setTextSize(Helper.getFontSize(mContext.getResources(), 8.5));

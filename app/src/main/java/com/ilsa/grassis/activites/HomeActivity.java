@@ -107,7 +107,10 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     private void SyncData() {
 
         if (AppContoller.nearByVo == null) {
-            getNearByDespensories(new Location("asd"));
+            if (Helper.checkInternetConnection(mContext)) {
+                getNearByDespensories(new Location("asd"));
+            } else
+                Dailogs.ShowToast(mContext, getString(R.string.no_internet_msg), Constants.SHORT_TIME);
         } else {
             setAdaptorAndViews(AppContoller.nearByVo);
         }
@@ -218,7 +221,10 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                 startActivity(new Intent(mContext, DiscoverActivity.class));
                 break;
             case R.id.home_btn_profile:
-                startActivity(new Intent(mContext, ProfileActivity.class));
+                if (AppContoller.IsLoggedIn && AppContoller.userData != null)
+                    startActivity(new Intent(mContext, ProfileActivity.class));
+                else
+                    Dailogs.ShowToast(mContext, "You need to sign in or sign up before continuing", Constants.SHORT_TIME);
                 break;
             case R.id.home_btn_deals:
                 if (AppContoller.IsLoggedIn && AppContoller.userData != null)

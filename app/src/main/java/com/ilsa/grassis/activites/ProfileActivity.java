@@ -5,6 +5,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.content.IntentCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -25,6 +26,8 @@ import com.ilsa.grassis.library.RegularTextView;
 import com.ilsa.grassis.library.RoundedImageView;
 import com.ilsa.grassis.rootvo.UserDataVO;
 import com.ilsa.grassis.utils.Dailogs;
+import com.ilsa.grassis.utils.Helper;
+import com.ilsa.grassis.utils.ShPrefsHelper;
 
 import org.json.JSONObject;
 
@@ -202,7 +205,10 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
                 Dailogs.ShowToast(mContext, "QR Scan is not integrated.", Constants.SHORT_TIME);
                 break;
             case R.id.logOut:
-                LogOut();
+                if (Helper.checkInternetConnection(mContext)) {
+                    LogOut();
+                } else
+                    Dailogs.ShowToast(mContext, getString(R.string.no_internet_msg), Constants.SHORT_TIME);
                 break;
         }
     }
@@ -220,7 +226,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
                 .url("http://kushmarketing.herokuapp.com/api/logout")
                 .get()
                 .addHeader("accept", "application/vnd.kush_marketing.com; version=1")
-                .addHeader("authorization", "Bearer "+ AppContoller.userData.getUser().getAccess_token())
+                .addHeader("authorization", "Bearer " + AppContoller.userData.getUser().getAccess_token())
                 .addHeader("x-client-email", AppContoller.userData.getUser().getEmail())
                 .addHeader("cache-control", "no-cache")
                 .addHeader("postman-token", "a9ca61ff-909c-766a-1862-46503cabbe4e")
@@ -237,7 +243,16 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
 
             @Override
             public void onResponse(Call call, final Response response) throws IOException {
+
+                AppContoller.IsLoggedIn = false;
+                AppContoller.userData.setUser(null);
+                ShPrefsHelper.setSharedPreferenceString(mContext, Constants.USER_VO, null);
                 pd.dismiss();
+
+                Intent intent = new Intent(ProfileActivity.this, LoginActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | IntentCompat.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intent);
+                finish();
                 final String res = response.body().string().toString();
                 Log.i("response", res);
                 if (!response.isSuccessful()) {
@@ -258,6 +273,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
                 }
             }
         });
+
     }
 
 }

@@ -21,6 +21,7 @@ import com.ilsa.grassis.library.RegularTextView;
 import com.ilsa.grassis.rootvo.UserDataVO;
 import com.ilsa.grassis.utils.Dailogs;
 import com.ilsa.grassis.utils.Helper;
+import com.ilsa.grassis.utils.ShPrefsHelper;
 
 import org.json.JSONObject;
 
@@ -102,7 +103,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 break;
             case R.id.login_txt_skip_now:
                 AppContoller.IsLoggedIn = false;
-                startActivity(new Intent(mContext, HomeActivity.class));
+                if (Helper.checkInternetConnection(mContext))
+                    startActivity(new Intent(mContext, HomeActivity.class));
+                else
+                    Dailogs.ShowToast(mContext, getString(R.string.no_internet_msg), Constants.SHORT_TIME);
                 break;
             case R.id.login_txt_get_started:
                 // startActivity(new Intent(mContext, HomeActivity.class));
@@ -175,6 +179,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
                     if (AppContoller.userData.getUser() != null) {
                         AppContoller.IsLoggedIn = true;
+                        ShPrefsHelper.setSharedPreferenceString(mContext, Constants.USER_VO, res);
                         Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
                         intent.putExtra("first_name", AppContoller.userData.getUser().getFirst_name());
                         intent.putExtra("last_name", AppContoller.userData.getUser().getLast_name());

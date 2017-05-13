@@ -10,8 +10,8 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:paddingBottom="@dimen/_10sdp"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:paddingBottom="@dimen/_10sdp">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -29,6 +29,13 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:scaleType="centerCrop" />
+
+                <ProgressBar
+                    android:id="@+id/rewardFrgProgress"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:visibility="invisible" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -154,6 +161,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
+                    android:layout_marginTop="@dimen/_8sdp"
                     android:background="@drawable/round_edge_black"
                     android:paddingBottom="@dimen/_5sdp"
                     android:paddingLeft="@dimen/_17sdp"
@@ -161,7 +169,6 @@
                     android:paddingTop="@dimen/_5sdp"
                     android:text="ADD STAMP"
                     android:textColor="#24292c"
-                    android:layout_marginTop="@dimen/_8sdp"
                     android:textSize="@dimen/_13sdp" />
             </LinearLayout>
         </LinearLayout>

@@ -3,6 +3,7 @@ package com.ilsa.grassis.fragments;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -27,6 +28,7 @@ import com.ilsa.grassis.library.MenuItemClickListener;
 import com.ilsa.grassis.library.RecyclerTouchListener;
 import com.ilsa.grassis.rootvo.DealsVO;
 import com.ilsa.grassis.utils.Dailogs;
+import com.ilsa.grassis.utils.Helper;
 
 import org.json.JSONObject;
 
@@ -76,7 +78,10 @@ public class DealsFrag extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_deals_list, container, false);
         mContext = getContext();
         mActivity = getActivity();
-        getDealsFromWeb();
+        if (Helper.checkInternetConnection(mContext)) {
+            getDealsFromWeb();
+        } else
+            Dailogs.ShowToast(mContext, getString(R.string.no_internet_msg), Constants.SHORT_TIME);
         return rootView;
     }
 
@@ -119,7 +124,7 @@ public class DealsFrag extends Fragment {
                 .url("http://kushmarketing.herokuapp.com/api/deals?dispensary=4")
                 .get()
                 .addHeader("accept", "application/vnd.kush_marketing.com; version=1")
-                .addHeader("authorization", "Bearer "+ AppContoller.userData.getUser().getAccess_token())
+                .addHeader("authorization", "Bearer " + AppContoller.userData.getUser().getAccess_token())
                 .addHeader("cache-control", "no-cache")
                 .addHeader("postman-token", "3d2e3f37-b6c9-7bb0-7cbf-5925a7ce2fb8")
                 .build();

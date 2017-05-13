@@ -30,6 +30,7 @@ import com.ilsa.grassis.library.RecyclerTouchListener;
 import com.ilsa.grassis.rootvo.GetAllRewards;
 import com.ilsa.grassis.rootvo.UserDataVO;
 import com.ilsa.grassis.utils.Dailogs;
+import com.ilsa.grassis.utils.Helper;
 import com.ilsa.grassis.vo.DealsVO;
 
 import org.json.JSONObject;
@@ -84,8 +85,10 @@ public class RewardFrag extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_reward_list, container, false);
         mContext = getContext();
         mActivity = getActivity();
-
-        GetRewardsFromWeb();
+        if (Helper.checkInternetConnection(mContext)) {
+            GetRewardsFromWeb();
+        } else
+            Dailogs.ShowToast(mContext, getString(R.string.no_internet_msg), Constants.SHORT_TIME);
         return rootView;
     }
 
