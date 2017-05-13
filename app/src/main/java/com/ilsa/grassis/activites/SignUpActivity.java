@@ -315,9 +315,13 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
                             if (IsFieldValid(mtxtEmail.getEditableText(), Constants.SIGNUP_EMAIL_VALIDATION)) {
                                 if (IsFieldValid(metPhoneNo.getEditableText(), Constants.SIGNUP_PHONE_VALIDATION)) {
                                     if (IsFieldValid(metPassword.getEditableText(), Constants.SIGNUP_PASSWORD_VALIDATION)) {
-                                        SigingUpOnServer(mContext, "users", metFirstName.getText().toString(),
-                                                metLastName.getText().toString(), metUserName.getText().toString(), mtxtEmail.getText().toString(), metPhoneNo.getText().toString(),
-                                                metPassword.getText().toString());
+                                        if (Helper.checkInternetConnection(mContext)) {
+                                            SigingUpOnServer(mContext, "users", metFirstName.getText().toString(),
+                                                    metLastName.getText().toString(), metUserName.getText().toString(), mtxtEmail.getText().toString(), metPhoneNo.getText().toString(),
+                                                    metPassword.getText().toString());
+                                        } else
+                                            Dailogs.ShowToast(mContext, getString(R.string.no_internet_msg), Constants.SHORT_TIME);
+
                                     } else {
                                         // Dailogs.ShowToast(mContext, getString(R.string.invalid_password), Constants.SHORT_TIME);
                                         metPassword.setError("Length must be between 8 to 11 character");
