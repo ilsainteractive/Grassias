@@ -9,11 +9,14 @@ import android.support.v4.content.IntentCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.drawable.GlideDrawable;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.ilsa.grassis.R;
@@ -24,7 +27,6 @@ import com.ilsa.grassis.library.Constants;
 import com.ilsa.grassis.library.MediumTextView;
 import com.ilsa.grassis.library.RegularTextView;
 import com.ilsa.grassis.library.RoundedImageView;
-import com.ilsa.grassis.rootvo.UserDataVO;
 import com.ilsa.grassis.utils.Dailogs;
 import com.ilsa.grassis.utils.Helper;
 import com.ilsa.grassis.utils.ShPrefsHelper;
@@ -37,10 +39,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import okhttp3.Call;
 import okhttp3.Callback;
-import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
-import okhttp3.RequestBody;
 import okhttp3.Response;
 
 /**
@@ -54,8 +54,10 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
     private ScrollView mScrollView;
     private boolean isScrolled = false;
 
-    @BindView(R.id.profile_txt_name)
-    BoldSFTextView mtxtName;
+    @BindView(R.id.profile_txt_first_name)
+    BoldSFTextView mtxtFirstName;
+    @BindView(R.id.profile_txt_last_name)
+    BoldSFTextView mtxtLastName;
     @BindView(R.id.profile_image)
     RoundedImageView imgName;
     @BindView(R.id.profile_txt_member_status)
@@ -101,9 +103,18 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         isScrolled = false;
         InitComponents();
         AddListener();
-        GetProfileInfo();
+        LoasUserInfo();
+       // GetProfileInfo();
     }
 
+    private void LoasUserInfo()
+    {
+        String frstName=AppContoller.userData.getUser().getFirst_name();
+        String lstName= AppContoller.userData.getUser().getLast_name();
+        mtxtFirstName.setText(frstName.substring(0, 1).toUpperCase() + frstName.substring(1));
+        mtxtLastName.setText(lstName.substring(0, 1).toUpperCase() + lstName.substring(1));
+        Glide.with(mContext).load(AppContoller.userData.getUser().getAvatar().getSmall()).asBitmap().into(imgName);
+    }
     private void GetProfileInfo() {
 
         final ProgressDialog pd = new ProgressDialog(ProfileActivity.this);
@@ -180,6 +191,10 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         mQr.setOnClickListener(this);
         logOut.setOnClickListener(this);
         mProfile.setImageResource(R.mipmap.profile_icon1);
+        mtxtHistory.setOnClickListener(this);
+        mtxtFavorite.setOnClickListener(this);
+        mtxtTermsCondition.setOnClickListener(this);
+        mtxtPolicy.setOnClickListener(this);
     }
 
     @Override
@@ -209,6 +224,18 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
                     LogOut();
                 } else
                     Dailogs.ShowToast(mContext, getString(R.string.no_internet_msg), Constants.SHORT_TIME);
+                break;
+            case R.id.profile_txt_history:
+                Dailogs.ShowToast(mContext, "History", Constants.SHORT_TIME);
+                break;
+            case R.id.profile_txt_favorite:
+                Dailogs.ShowToast(mContext, "Favorties", Constants.SHORT_TIME);
+                break;
+            case R.id.profile_txt_trem_condition:
+                Dailogs.ShowToast(mContext, "Term and Condition", Constants.SHORT_TIME);
+                break;
+            case R.id.profile_txt_policy:
+                Dailogs.ShowToast(mContext, "Policy", Constants.SHORT_TIME);
                 break;
         }
     }
