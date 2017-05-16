@@ -8,6 +8,12 @@
     android:minHeight="?attr/actionBarSize"
     local:theme="@style/AppActionBarTheme">
 
+    <ImageView
+        android:id="@+id/toolbar_heart"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@mipmap/mail_icon"/>
+
     <com.ilsa.grassis.library.RegularTextView
         android:id="@+id/toolbar_title_dump"
         android:layout_width="wrap_content"

@@ -89,6 +89,9 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
     @BindView(R.id.home_btn_qr)
     ImageView mQr;
 
+    @BindView(R.id.profile_txt_editProfile)
+    RegularTextView editProfile;
+
     @BindView(R.id.logOut)
     RegularTextView logOut;
 
@@ -104,17 +107,17 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         InitComponents();
         AddListener();
         LoasUserInfo();
-       // GetProfileInfo();
+        // GetProfileInfo();
     }
 
-    private void LoasUserInfo()
-    {
-        String frstName=AppContoller.userData.getUser().getFirst_name();
-        String lstName= AppContoller.userData.getUser().getLast_name();
+    private void LoasUserInfo() {
+        String frstName = AppContoller.userData.getUser().getFirst_name();
+        String lstName = AppContoller.userData.getUser().getLast_name();
         mtxtFirstName.setText(frstName.substring(0, 1).toUpperCase() + frstName.substring(1));
         mtxtLastName.setText(lstName.substring(0, 1).toUpperCase() + lstName.substring(1));
         Glide.with(mContext).load(AppContoller.userData.getUser().getAvatar().getSmall()).asBitmap().into(imgName);
     }
+
     private void GetProfileInfo() {
 
         final ProgressDialog pd = new ProgressDialog(ProfileActivity.this);
@@ -195,6 +198,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         mtxtFavorite.setOnClickListener(this);
         mtxtTermsCondition.setOnClickListener(this);
         mtxtPolicy.setOnClickListener(this);
+        editProfile.setOnClickListener(this);
     }
 
     @Override
@@ -232,10 +236,19 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
                 Dailogs.ShowToast(mContext, "Favorties", Constants.SHORT_TIME);
                 break;
             case R.id.profile_txt_trem_condition:
-                Dailogs.ShowToast(mContext, "Term and Condition", Constants.SHORT_TIME);
+                Intent intent = new Intent(ProfileActivity.this, HelpActivity.class);
+                intent.putExtra("PATH", "http://grassias.ilsainteractive.net/");
+                intent.putExtra("TITLE", "Terms and Condition");
+                startActivity(intent);
                 break;
             case R.id.profile_txt_policy:
-                Dailogs.ShowToast(mContext, "Policy", Constants.SHORT_TIME);
+                Intent intent2 = new Intent(ProfileActivity.this, HelpActivity.class);
+                intent2.putExtra("PATH", "http://grassias.ilsainteractive.net/");
+                intent2.putExtra("TITLE", "Privacy Policy");
+                startActivity(intent2);
+                break;
+            case R.id.profile_txt_editProfile:
+                Dailogs.ShowToast(mContext, "Edit Profile", Constants.SHORT_TIME);
                 break;
         }
     }

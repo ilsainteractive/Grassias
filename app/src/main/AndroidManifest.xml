@@ -100,15 +100,20 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.ilsa.grassis.activites.HomeActivity" />
         </activity>
-
         <activity
             android:name=".activites.CodeScanner"
-            android:theme="@style/HomeTheme"></activity>
+            android:theme="@style/HomeTheme" />
 
         <meta-data
             android:name="io.fabric.ApiKey"
-            android:value="35b8e72ebeb47857a63d0b1abd19645a8e486408"
-            />
+            android:value="35b8e72ebeb47857a63d0b1abd19645a8e486408" />
+
+        <activity
+            android:name=".activites.HelpActivity"
+            android:theme="@style/HomeTheme" />
+        <activity
+            android:name=".activites.HistoryActivity"
+            android:theme="@style/HomeTheme" />
     </application>
 
 </manifest>

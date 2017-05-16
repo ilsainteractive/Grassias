@@ -57,6 +57,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
     private BoldSFTextView mtxtToolbarTitle;
     private RegularTextView mtxtToolbarTitleDump;
+    private ImageView heart;
 
     //private RegularTextView mtxtListTitleTop, mtxtListSubTitleTop;
     //RegularTextView mtxtToolbarTitleDump, mtxtListViewBottomSection2Title;
@@ -124,6 +125,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         mtxtToolbarTitle = (BoldSFTextView) toolbar.findViewById(R.id.toolbar_title);
         mtxtToolbarTitleDump = (RegularTextView) toolbar.findViewById(R.id.toolbar_title_dump);
+        heart = (ImageView) toolbar.findViewById(R.id.toolbar_heart);
         toolbar.setTitle("");
         if (AppContoller.userData != null)
             mtxtToolbarTitle.setText(AppContoller.userData.getUser().getUsername());
@@ -209,6 +211,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         mHome.setOnClickListener(this);
         mQr.setOnClickListener(this);
         mHome.setImageResource(R.mipmap.home_icon1);
+        heart.setOnClickListener(this);
     }
 
     @Override
@@ -238,6 +241,8 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.home_btn_qr:
                 //startActivity(new Intent(mContext, CodeScanner.class));
                 Dailogs.ShowToast(mContext, "Not integrated yet", Constants.SHORT_TIME);
+                break;
+            case R.id.toolbar_heart:
                 break;
         }
     }

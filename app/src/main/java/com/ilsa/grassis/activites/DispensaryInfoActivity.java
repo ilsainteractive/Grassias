@@ -12,11 +12,9 @@ import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -80,7 +78,7 @@ public class DispensaryInfoActivity extends AppCompatActivity implements OnMapRe
     @BindView(R.id.viewPager)
     ViewPager pager_layout;
 
-    @BindView(R.id.dispensaryInfo_txt_menu_view)
+    @BindView(R.id.editProfile)
     MediumTextView mtxtMenuView;
 
     private GoogleMap mMap;
