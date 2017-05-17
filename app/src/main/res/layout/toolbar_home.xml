@@ -3,7 +3,7 @@
     xmlns:local="http://schemas.android.com/tools"
     android:id="@+id/toolbar_top"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="?attr/actionBarSize"
     android:background="@color/white"
     android:minHeight="?attr/actionBarSize"
     local:theme="@style/AppActionBarTheme">
@@ -11,7 +11,8 @@
     <ImageView
         android:id="@+id/toolbar_heart"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:paddingRight="@dimen/_10sdp"
+        android:layout_height="match_parent"
         android:src="@mipmap/blankheart"/>
 
     <com.ilsa.grassis.library.RegularTextView
@@ -21,8 +22,7 @@
         android:layout_gravity="center"
         android:text="Hi,"
         android:textColor="@color/black"
-        android:textSize="@dimen/_16sdp"
-        android:visibility="invisible" />
+        android:textSize="@dimen/_16sdp"/>
 
     <com.ilsa.grassis.library.BoldSFTextView
         android:id="@+id/toolbar_title"
@@ -30,8 +30,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:paddingLeft="1dp"
-        android:text="Cheryl."
+        android:text="Guest"
         android:textColor="@color/black"
-        android:textSize="@dimen/_16sdp"
-        android:visibility="invisible" />
+        android:textSize="@dimen/_16sdp" />
 </android.support.v7.widget.Toolbar>

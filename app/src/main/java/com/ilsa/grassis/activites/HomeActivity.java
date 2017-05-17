@@ -17,6 +17,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -24,6 +25,7 @@ import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
@@ -39,8 +41,12 @@ import com.ilsa.grassis.library.MenuItemClickListener;
 import com.ilsa.grassis.library.RecyclerTouchListener;
 import com.ilsa.grassis.library.RegularTextView;
 import com.ilsa.grassis.rootvo.NearByVo;
+import com.ilsa.grassis.rootvo.UserDataVO;
 import com.ilsa.grassis.utils.Dailogs;
 import com.ilsa.grassis.utils.Helper;
+import com.ilsa.grassis.utils.ShPrefsHelper;
+
+import org.json.JSONObject;
 
 import java.io.IOException;
 
@@ -48,8 +54,10 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import okhttp3.Call;
 import okhttp3.Callback;
+import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
+import okhttp3.RequestBody;
 import okhttp3.Response;
 
 /**
@@ -78,6 +86,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
     private HomeAdapter homeAdapter;
 
+    private NearByVo searchNearByVo;
     //@BindView(R.id.recycler_view_home)
     RecyclerView mRecyclerView;
 
@@ -98,6 +107,9 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
     @BindView(R.id.toolbar)
     Toolbar mRelativeLayout;
+
+    @BindView(R.id.notFoundDispensary)
+    TextView notFoundText;
 
     //private LinearLayout mListViewTopSection, mListViewTopSectionText, mListViewBottomSectionPager, mListViewBottomSection2;
 
@@ -306,9 +318,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         if (Build.VERSION.SDK_INT >= 21) {
             mpopupWindow.setElevation(5.0f);
         }
-
         mpopupWindow.showAsDropDown(toolbar);
-        // mpopupWindow.showAtLocation(mRelativeLayout, Gravity.BOTTOM, 0,mRelativeLayout.getBottom() - 60);
     }
 
     /**
@@ -336,26 +346,133 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-//        getMenuInflater().inflate(R.menu.menu_home, menu);
-//
-//        MenuItem myActionMenuItem = menu.findItem(R.id.action_search);
-//        mSearchView = (SearchView) myActionMenuItem.getActionView();
-//        mSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-//            @Override
-//            public boolean onQueryTextSubmit(String query) {
-////                if (!mSearchView.isIconified()) {
-////                    mSearchView.setIconified(true);
-////                }
-////                myActionMenuItem.collapseActionView();
-//                return false;
-//            }
-//
-//            @Override
-//            public boolean onQueryTextChange(String s) {
-//                return false;
-//            }
-//        });
+        getMenuInflater().inflate(R.menu.menu_home, menu);
+
+        MenuItem myActionMenuItem = menu.findItem(R.id.action_search);
+        mSearchView = (SearchView) myActionMenuItem.getActionView();
+
+
+        mSearchView.setOnSearchClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                heart.setVisibility(View.GONE);
+                mtxtToolbarTitleDump.setVisibility(View.GONE);
+                mtxtToolbarTitle.setVisibility(View.GONE);
+            }
+        });
+        mSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+
+                if (query.length() > 3) {
+                    SearchWebService(query);
+                }
+//                if (!mSearchView.isIconified()) {
+//                    mSearchView.setIconified(true);
+//                }
+//                myActionMenuItem.collapseActionView();
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String s) {
+
+                return false;
+            }
+
+        });
+
+        mSearchView.setOnCloseListener(new SearchView.OnCloseListener() {
+            @Override
+            public boolean onClose() {
+                if (AppContoller.nearByVo != null)
+                    setAdaptorAndViews(AppContoller.nearByVo);
+
+                heart.setVisibility(View.VISIBLE);
+                mtxtToolbarTitleDump.setVisibility(View.VISIBLE);
+                mtxtToolbarTitle.setVisibility(View.VISIBLE);
+                return false;
+            }
+        });
         return true;
+    }
+
+
+    private void SearchWebService(String query) {
+
+        final ProgressDialog pd = new ProgressDialog(HomeActivity.this);
+        pd.setMessage(getString(R.string.Verifying_msg));
+        pd.setCancelable(false);
+        pd.show();
+
+        OkHttpClient client = new OkHttpClient();
+
+        Request request = new Request.Builder()
+                .url("http://kushmarketing.herokuapp.com/api/search?limit=10&lat=&lng=&distance=20000&q=" + query)
+                .get()
+                .addHeader("accept", "application/vnd.kush_marketing.com; version=1")
+                .addHeader("cache-control", "no-cache")
+                .addHeader("postman-token", "b9764130-2778-7052-4889-b48d2c5d6ad6")
+                .build();
+
+        client.newCall(request).enqueue(new Callback() {
+
+            @Override
+            public void onFailure(Call call, IOException e) {
+                e.printStackTrace();
+                pd.dismiss();
+            }
+
+            @Override
+            public void onResponse(Call call, final Response response) throws IOException {
+                pd.dismiss();
+                final String res = response.body().string().toString();
+                Log.i("response", res);
+                if (!response.isSuccessful()) {
+                    mActivity.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            try {
+                                JSONObject jsonObject = new JSONObject(res);
+                                JSONObject error = jsonObject.getJSONObject("error");
+                                String message = error.get("message").toString();
+                                Dailogs.ShowToast(mContext, message, Constants.LONG_TIME);
+                            } catch (Exception e) {
+                            }
+                        }
+                    });
+                } else {
+                    try {
+                        Gson gson = new GsonBuilder().create();
+                        searchNearByVo = gson.fromJson(res, NearByVo.class);
+
+                        if (searchNearByVo.getDispensaries().size()>0) {
+                            mActivity.runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    pd.dismiss();
+                                    setAdaptorAndViews(searchNearByVo);
+                                }
+                            });
+                        } else {
+                            mActivity.runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    notFoundText.setVisibility(View.VISIBLE);
+                                    mRecyclerView.setVisibility(View.GONE);
+                                }
+                            });
+                        }
+
+                    } catch (Exception e) {
+                        pd.dismiss();
+                        e.printStackTrace();
+                        Log.i("problem", e.getMessage());
+                    }
+                }
+            }
+        });
     }
 
     private void getNearByDespensories(Location location) {
@@ -425,6 +542,9 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
     private void setAdaptorAndViews(NearByVo nearByVo) {
 
+        notFoundText.setVisibility(View.GONE);
+        mRecyclerView.setVisibility(View.VISIBLE);
+
         homeAdapter = new HomeAdapter(mContext, nearByVo);
         mRecyclerView.setHasFixedSize(true);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
@@ -433,8 +553,8 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
         mRecyclerView.setAdapter(homeAdapter);
 
-        mtxtToolbarTitle.setVisibility(View.VISIBLE);
-        mtxtToolbarTitleDump.setVisibility(View.VISIBLE);
+        //  mtxtToolbarTitle.setVisibility(View.VISIBLE);
+        //  mtxtToolbarTitleDump.setVisibility(View.VISIBLE);
         if (AppContoller.IsLoggedIn && AppContoller.userData != null)
             mtxtToolbarTitle.setText(AppContoller.userData.getUser().getUsername());
         else

@@ -112,21 +112,23 @@ public class RewardAdapter extends RecyclerView.Adapter<RewardAdapter.MyViewHold
 //        }
     }
 
-    private void openDialoge()
-    {
+    private void openDialoge() {
         // custom dialog
         final Dialog dialog = new Dialog(mContext);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.custom_addstamp_dialoge);
+        dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
 
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
         // set the custom dialog components - text, image and button
        /* TextView text = (TextView) dialog.findViewById(R.id.text);
         text.setText("Android custom dialog example!");*/
-        EditText editText=(EditText)dialog.findViewById(R.id.addstamp_edt);
+        EditText editText = (EditText) dialog.findViewById(R.id.addstamp_edt);
 
         dialog.show();
     }
+
     @Override
     public int getItemCount() {
         return getAllRewardList.length;
