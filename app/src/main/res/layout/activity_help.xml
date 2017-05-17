@@ -31,7 +31,7 @@
                 android:layout_centerHorizontal="true"
                 android:background="@color/transparent"
                 android:clickable="true"
-                android:src="@mipmap/backarrow"
+                android:src="@mipmap/calender_icon"
                 android:visibility="invisible"/>
         </RelativeLayout>
 

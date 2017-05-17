@@ -1,6 +1,7 @@
 package com.ilsa.grassis.activites;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -15,6 +16,8 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,20 +25,31 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.ListView;
+import android.widget.PopupWindow;
+import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.ilsa.grassis.R;
 import com.ilsa.grassis.adapters.HomeAdapter;
+import com.ilsa.grassis.adapters.ToggleDisAdapter;
+import com.ilsa.grassis.apivo.TemporaryPopUpModel;
 import com.ilsa.grassis.library.AppContoller;
 import com.ilsa.grassis.library.BoldSFTextView;
 import com.ilsa.grassis.library.Constants;
+import com.ilsa.grassis.library.ExpandedRecyclerView;
+import com.ilsa.grassis.library.MenuItemClickListener;
+import com.ilsa.grassis.library.RecyclerTouchListener;
 import com.ilsa.grassis.library.RegularTextView;
+import com.ilsa.grassis.rootvo.DealsVO;
 import com.ilsa.grassis.rootvo.NearByVo;
 import com.ilsa.grassis.utils.Dailogs;
 import com.ilsa.grassis.utils.Helper;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -54,6 +68,9 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     private Activity mActivity;
     private Toolbar toolbar;
     private SearchView mSearchView;
+    private PopupWindow mpopupWindow;
+    private boolean isHeartBlank = true;
+    private RecyclerTouchListener listener;
 
     private BoldSFTextView mtxtToolbarTitle;
     private RegularTextView mtxtToolbarTitleDump;
@@ -85,6 +102,9 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
     @BindView(R.id.home_btn_qr)
     ImageView mQr;
+
+    @BindView(R.id.toolbar)
+    Toolbar mRelativeLayout;
 
     //private LinearLayout mListViewTopSection, mListViewTopSectionText, mListViewBottomSectionPager, mListViewBottomSection2;
 
@@ -243,8 +263,59 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                 Dailogs.ShowToast(mContext, "Not integrated yet", Constants.SHORT_TIME);
                 break;
             case R.id.toolbar_heart:
+                if (isHeartBlank) {
+                    openPopUpWindow();
+                    heart.setImageResource(R.mipmap.fillheart);
+                } else {
+                    isHeartBlank = true;
+                    mpopupWindow.dismiss();
+                    heart.setImageResource(R.mipmap.blankheart);
+                }
+
                 break;
         }
+    }
+
+    private void openPopUpWindow() {
+
+
+        isHeartBlank = false;
+        LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(LAYOUT_INFLATER_SERVICE);
+        View customView = inflater.inflate(R.layout.popupwindow_listview, null);
+        ExpandedRecyclerView recyclerView = (ExpandedRecyclerView) customView.findViewById(R.id.recycler_viewId);  // List defined in XML ( See Below )
+        recyclerView.setHasFixedSize(true);
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(mContext);
+        recyclerView.setLayoutManager(mLayoutManager);
+        recyclerView.addItemDecoration(new DividerItemDecoration(mContext, LinearLayoutManager.VERTICAL));
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        recyclerView.setNestedScrollingEnabled(false);
+        listener = new RecyclerTouchListener(mContext, recyclerView, new MenuItemClickListener() {
+            @Override
+            public void onClick(View view, int position) {
+                Toast.makeText(HomeActivity.this, "Toggle service issue", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onLongClick(View view, int position) {
+                //Toast.makeText(mContext, "long clicked " + position, Toast.LENGTH_SHORT).show();
+            }
+        });
+        recyclerView.addOnItemTouchListener(listener);
+
+        ToggleDisAdapter adapter = new ToggleDisAdapter(mContext, AppContoller.nearByVo);
+        recyclerView.setAdapter(adapter);
+
+        mpopupWindow = new PopupWindow(
+                customView,
+                RecyclerView.LayoutParams.MATCH_PARENT,
+                RecyclerView.LayoutParams.WRAP_CONTENT
+        );
+        if (Build.VERSION.SDK_INT >= 21) {
+            mpopupWindow.setElevation(5.0f);
+        }
+
+        mpopupWindow.showAsDropDown(toolbar);
+        // mpopupWindow.showAtLocation(mRelativeLayout, Gravity.BOTTOM, 0,mRelativeLayout.getBottom() - 60);
     }
 
     /**
@@ -321,6 +392,8 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
                 @Override
                 public void onResponse(Call call, final Response response) {
+
+                    pd.dismiss();
                     if (!response.isSuccessful()) {
                         mActivity.runOnUiThread(new Runnable() {
                             @Override

@@ -1,13 +1,22 @@
 package com.ilsa.grassis.adapters;
 
+import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.GradientDrawable;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.drawable.GlideDrawable;
@@ -71,6 +80,14 @@ public class RewardAdapter extends RecyclerView.Adapter<RewardAdapter.MyViewHold
                 return false;
             }
         }).into(holder.icon);
+
+        holder.add_stamp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                openDialoge();
+            }
+        });
 //        holder.ViewDeal.setText("VIEW DEALS");
 //        holder.ViewDeal.setOnClickListener(new View.OnClickListener() {
 //            @Override
@@ -95,6 +112,21 @@ public class RewardAdapter extends RecyclerView.Adapter<RewardAdapter.MyViewHold
 //        }
     }
 
+    private void openDialoge()
+    {
+        // custom dialog
+        final Dialog dialog = new Dialog(mContext);
+        dialog.setContentView(R.layout.custom_addstamp_dialoge);
+
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+        // set the custom dialog components - text, image and button
+       /* TextView text = (TextView) dialog.findViewById(R.id.text);
+        text.setText("Android custom dialog example!");*/
+        EditText editText=(EditText)dialog.findViewById(R.id.addstamp_edt);
+
+        dialog.show();
+    }
     @Override
     public int getItemCount() {
         return getAllRewardList.length;
