@@ -204,11 +204,11 @@ public class DiscoverActivity extends AppCompatActivity implements View.OnClickL
                             }
                         });
 
-//                        Glide.with(mContext).
-//                                load(dispensary.getLogo().getSmall())
-//                                .bitmapTransform(new CropCircleTransformation(mContext))
-//                                .diskCacheStrategy(DiskCacheStrategy.ALL)
-//                                .into(profile_image);
+                        Glide.with(mContext).
+                                load(dispensary.getLogo().getSmall())
+                                .bitmapTransform(new CropCircleTransformation(mContext))
+                                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                                .into(profile_image);
                         return v;
                     }
 

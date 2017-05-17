@@ -19,10 +19,6 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.Window;
-import android.view.WindowManager;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
@@ -41,10 +37,8 @@ import com.ilsa.grassis.library.MenuItemClickListener;
 import com.ilsa.grassis.library.RecyclerTouchListener;
 import com.ilsa.grassis.library.RegularTextView;
 import com.ilsa.grassis.rootvo.NearByVo;
-import com.ilsa.grassis.rootvo.UserDataVO;
 import com.ilsa.grassis.utils.Dailogs;
 import com.ilsa.grassis.utils.Helper;
-import com.ilsa.grassis.utils.ShPrefsHelper;
 
 import org.json.JSONObject;
 
@@ -54,10 +48,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import okhttp3.Call;
 import okhttp3.Callback;
-import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
-import okhttp3.RequestBody;
 import okhttp3.Response;
 
 /**
@@ -77,17 +69,10 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     private RegularTextView mtxtToolbarTitleDump;
     private ImageView heart;
 
-    //private RegularTextView mtxtListTitleTop, mtxtListSubTitleTop;
-    //RegularTextView mtxtToolbarTitleDump, mtxtListViewBottomSection2Title;
-    //private RegularTextView mtxtListViewBottomSection3SubTitle;
-    //private BoldSFTextView mtxtListTitleBottom, mtxtLvBottomSection2Per, mtxtListViewBottomSection2SubTitle, mtxtListViewBottomSection3Title;
-    //private ThinTextView mtxtLvBottomSection2Off, mtxtLvBottomSection2Products;
-    //private ImageView mImgCart, mImgDetail, mImgLvTopSection;
-
     private HomeAdapter homeAdapter;
-
     private NearByVo searchNearByVo;
-    //@BindView(R.id.recycler_view_home)
+    private ProgressDialog pd;
+
     RecyclerView mRecyclerView;
 
     @BindView(R.id.home_btn_dispensory)
@@ -111,8 +96,6 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     @BindView(R.id.notFoundDispensary)
     TextView notFoundText;
 
-    //private LinearLayout mListViewTopSection, mListViewTopSectionText, mListViewBottomSectionPager, mListViewBottomSection2;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -123,11 +106,9 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         mActivity = this;
 
         initToolBar();
-        //ActionBarConfigs();
         InitComponents();
         AddListener();
         SyncData();
-        //initViews();
     }
 
     private void SyncData() {
@@ -142,9 +123,6 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
-    /**
-     * Init toolbar.
-     */
     public void initToolBar() {
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -157,75 +135,8 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         setSupportActionBar(toolbar);
     }
 
-    /**
-     * Layout components initializing and bridging here.
-     */
     private void InitComponents() {
         mRecyclerView = (RecyclerView) findViewById(R.id.recycler_view_home);
-
-//        mListViewTopSection = (LinearLayout) findViewById(R.id.home_lv_top_section);
-//        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, Math.round(Helper.getFontSize(mContext.getResources(), 220)));
-//        mListViewTopSection.setLayoutParams(params);
-//
-//        mImgLvTopSection = (ImageView) findViewById(R.id.home_lv_top_section_img);
-//        RelativeLayout.LayoutParams topImgHieght = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, Math.round(Helper.getFontSize(mContext.getResources(), 190)));
-//        mImgLvTopSection.setLayoutParams(topImgHieght);
-//
-//        mListViewTopSectionText = (LinearLayout) findViewById(R.id.home_lv_top_section_texts_layout);
-//        RelativeLayout.LayoutParams paramsTexts = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, Math.round(Helper.getFontSize(mContext.getResources(), 190)));
-//        mListViewTopSectionText.setLayoutParams(paramsTexts);
-//
-        //mtxtListTitleBottom = (BoldSFTextView) findViewById(R.id.home_lv_bottom_title);
-        //LinearLayout.LayoutParams paramsBottomTitle = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, Math.round(Helper.getFontSize(mContext.getResources(), 100)));
-        //mtxtListTitleBottom.setLayoutParams(paramsBottomTitle);
-//
-//        mListViewBottomSectionPager = (LinearLayout) findViewById(R.id.home_lv_bottom_pager);
-//        LinearLayout.LayoutParams paramsBottomPager = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, Math.round(Helper.getFontSize(mContext.getResources(), 360)));
-//        mListViewBottomSectionPager.setLayoutParams(paramsBottomPager);
-//
-//        mListViewBottomSection2 = (LinearLayout) findViewById(R.id.home_lv_bottom_section_2);
-//        LinearLayout.LayoutParams paramsBottomsection2 = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, Math.round(Helper.getFontSize(mContext.getResources(), 120)));
-//        mListViewBottomSection2.setLayoutParams(paramsBottomsection2);
-
-        //mtxtListViewBottomSection2Title = (RegularTextView) findViewById(R.id.home_lv_bottom_section_2_subTitle);
-        //mtxtListViewBottomSection2Title.setTextSize(Helper.getFontSize(mContext.getResources(), 3.5));
-
-        //mtxtListViewBottomSection2SubTitle = (BoldSFTextView) findViewById(R.id.home_lv_bottom_section_2_title);
-        //mtxtListViewBottomSection2SubTitle.setTypeface(null, Typeface.BOLD);
-        //mtxtListViewBottomSection2SubTitle.setTextSize(Helper.getFontSize(mContext.getResources(), 5));
-
-        // mtxtLvBottomSection2Per = (BoldSFTextView) findViewById(R.id.home_lv_bottom_section_2_txt_per);
-        //mtxtLvBottomSection2Per.setTextSize(Helper.getFontSize(mContext.getResources(), 21));
-
-        // mtxtLvBottomSection2Off = (ThinTextView) findViewById(R.id.home_lv_bottom_section_2_txt_off);
-        //mtxtLvBottomSection2Off.setTextSize(Helper.getFontSize(mContext.getResources(), 21));
-
-        //  mtxtLvBottomSection2Products = (ThinTextView) findViewById(R.id.home_lv_bottom_section_2_txt_products);
-        //mtxtLvBottomSection2Products.setTextSize(Helper.getFontSize(mContext.getResources(), 10));
-
-        // mtxtListViewBottomSection3Title = (BoldSFTextView) findViewById(R.id.home_lv_bottom_section_3_title);
-        //mtxtListViewBottomSection3Title.setTextSize(Helper.getFontSize(mContext.getResources(), 5));
-        //mtxtListViewBottomSection3Title.setTypeface(null, Typeface.BOLD);
-
-        //mtxtListViewBottomSection3SubTitle = (RegularTextView) findViewById(R.id.home_lv_bottom_section_3_subTitle);
-        //mtxtListViewBottomSection3SubTitle.setTextSize(Helper.getFontSize(mContext.getResources(), 3.5));
-
-        //below setting
-        //   mtxtListTitleTop = (RegularTextView) findViewById(R.id.home_list_top_title);
-        //   mtxtListSubTitleTop = (RegularTextView) findViewById(R.id.home_list_top_sub_title);
-
-        // mtxtListTitleTop.setTextSize(Helper.getFontSize(mContext.getResources(), 10));
-        //mtxtListSubTitleTop.setTextSize(Helper.getFontSize(mContext.getResources(), 4.7));
-        //mtxtListTitleBottom.setTextSize(Helper.getFontSize(mContext.getResources(), 9));
-        //mtxtListSubTitleTop.setText(Helper.getBoldedText("2.3 miles  |  OPEN till 8:00pm", 14, 19));
-
-        // mImgCart = (ImageView) findViewById(R.id.home_list_box_cart);
-        //  mImgDetail = (ImageView) findViewById(R.id.home_list_box_detail);
-        //int padding = Math.round(Helper.getFontSize(mContext.getResources(), 19));
-//        mImgCart.setPadding(padding, padding,
-//                padding, padding);
-//        mImgDetail.setPadding(padding, padding,
-//                padding, padding);
     }
 
     private void AddListener() {
@@ -261,30 +172,35 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                     Dailogs.ShowToast(mContext, "You need to sign in or sign up before continuing", Constants.SHORT_TIME);
                 break;
             case R.id.home_btn_home:
-                //startActivity(new Intent(mContext, DealsRewardActivity.class));
                 break;
             case R.id.home_btn_qr:
                 startActivity(new Intent(mContext, CodeScanner.class));
-               // Dailogs.ShowToast(mContext, "Not integrated yet", Constants.SHORT_TIME);
                 break;
             case R.id.toolbar_heart:
                 if (isHeartBlank) {
                     openPopUpWindow();
                     heart.setImageResource(R.mipmap.fillheart);
+                    isHeartBlank = false;
                 } else {
                     isHeartBlank = true;
                     mpopupWindow.dismiss();
                     heart.setImageResource(R.mipmap.blankheart);
                 }
-
                 break;
         }
     }
 
+    @Override
+    public void onBackPressed() {
+        if (mpopupWindow != null && mpopupWindow.isShowing()) {
+            mpopupWindow.dismiss();
+            isHeartBlank = true;
+            heart.setImageResource(R.mipmap.blankheart);
+        } else
+            super.onBackPressed();
+    }
+
     private void openPopUpWindow() {
-
-
-        isHeartBlank = false;
         LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(LAYOUT_INFLATER_SERVICE);
         View customView = inflater.inflate(R.layout.popupwindow_listview, null);
         ExpandedRecyclerView recyclerView = (ExpandedRecyclerView) customView.findViewById(R.id.recycler_viewId);  // List defined in XML ( See Below )
@@ -319,29 +235,6 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
             mpopupWindow.setElevation(5.0f);
         }
         mpopupWindow.showAsDropDown(toolbar);
-    }
-
-    /**
-     * Toolbar customization
-     */
-    private void ActionBarConfigs() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            Window window = mActivity.getWindow();
-            window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-            window.setStatusBarColor(mActivity.getResources().getColor(R.color.lightGrey));
-        } else {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-                Window w = mActivity.getWindow();
-                w.setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS, WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-                int statusBarHeight = Helper.getStatusBarHeight(mContext);
-                View view = new View(mContext);
-                view.setLayoutParams(new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-                view.getLayoutParams().height = statusBarHeight;
-                ((ViewGroup) w.getDecorView()).addView(view);
-                view.setBackgroundColor(mContext.getResources().getColor(R.color.lightGrey));
-            }
-        }
     }
 
     @Override
@@ -398,11 +291,10 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         return true;
     }
 
-
     private void SearchWebService(String query) {
 
-        final ProgressDialog pd = new ProgressDialog(HomeActivity.this);
-        pd.setMessage(getString(R.string.Verifying_msg));
+        pd = new ProgressDialog(HomeActivity.this);
+        pd.setMessage(getString(R.string.searching_dispensaries));
         pd.setCancelable(false);
         pd.show();
 
@@ -426,7 +318,6 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
             @Override
             public void onResponse(Call call, final Response response) throws IOException {
-                pd.dismiss();
                 final String res = response.body().string().toString();
                 Log.i("response", res);
                 if (!response.isSuccessful()) {
@@ -438,7 +329,9 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                                 JSONObject error = jsonObject.getJSONObject("error");
                                 String message = error.get("message").toString();
                                 Dailogs.ShowToast(mContext, message, Constants.LONG_TIME);
+                                pd.dismiss();
                             } catch (Exception e) {
+                                pd.dismiss();
                             }
                         }
                     });
@@ -447,18 +340,19 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                         Gson gson = new GsonBuilder().create();
                         searchNearByVo = gson.fromJson(res, NearByVo.class);
 
-                        if (searchNearByVo.getDispensaries().size()>0) {
+                        if (searchNearByVo.getDispensaries().size() > 0) {
                             mActivity.runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
-                                    pd.dismiss();
                                     setAdaptorAndViews(searchNearByVo);
+                                    pd.dismiss();
                                 }
                             });
                         } else {
                             mActivity.runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
+                                    pd.dismiss();
                                     notFoundText.setVisibility(View.VISIBLE);
                                     mRecyclerView.setVisibility(View.GONE);
                                 }
@@ -477,7 +371,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
     private void getNearByDespensories(Location location) {
 
-        final ProgressDialog pd = new ProgressDialog(mContext);
+        pd = new ProgressDialog(mContext);
         pd.setMessage(getString(R.string.loading_dispensaries));
         pd.setCancelable(false);
         pd.show();
@@ -496,20 +390,19 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                         @Override
                         public void run() {
                             Dailogs.ShowToast(mContext, getString(R.string.something_went_wrong_ry_again), Constants.LONG_TIME);
+                            pd.dismiss();
                         }
                     });
                 }
 
                 @Override
                 public void onResponse(Call call, final Response response) {
-
-                    pd.dismiss();
                     if (!response.isSuccessful()) {
                         mActivity.runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                pd.dismiss();
                                 Dailogs.ShowToast(mContext, getString(R.string.something_went_wrong_ry_again), Constants.LONG_TIME);
+                                pd.dismiss();
                             }
                         });
                     } else {
@@ -520,8 +413,8 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                             mActivity.runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
-                                    pd.dismiss();
                                     setAdaptorAndViews(AppContoller.nearByVo);
+                                    pd.dismiss();
                                 }
                             });
 

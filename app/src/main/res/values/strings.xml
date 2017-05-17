@@ -34,6 +34,7 @@
     <string name="invalid_email">Invalid email Address</string>
     <string name="invalid_phone_no">Invalid phone no</string>
     <string name="loading_dispensaries">Finding near by dispensaries ...</string>
+    <string name="searching_dispensaries">Searching dispensaries ...</string>
 
     <!--Dispensary Screen-->
     <string name="title_activity_dispensary">Dispensaries</string>

@@ -172,7 +172,11 @@ public class DispensaryInfoActivity extends AppCompatActivity implements OnMapRe
         mtxtMenuView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(mContext, MenuActivity.class));
+                Intent i = new Intent(mContext, MenuActivity.class);
+                i.putExtra("dispensary_id", mDispensary_id);
+                if (mDispensary.getPhotos().size() > 0)
+                    i.putExtra("dispensary_photo", mDispensary.getPhotos().get(0).getPhoto().getLarge());
+                startActivity(i);
             }
         });
         mFacebook.setOnClickListener(new View.OnClickListener() {

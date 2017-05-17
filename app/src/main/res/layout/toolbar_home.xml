@@ -11,9 +11,9 @@
     <ImageView
         android:id="@+id/toolbar_heart"
         android:layout_width="wrap_content"
-        android:paddingRight="@dimen/_10sdp"
         android:layout_height="match_parent"
-        android:src="@mipmap/blankheart"/>
+        android:paddingRight="@dimen/_10sdp"
+        android:src="@mipmap/blankheart" />
 
     <com.ilsa.grassis.library.RegularTextView
         android:id="@+id/toolbar_title_dump"
@@ -22,7 +22,7 @@
         android:layout_gravity="center"
         android:text="Hi,"
         android:textColor="@color/black"
-        android:textSize="@dimen/_16sdp"/>
+        android:textSize="@dimen/_16sdp" />
 
     <com.ilsa.grassis.library.BoldSFTextView
         android:id="@+id/toolbar_title"

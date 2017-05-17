@@ -13,16 +13,16 @@
 
         <ImageView
             android:id="@+id/profile_image"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_margin="@dimen/_5sdp"
-            android:layout_weight="1.5"
+            android:layout_weight="1.2"
             android:src="@mipmap/home_lv_bottom_icon" />
 
         <LinearLayout
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="40dp"
-            android:layout_weight="7"
+            android:layout_weight="7.3"
             android:orientation="vertical">
 
             <com.ilsa.grassis.library.BoldSFTextView
@@ -46,7 +46,7 @@
 
         <ImageView
             android:id="@+id/like"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_marginRight="5dp"
             android:layout_weight="1.5"

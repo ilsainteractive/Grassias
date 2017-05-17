@@ -62,11 +62,6 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
     private List<Products> menuListVOs;
     private ProgressBar progress;
 
-    // Dummy data for inflation
-    private String[] titles = {"Exctracts", "Indica", "Sativa", "Hybrid", "Edibles", "Topicals", "Grow"};
-    private int[] images = {R.mipmap.menu_lv_item_img, R.mipmap.menu_lv_item_img, R.mipmap.menu_lv_item_img,
-            R.mipmap.menu_lv_item_img, R.mipmap.menu_lv_item_img, R.mipmap.menu_lv_item_img, R.mipmap.menu_lv_item_img};
-
     private RecyclerTouchListener listener;
     private boolean isScrolled = false;
 
@@ -84,7 +79,6 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
 
     @BindView(R.id.home_btn_qr)
     ImageView mQr;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -125,7 +119,7 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
      */
     private void InitComponents() {
 
-        progress = (ProgressBar) findViewById(R.id.progress);
+        progress = (ProgressBar) findViewById(R.id.progress_menu);
         mTopBanner = (ImageView) findViewById(R.id.menu_bottom_banner);
         mScrollView = (ScrollView) findViewById(R.id.scrollView);
         recyclerView = (ExpandedRecyclerView) findViewById(R.id.recycler_view);
@@ -145,7 +139,7 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
         progress.setVisibility(View.VISIBLE);
         Glide.with(mContext).load(getIntent().getStringExtra("dispensary_photo"))
                 .thumbnail(0.5f)
-                .crossFade()
+                .crossFade().placeholder(R.mipmap.ic_launcher)
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .listener(new RequestListener<String, GlideDrawable>() {
                     @Override
