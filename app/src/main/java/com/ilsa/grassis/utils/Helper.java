@@ -7,6 +7,9 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
@@ -20,6 +23,8 @@ import android.text.TextUtils;
 import android.util.TypedValue;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.model.BitmapDescriptor;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.ilsa.grassis.library.AppContoller;
@@ -211,5 +216,14 @@ public class Helper {
                 return false;
             }
         }
+    }
+
+    public static BitmapDescriptor getMarkerIconFromDrawable(Drawable drawable) {
+        Canvas canvas = new Canvas();
+        Bitmap bitmap = Bitmap.createBitmap(drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
+        canvas.setBitmap(bitmap);
+        drawable.setBounds(0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight());
+        drawable.draw(canvas);
+        return BitmapDescriptorFactory.fromBitmap(bitmap);
     }
 }

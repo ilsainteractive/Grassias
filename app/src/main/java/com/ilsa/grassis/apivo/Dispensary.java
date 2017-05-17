@@ -2,13 +2,14 @@ package com.ilsa.grassis.apivo;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
  * Created by SohailZahid on 5/4/2017.
  */
 
-public class Dispensary {
+public class Dispensary  {
     private Widgets widgets;
 
     private String instagram;

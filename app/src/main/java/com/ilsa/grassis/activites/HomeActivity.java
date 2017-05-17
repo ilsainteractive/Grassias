@@ -1,7 +1,6 @@
 package com.ilsa.grassis.activites;
 
 import android.app.Activity;
-import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -16,7 +15,6 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
@@ -25,9 +23,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.PopupWindow;
-import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
@@ -35,7 +31,6 @@ import com.google.gson.GsonBuilder;
 import com.ilsa.grassis.R;
 import com.ilsa.grassis.adapters.HomeAdapter;
 import com.ilsa.grassis.adapters.ToggleDisAdapter;
-import com.ilsa.grassis.apivo.TemporaryPopUpModel;
 import com.ilsa.grassis.library.AppContoller;
 import com.ilsa.grassis.library.BoldSFTextView;
 import com.ilsa.grassis.library.Constants;
@@ -43,13 +38,11 @@ import com.ilsa.grassis.library.ExpandedRecyclerView;
 import com.ilsa.grassis.library.MenuItemClickListener;
 import com.ilsa.grassis.library.RecyclerTouchListener;
 import com.ilsa.grassis.library.RegularTextView;
-import com.ilsa.grassis.rootvo.DealsVO;
 import com.ilsa.grassis.rootvo.NearByVo;
 import com.ilsa.grassis.utils.Dailogs;
 import com.ilsa.grassis.utils.Helper;
 
 import java.io.IOException;
-import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

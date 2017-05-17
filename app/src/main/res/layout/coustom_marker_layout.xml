@@ -8,35 +8,37 @@
 
     <LinearLayout
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="40dp"
         android:background="@drawable/round_edge_white">
 
         <ImageView
             android:id="@+id/profile_image"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_margin="5dp"
+            android:layout_margin="@dimen/_5sdp"
             android:layout_weight="1.5"
-            app:srcCompat="@mipmap/home_lv_bottom_icon" />
+            android:src="@mipmap/home_lv_bottom_icon" />
 
         <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
             android:layout_weight="7"
             android:orientation="vertical">
 
             <com.ilsa.grassis.library.BoldSFTextView
+                android:id="@+id/dispensary_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="2"
+                android:layout_marginTop="5dp"
                 android:gravity="center|left"
                 android:text="Malibu Community \nCollective"
                 android:textSize="12sp" />
 
             <com.ilsa.grassis.library.RegularTextView
+                android:id="@+id/dispensary_add"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1.5"
+                android:layout_marginBottom="5dp"
                 android:gravity="center|left|top"
                 android:text="445 Santa Monica Blvd, 90036"
                 android:textSize="10sp" />
@@ -44,10 +46,11 @@
 
         <ImageView
             android:id="@+id/like"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_margin="15dp"
+            android:layout_marginRight="5dp"
             android:layout_weight="1.5"
+            android:padding="@dimen/_8sdp"
             android:scaleType="center"
             app:srcCompat="@mipmap/heart_icon_empty" />
     </LinearLayout>

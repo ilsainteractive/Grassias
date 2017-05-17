@@ -3,10 +3,7 @@ package com.ilsa.grassis.activites;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.Canvas;
 import android.graphics.Typeface;
-import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -32,7 +29,6 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptor;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -48,6 +44,7 @@ import com.ilsa.grassis.library.RecyclerTouchListener;
 import com.ilsa.grassis.library.RegularTextView;
 import com.ilsa.grassis.rootvo.NearByVo;
 import com.ilsa.grassis.utils.Dailogs;
+import com.ilsa.grassis.utils.Helper;
 
 import java.util.ArrayList;
 
@@ -168,8 +165,7 @@ public class DiscoverActivity extends AppCompatActivity implements View.OnClickL
                 latLng = new LatLng(dispensary.getLocation().getCoords().getLatitude(), dispensary.getLocation().getCoords().getLongitude());
                 mSelectedId = dispensary.getId();
                 MarkerOptions marker = new MarkerOptions().position(latLng);
-                // Bitmap mBitmap = addBorderToBitmap(drawableToBitmap(theBitmap));
-                BitmapDescriptor markerIcon = getMarkerIconFromDrawable(theBitmap);
+                BitmapDescriptor markerIcon = Helper.getMarkerIconFromDrawable(theBitmap);
                 marker.icon(markerIcon);
                 marker.snippet(dispensary.getId());
                 ArrayList<Marker> markers = new ArrayList<Marker>();
@@ -178,14 +174,55 @@ public class DiscoverActivity extends AppCompatActivity implements View.OnClickL
                     @Override
                     public boolean onMarkerClick(final Marker marker) {
                         mSelectedId = marker.getSnippet();
-//                        try {
-//                            addBorderArroundMarker(mSelectedId);
-//                        } catch (ExecutionException e) {
-//                            e.printStackTrace();
-//                        } catch (InterruptedException e) {
-//                            e.printStackTrace();
-//                        }
+//                        Intent intent = new Intent(mContext, DispensaryInfoActivity.class);
+//                        intent.putExtra("dispensary_id", mSelectedId);
+//                        startActivity(intent);
                         return false;
+                    }
+                });
+                mMap.setInfoWindowAdapter(new GoogleMap.InfoWindowAdapter() {
+                    @Override
+                    public View getInfoWindow(Marker marker) {
+                        View v = mActivity.getLayoutInflater().inflate(R.layout.coustom_marker_layout, null);
+                        BoldSFTextView title = (BoldSFTextView) v.findViewById(R.id.dispensary_name);
+                        ImageView favorite = (ImageView) v.findViewById(R.id.like);
+                        ImageView profile_image = (ImageView) v.findViewById(R.id.profile_image);
+                        Dispensary dispensary = null;
+                        for (int i = 0; i < mData.size(); i++) {
+                            dispensary = mData.get(i);
+                            if (dispensary.getId().equalsIgnoreCase(marker.getSnippet())) {
+                                break;
+                            }
+                        }
+                        RegularTextView add = (RegularTextView) v.findViewById(R.id.dispensary_add);
+                        title.setText(dispensary.getName());
+                        add.setText(dispensary.getLocation().getAddress());
+                        favorite.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                Dailogs.ShowToast(mContext, "Favorite request has not integrated yet", Toast.LENGTH_LONG);
+                            }
+                        });
+
+//                        Glide.with(mContext).
+//                                load(dispensary.getLogo().getSmall())
+//                                .bitmapTransform(new CropCircleTransformation(mContext))
+//                                .diskCacheStrategy(DiskCacheStrategy.ALL)
+//                                .into(profile_image);
+                        return v;
+                    }
+
+                    @Override
+                    public View getInfoContents(Marker marker) {
+                        return null;
+                    }
+                });
+                mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
+                    @Override
+                    public void onInfoWindowClick(Marker marker) {
+                        Intent intent = new Intent(mContext, DispensaryInfoActivity.class);
+                        intent.putExtra("dispensary_id", mSelectedId);
+                        startActivity(intent);
                     }
                 });
                 if (mapPos == mData.size() - 1) {
@@ -195,15 +232,6 @@ public class DiscoverActivity extends AppCompatActivity implements View.OnClickL
                 Log.i("added", mapPos + "");
             }
         }.execute();
-    }
-
-    private BitmapDescriptor getMarkerIconFromDrawable(Drawable drawable) {
-        Canvas canvas = new Canvas();
-        Bitmap bitmap = Bitmap.createBitmap(drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
-        canvas.setBitmap(bitmap);
-        drawable.setBounds(0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight());
-        drawable.draw(canvas);
-        return BitmapDescriptorFactory.fromBitmap(bitmap);
     }
 
     private void setMapAndList(NearByVo nearByVo, String type) {
@@ -225,13 +253,15 @@ public class DiscoverActivity extends AppCompatActivity implements View.OnClickL
 
     }
 
-    private void AddAdaptor(ArrayList<Dispensary> mData, String type) {
+    private void AddAdaptor(final ArrayList<Dispensary> mData, String type) {
         discovAdapter = new DiscovAdapter(mContext, mData, type);
         recyclerView = (ExpandedRecyclerView) findViewById(R.id.recycler_view);
         listener = new RecyclerTouchListener(mContext, recyclerView, new MenuItemClickListener() {
             @Override
             public void onClick(View view, int position) {
-                startActivity(new Intent(mContext, DispensaryInfoActivity.class));
+                Intent intent = new Intent(mContext, DispensaryInfoActivity.class);
+                intent.putExtra("dispensary_id", mData.get(position).getId());
+                startActivity(intent);
             }
 
             @Override

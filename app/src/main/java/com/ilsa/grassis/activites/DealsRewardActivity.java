@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -60,6 +61,10 @@ public class DealsRewardActivity extends AppCompatActivity implements View.OnCli
     @BindView(R.id.home_btn_qr)
     ImageView mQr;
 
+    Typeface bold, regular;
+    boolean Flag;
+    Handler handler;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,11 +72,14 @@ public class DealsRewardActivity extends AppCompatActivity implements View.OnCli
         ButterKnife.bind(this);
         mContext = this;
         mActivity = this;
+        handler = new Handler();
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle("");
         setSupportActionBar(toolbar);
         //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        bold = Typeface.createFromAsset(mContext.getAssets(), "fonts/SFUIText-Heavy.otf");
+        regular = Typeface.createFromAsset(mContext.getAssets(), "fonts/SFUIText-Regular.otf");
 
         mtxtDeals = (BoldSFTextView) findViewById(R.id.toolbar_deals);
         mtxtRewads = (RegularTextView) findViewById(R.id.toolbar_rewards);
@@ -79,6 +87,32 @@ public class DealsRewardActivity extends AppCompatActivity implements View.OnCli
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
         mViewPager = (ViewPager) findViewById(R.id.container);
         mViewPager.setAdapter(mSectionsPagerAdapter);
+
+        mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+                if (!Flag) {
+                    if (position == 0) {
+                        mtxtRewads.setTypeface(regular);
+                        mtxtDeals.setTypeface(bold);
+                    } else {
+                        if (position == 1) {
+                            mtxtRewads.setTypeface(bold);
+                            mtxtDeals.setTypeface(regular);
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+            }
+        });
 
         final TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(mViewPager);
@@ -107,20 +141,30 @@ public class DealsRewardActivity extends AppCompatActivity implements View.OnCli
             @Override
             public void onClick(View v) {
                 mViewPager.setCurrentItem(0, true);
-                Typeface bold = Typeface.createFromAsset(mContext.getAssets(), "fonts/SFUIText-Heavy.otf");
-                Typeface regular = Typeface.createFromAsset(mContext.getAssets(), "fonts/SFUIText-Regular.otf");
+                Flag = true;
                 mtxtRewads.setTypeface(regular);
                 mtxtDeals.setTypeface(bold);
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        Flag = false;
+                    }
+                }, 300);
             }
         });
         mtxtRewads.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 mViewPager.setCurrentItem(1, true);
-                Typeface bold = Typeface.createFromAsset(mContext.getAssets(), "fonts/SFUIText-Heavy.otf");
-                Typeface regular = Typeface.createFromAsset(mContext.getAssets(), "fonts/SFUIText-Regular.otf");
+                Flag = true;
                 mtxtRewads.setTypeface(bold);
                 mtxtDeals.setTypeface(regular);
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        Flag = false;
+                    }
+                }, 300);
             }
         });
         AddListener();
@@ -177,10 +221,10 @@ public class DealsRewardActivity extends AppCompatActivity implements View.OnCli
             // getItem is called to instantiate the fragment for the given page.
             // Return a PlaceholderFragment (defined as a static inner class below).
             if (position == 0) {
-                return DealsFrag.newInstance(position+1);
+                return DealsFrag.newInstance(position + 1);
             }
             if (position == 1) {
-                return RewardFrag.newInstance(position+1);
+                return RewardFrag.newInstance(position + 1);
             }
             return null;
         }
