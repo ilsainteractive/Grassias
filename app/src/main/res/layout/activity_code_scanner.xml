@@ -24,7 +24,6 @@
             app:gvb_rect_colors="@array/rect_color" />
     </RelativeLayout>
 
-
     <LinearLayout
         android:id="@+id/actions"
         android:layout_width="match_parent"

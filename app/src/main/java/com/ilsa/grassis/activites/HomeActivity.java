@@ -264,8 +264,8 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                 //startActivity(new Intent(mContext, DealsRewardActivity.class));
                 break;
             case R.id.home_btn_qr:
-                //startActivity(new Intent(mContext, CodeScanner.class));
-                Dailogs.ShowToast(mContext, "Not integrated yet", Constants.SHORT_TIME);
+                startActivity(new Intent(mContext, CodeScanner.class));
+               // Dailogs.ShowToast(mContext, "Not integrated yet", Constants.SHORT_TIME);
                 break;
             case R.id.toolbar_heart:
                 if (isHeartBlank) {

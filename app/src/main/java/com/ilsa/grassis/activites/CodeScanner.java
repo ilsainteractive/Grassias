@@ -16,6 +16,7 @@ import com.ilsa.grassis.R;
 
 import java.util.List;
 
+import xyz.belvi.mobilevisionbarcodescanner.BarcodeBitmapScanner;
 import xyz.belvi.mobilevisionbarcodescanner.BarcodeRetriever;
 
 import static com.ilsa.grassis.R2.id.barcode;
@@ -33,6 +34,8 @@ public class CodeScanner extends AppCompatActivity implements BarcodeRetriever {
 
         final BarcodeCapture barcodeCapture = (BarcodeCapture) getSupportFragmentManager().findFragmentById(barcode);
         barcodeCapture.setRetrieval(this);
+
+        barcodeCapture.setShowDrawRect(true);
 
         fromXMl = (CheckBox) findViewById(R.id.from_xml);
         drawRect = (SwitchCompat) findViewById(R.id.draw_rect);
