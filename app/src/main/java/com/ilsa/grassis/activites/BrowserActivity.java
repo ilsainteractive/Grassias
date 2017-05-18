@@ -1,50 +1,49 @@
 package com.ilsa.grassis.activites;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.graphics.Color;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.Window;
-import android.view.WindowManager;
+import android.webkit.WebResourceError;
+import android.webkit.WebResourceRequest;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 
 import com.ilsa.grassis.R;
+import com.ilsa.grassis.library.Constants;
+import com.ilsa.grassis.utils.Dailogs;
 import com.ilsa.grassis.utils.Helper;
 
 @SuppressLint("ResourceAsColor")
-public class HelpActivity extends AppCompatActivity {
+public class BrowserActivity extends AppCompatActivity {
 
     WebView webView;
     ProgressDialog dialog;
-    ImageView iRefresh;
-    String link, name;
+    ImageView reload;
+    String link, title;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_help);
+        setContentView(R.layout.activity_browser);
 
         link = getIntent().getStringExtra("PATH");
-        name = getIntent().getStringExtra("TITLE");
+        title = getIntent().getStringExtra("TITLE");
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         // Title and subtitle
-        toolbar.setTitle(name);
-        toolbar.setTitleTextColor(Color.WHITE);
+        toolbar.setTitle(title);
+        toolbar.setTitleTextColor(Color.BLACK);
         toolbar.setBackgroundColor(getResources().getColor(
-                R.color.baseColor));
+                R.color.white));
         //toolbar.setNavigationIcon(R.mipmap.backarrow);
         toolbar.setNavigationOnClickListener(new OnClickListener() {
 
@@ -54,18 +53,18 @@ public class HelpActivity extends AppCompatActivity {
             }
         });
 
-       /* if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            Window window = getWindow();
-            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-            window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-            //window.setStatusBarColor(Common.darkenColor(getResources()
-                    //.getColor(R.color.themeToolbarColor)));
-        }*/
+        setSupportActionBar(toolbar);
 
         webView = (WebView) findViewById(R.id.webview);
-        iRefresh = (ImageView) findViewById(R.id.iRefresh);
-       // iRefresh.setOnClickListener(HelpActivity.this);
-        dialog = new ProgressDialog(HelpActivity.this);
+        reload = (ImageView) findViewById(R.id.reload);
+        reload.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                webView.loadUrl(link);
+            }
+        });
+        // iRefresh.setOnClickListener(BrowserActivity.this);
+        dialog = new ProgressDialog(BrowserActivity.this);
         dialog.setMessage("Loading...");
         // dialog.setIndeterminate(false);
         dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
@@ -78,6 +77,7 @@ public class HelpActivity extends AppCompatActivity {
             webView.setWebViewClient(new WebViewClient() {
                 @Override
                 public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                    reload.setVisibility(View.GONE);
                     view.loadUrl(url);
                     return false;
                 }
@@ -88,9 +88,15 @@ public class HelpActivity extends AppCompatActivity {
                     webView.setVisibility(View.VISIBLE);
                     dialog.dismiss();
                 }
+
+                @Override
+                public void onReceivedError(WebView view, WebResourceRequest request, WebResourceError error) {
+                    super.onReceivedError(view, request, error);
+                    reload.setVisibility(View.VISIBLE);
+                }
             });
         } else {
-           // webView.setVisibility(View.GONE);
+            Dailogs.ShowToast(this, getString(R.string.no_internet_msg), Constants.SHORT_TIME);
         }
     }
 }

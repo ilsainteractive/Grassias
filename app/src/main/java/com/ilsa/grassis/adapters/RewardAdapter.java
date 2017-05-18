@@ -12,6 +12,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -85,6 +87,11 @@ public class RewardAdapter extends RecyclerView.Adapter<RewardAdapter.MyViewHold
             @Override
             public void onClick(View v) {
 
+
+                InputMethodManager inputMethodManager=(InputMethodManager)mContext.getSystemService(Context.INPUT_METHOD_SERVICE);
+                inputMethodManager.toggleSoftInput(InputMethodManager.SHOW_FORCED,0);
+
+
                 openDialoge();
             }
         });
@@ -114,6 +121,8 @@ public class RewardAdapter extends RecyclerView.Adapter<RewardAdapter.MyViewHold
 
     private void openDialoge() {
         // custom dialog
+
+
         final Dialog dialog = new Dialog(mContext);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.custom_addstamp_dialoge);

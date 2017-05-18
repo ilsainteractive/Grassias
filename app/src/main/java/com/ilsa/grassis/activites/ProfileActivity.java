@@ -14,9 +14,6 @@ import android.widget.LinearLayout;
 import android.widget.ScrollView;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.resource.drawable.GlideDrawable;
-import com.bumptech.glide.request.RequestListener;
-import com.bumptech.glide.request.target.Target;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.ilsa.grassis.R;
@@ -236,13 +233,13 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
                 Dailogs.ShowToast(mContext, "Favorties", Constants.SHORT_TIME);
                 break;
             case R.id.profile_txt_trem_condition:
-                Intent intent = new Intent(ProfileActivity.this, HelpActivity.class);
+                Intent intent = new Intent(ProfileActivity.this, BrowserActivity.class);
                 intent.putExtra("PATH", "http://grassias.ilsainteractive.net/");
                 intent.putExtra("TITLE", "Terms and Condition");
                 startActivity(intent);
                 break;
             case R.id.profile_txt_policy:
-                Intent intent2 = new Intent(ProfileActivity.this, HelpActivity.class);
+                Intent intent2 = new Intent(ProfileActivity.this, BrowserActivity.class);
                 intent2.putExtra("PATH", "http://grassias.ilsainteractive.net/");
                 intent2.putExtra("TITLE", "Privacy Policy");
                 startActivity(intent2);
