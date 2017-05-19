@@ -389,8 +389,8 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                     mActivity.runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            Dailogs.ShowToast(mContext, getString(R.string.something_went_wrong_ry_again), Constants.LONG_TIME);
                             pd.dismiss();
+                            Dailogs.ShowToast(mContext, getString(R.string.something_went_wrong_ry_again), Constants.LONG_TIME);
                         }
                     });
                 }
@@ -401,8 +401,9 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                         mActivity.runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                Dailogs.ShowToast(mContext, getString(R.string.something_went_wrong_ry_again), Constants.LONG_TIME);
                                 pd.dismiss();
+                                Dailogs.ShowToast(mContext, getString(R.string.something_went_wrong_ry_again), Constants.LONG_TIME);
+
                             }
                         });
                     } else {
@@ -413,8 +414,9 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                             mActivity.runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
-                                    setAdaptorAndViews(AppContoller.nearByVo);
                                     pd.dismiss();
+                                    setAdaptorAndViews(AppContoller.nearByVo);
+
                                 }
                             });
 

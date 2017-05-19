@@ -3,9 +3,13 @@ package com.ilsa.grassis.activites;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.Typeface;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -13,7 +17,6 @@ import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -21,13 +24,15 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.appolica.interactiveinfowindow.InfoWindow;
+import com.appolica.interactiveinfowindow.InfoWindowManager;
+import com.appolica.interactiveinfowindow.fragment.MapInfoWindowFragment;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
@@ -35,6 +40,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.ilsa.grassis.R;
 import com.ilsa.grassis.adapters.DiscovAdapter;
 import com.ilsa.grassis.apivo.Dispensary;
+import com.ilsa.grassis.fragments.FormFragment;
 import com.ilsa.grassis.library.AppContoller;
 import com.ilsa.grassis.library.BoldSFTextView;
 import com.ilsa.grassis.library.Constants;
@@ -56,6 +62,13 @@ import jp.wasabeef.glide.transformations.CropCircleTransformation;
  * Discover activity.
  */
 public class DiscoverActivity extends AppCompatActivity implements View.OnClickListener, OnMapReadyCallback {
+
+
+    private MapInfoWindowFragment mapInfoWindowFragment;
+    private InfoWindow.MarkerSpecification markerSpec;
+    private static InfoWindow formWindow;
+    private static InfoWindowManager infoWindowManager;
+    private boolean IsOpen = false;
 
     private Context mContext;
     private Toolbar mToolbar;
@@ -141,11 +154,6 @@ public class DiscoverActivity extends AppCompatActivity implements View.OnClickL
 
         new AsyncTask<Void, Void, GlideDrawable>() {
             @Override
-            protected void onPreExecute() {
-                super.onPreExecute();
-            }
-
-            @Override
             protected GlideDrawable doInBackground(Void... params) {
                 try {
                     return Glide.
@@ -174,62 +182,44 @@ public class DiscoverActivity extends AppCompatActivity implements View.OnClickL
                     @Override
                     public boolean onMarkerClick(final Marker marker) {
                         mSelectedId = marker.getSnippet();
-//                        Intent intent = new Intent(mContext, DispensaryInfoActivity.class);
-//                        intent.putExtra("dispensary_id", mSelectedId);
-//                        startActivity(intent);
-                        return false;
-                    }
-                });
-                mMap.setInfoWindowAdapter(new GoogleMap.InfoWindowAdapter() {
-                    @Override
-                    public View getInfoWindow(Marker marker) {
-                        View v = mActivity.getLayoutInflater().inflate(R.layout.coustom_marker_layout, null);
-                        BoldSFTextView title = (BoldSFTextView) v.findViewById(R.id.dispensary_name);
-                        ImageView favorite = (ImageView) v.findViewById(R.id.like);
-                        ImageView profile_image = (ImageView) v.findViewById(R.id.profile_image);
-                        Dispensary dispensary = null;
-                        for (int i = 0; i < mData.size(); i++) {
-                            dispensary = mData.get(i);
-                            if (dispensary.getId().equalsIgnoreCase(marker.getSnippet())) {
-                                break;
+                        if (!IsOpen) {
+                            Dispensary dispensary = null;
+                            for (int i = 0; i < mData.size(); i++) {
+                                dispensary = mData.get(i);
+                                if (dispensary.getId().equalsIgnoreCase(marker.getSnippet())) {
+                                    break;
+                                }
                             }
+                            formWindow = new InfoWindow(marker.getPosition(), markerSpec, new FormFragment(dispensary, marker));
+                            infoWindowManager.toggle(formWindow, true);
+                            infoWindowManager.setWindowShowListener(new InfoWindowManager.WindowShowListener() {
+                                @Override
+                                public void onWindowShowStarted(@NonNull InfoWindow infoWindow) {
+
+                                }
+
+                                @Override
+                                public void onWindowShown(@NonNull InfoWindow infoWindow) {
+                                    IsOpen = true;
+                                }
+
+                                @Override
+                                public void onWindowHideStarted(@NonNull InfoWindow infoWindow) {
+                                    IsOpen = false;
+                                }
+
+                                @Override
+                                public void onWindowHidden(@NonNull InfoWindow infoWindow) {
+
+                                }
+                            });
                         }
-                        RegularTextView add = (RegularTextView) v.findViewById(R.id.dispensary_add);
-                        title.setText(dispensary.getName());
-                        add.setText(dispensary.getLocation().getAddress());
-                        favorite.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                Dailogs.ShowToast(mContext, "Favorite request has not integrated yet", Toast.LENGTH_LONG);
-                            }
-                        });
-
-                        Glide.with(mContext).
-                                load(dispensary.getLogo().getSmall())
-                                .bitmapTransform(new CropCircleTransformation(mContext))
-                                .diskCacheStrategy(DiskCacheStrategy.ALL)
-                                .into(profile_image);
-                        return v;
-                    }
-
-                    @Override
-                    public View getInfoContents(Marker marker) {
-                        return null;
-                    }
-                });
-                mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
-                    @Override
-                    public void onInfoWindowClick(Marker marker) {
-                        Intent intent = new Intent(mContext, DispensaryInfoActivity.class);
-                        intent.putExtra("dispensary_id", mSelectedId);
-                        startActivity(intent);
+                        return false;
                     }
                 });
                 if (mapPos == mData.size() - 1) {
                     mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 13.0f));
-                    Log.i("added33", mapPos + "");
                 }
-                Log.i("added", mapPos + "");
             }
         }.execute();
     }
@@ -291,13 +281,23 @@ public class DiscoverActivity extends AppCompatActivity implements View.OnClickL
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle("");
         setSupportActionBar(toolbar);
-        //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     private void InitComponents() {
+        mapInfoWindowFragment =
+                (MapInfoWindowFragment) getSupportFragmentManager().findFragmentById(R.id.map);
+        infoWindowManager = mapInfoWindowFragment.infoWindowManager();
+        infoWindowManager.setHideOnFling(true);
+        mapInfoWindowFragment.getMapAsync(this);
 
-        SupportMapFragment mapFragment = ((SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map));
-        mapFragment.getMapAsync(this);
+        Drawable transparentDrawable = new ColorDrawable(Color.TRANSPARENT);
+        InfoWindowManager.ContainerSpecification containerSpecification = new InfoWindowManager.ContainerSpecification(transparentDrawable);
+        infoWindowManager.setContainerSpec(containerSpecification);
+
+        final int offsetX = (int) getResources().getDimension(R.dimen.marker_offset_x);
+        final int offsetY = (int) getResources().getDimension(R.dimen.marker_offset_y);
+
+        markerSpec = new InfoWindow.MarkerSpecification(offsetX, offsetY);
 
         mtxtDelivery = (RegularTextView) findViewById(R.id.toolbar_delivery);
         mtxtStoreFront = (BoldSFTextView) findViewById(R.id.toolbar_store_front);
@@ -319,7 +319,6 @@ public class DiscoverActivity extends AppCompatActivity implements View.OnClickL
                 }
             }
         });
-
 
         mtxtStoreFront.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -347,6 +346,7 @@ public class DiscoverActivity extends AppCompatActivity implements View.OnClickL
 
             }
         });
+
     }
 
     private void AddListener() {

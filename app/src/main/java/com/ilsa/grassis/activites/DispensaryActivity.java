@@ -31,6 +31,9 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.appolica.interactiveinfowindow.InfoWindow;
+import com.appolica.interactiveinfowindow.InfoWindowManager;
+import com.appolica.interactiveinfowindow.fragment.MapInfoWindowFragment;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.resource.drawable.GlideDrawable;
@@ -602,6 +605,7 @@ public class DispensaryActivity extends AppCompatActivity implements OnMapReadyC
                 mMap.addMarker(marker);
 
                 mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+
                     @Override
                     public boolean onMarkerClick(final Marker marker) {
 
