@@ -17,7 +17,6 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.ScrollView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -64,6 +63,7 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
 
     private RecyclerTouchListener listener;
     private boolean isScrolled = false;
+    private String SelectedID = "";
 
     @BindView(R.id.home_btn_dispensory)
     ImageView mDiscover;
@@ -126,8 +126,10 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
         listener = new RecyclerTouchListener(mContext, recyclerView, new MenuItemClickListener() {
             @Override
             public void onClick(View view, int position) {
-                //startActivity(new Intent(mContext, MenuItemActivity.class));
-                Toast.makeText(mContext, "Not working yet", Toast.LENGTH_LONG).show();
+                Intent intent = new Intent(mContext, MenuItemActivity.class);
+                intent.putExtra("dispensary_id", SelectedID);
+                intent.putExtra("dispensary_title", mDeals.getId());
+                startActivity(intent);
             }
 
             @Override
@@ -160,6 +162,7 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
      * Syncing data from server to inflate on listview.
      */
     private void syncData(String id) {
+        SelectedID = id;
         menuListVOs = new ArrayList<>();
         mMenuAdapter = new MenuAdapter(mContext, menuListVOs);
 

@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.ilsa.grassis.R;
+import com.ilsa.grassis.apivo.Products;
 import com.ilsa.grassis.library.RegularTextView;
 import com.ilsa.grassis.utils.Helper;
 import com.ilsa.grassis.vo.MenuListVO;
@@ -19,7 +20,7 @@ import java.util.List;
  */
 public class MenuItemAdapter extends RecyclerView.Adapter<MenuItemAdapter.MyViewHolder> {
 
-    private List<MenuListVO> menuList;
+    private List<Products> menuList;
     private Context mContext;
 
     /**
@@ -28,7 +29,7 @@ public class MenuItemAdapter extends RecyclerView.Adapter<MenuItemAdapter.MyView
      * @param mContext   the mContext
      * @param menuList the menu list
      */
-    public MenuItemAdapter(Context mContext, List<MenuListVO> menuList) {
+    public MenuItemAdapter(Context mContext, List<Products> menuList) {
         this.menuList = menuList;
         this.mContext = mContext;
     }
@@ -43,8 +44,8 @@ public class MenuItemAdapter extends RecyclerView.Adapter<MenuItemAdapter.MyView
 
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
-        MenuListVO movie = menuList.get(position);
-        holder.title.setText(movie.getTitle());
+        Products product = menuList.get(position);
+        holder.title.setText(product.getName());
     }
 
     @Override

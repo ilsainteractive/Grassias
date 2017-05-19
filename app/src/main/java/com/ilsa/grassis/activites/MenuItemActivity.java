@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -20,8 +19,12 @@ import android.widget.ImageView;
 import android.widget.ScrollView;
 
 import com.ilsa.grassis.R;
+import com.ilsa.grassis.adapters.MenuGalleryAdapter;
 import com.ilsa.grassis.adapters.MenuItemAdapter;
-import com.ilsa.grassis.adapters.MenuItemGalleryAdapter;
+import com.ilsa.grassis.apivo.Dispensaries;
+import com.ilsa.grassis.apivo.Dispensary;
+import com.ilsa.grassis.apivo.Products;
+import com.ilsa.grassis.library.AppContoller;
 import com.ilsa.grassis.library.Constants;
 import com.ilsa.grassis.library.ExpandedRecyclerView;
 import com.ilsa.grassis.library.MediumTextView;
@@ -29,13 +32,12 @@ import com.ilsa.grassis.library.MenuItemClickListener;
 import com.ilsa.grassis.library.RecyclerTouchListener;
 import com.ilsa.grassis.library.ThinTextView;
 import com.ilsa.grassis.utils.Dailogs;
-import com.ilsa.grassis.vo.MenuListVO;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import me.relex.circleindicator.CircleIndicator;
 
 /**
  * Menu item activity contains details about selected item from menu.
@@ -49,18 +51,21 @@ public class MenuItemActivity extends AppCompatActivity implements View.OnClickL
     private SearchView mSearchView;
     private ScrollView mScrollView;
     private ViewPager mViewPager;
+    CircleIndicator pageIndicatorView;
 
     private MediumTextView mtxtToolbarTitle;
     private ThinTextView mtxtTtile, mTxtSubTitle, mTxtAction;
 
     private ExpandedRecyclerView recyclerView;
-    private MenuItemAdapter mMenuAdapter;
+    private MenuItemAdapter mMenuItemAdapter;
 
     // dummy data list vaues
-    private List<MenuListVO> menuListVOs;
-    private String[] titles = {"Hindu Kush", "Mango Kush", "Death Star", "Hindu Kush", "Mango Kush", "Death Star", "Hindu Kush", "Mango Kush", "Death Star"};
+    private ArrayList<Products> menuListVOs;
+    private Dispensary mDispensary;
+
     private RecyclerTouchListener listener;
     private boolean isScrolled = false;
+    private String SelectedID = "";
 
     @BindView(R.id.home_btn_dispensory)
     ImageView mDiscover;
@@ -88,35 +93,34 @@ public class MenuItemActivity extends AppCompatActivity implements View.OnClickL
         isScrolled = false;
         initToolBar();
         InitComponents();
-        syncData();
+        if (getIntent().getStringExtra("dispensary_id") != null)
+            syncData(getIntent().getStringExtra("dispensary_id"));
         initViews();
+        SetTexts();
         AddListener();
     }
 
+    private void SetTexts() {
+
+        mtxtToolbarTitle.setText("Category Name");
+        mtxtTtile.setText(mDispensary.getName());
+        //mTxtSubTitle.setText(mDispensary.getName());
+    }
+
     private void initViews() {
-        MenuItemGalleryAdapter adapter = new MenuItemGalleryAdapter(mContext);
-        adapter.setData(createPageList());
+        if (menuListVOs.size() > 0) {
+            //mHolder.mProductPagerLayout.setVisibility(View.VISIBLE);
+            //mHolder.mNoProductLayout.setVisibility(View.GONE);
+            MenuGalleryAdapter adapter = new MenuGalleryAdapter(mContext);
+            adapter.setData(menuListVOs);
+            mViewPager.setAdapter(adapter);
 
-        ViewPager pager = (ViewPager) findViewById(R.id.viewPager);
-        pager.setAdapter(adapter);
-    }
-
-    @NonNull
-    private List<View> createPageList() {
-        List<View> pageList = new ArrayList<>();
-        pageList.add(createPageView(R.color.baseColor));
-        pageList.add(createPageView(R.color.colorPrimaryDark));
-        pageList.add(createPageView(R.color.login_status_color));
-        pageList.add(createPageView(R.color.baseColor));
-        pageList.add(createPageView(R.color.login_status_color));
-        return pageList;
-    }
-
-    @NonNull
-    private View createPageView(int color) {
-        View view = new View(this);
-        view.setBackgroundColor(getResources().getColor(color));
-        return view;
+            pageIndicatorView.setViewPager(mViewPager);
+            adapter.registerDataSetObserver(pageIndicatorView.getDataSetObserver());
+        } else {
+            //mHolder.mNoProductLayout.setVisibility(View.VISIBLE);
+            //mHolder.mProductPagerLayout.setVisibility(View.GONE);
+        }
     }
 
     private void AddListener() {
@@ -128,9 +132,6 @@ public class MenuItemActivity extends AppCompatActivity implements View.OnClickL
         mHome.setImageResource(R.mipmap.home_icon1);
     }
 
-    /**
-     * Init toolbar.
-     */
     public void initToolBar() {
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -154,16 +155,11 @@ public class MenuItemActivity extends AppCompatActivity implements View.OnClickL
 
         mScrollView = (ScrollView) findViewById(R.id.scrollView);
         mViewPager = (ViewPager) findViewById(R.id.viewPager);
-//        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
-//                Math.round(Helper.getFontSize(mContext.getResources(), 275)));
-//        mViewPager.setLayoutParams(layoutParams);
+        pageIndicatorView = (CircleIndicator) findViewById(R.id.indicator);
+
         mtxtTtile = (ThinTextView) findViewById(R.id.menu_item_title);
         mTxtSubTitle = (ThinTextView) findViewById(R.id.menu_item_sub_title);
         mTxtAction = (ThinTextView) findViewById(R.id.menu_item_action);
-
-        //mtxtTtile.setTextSize(Helper.getFontSize(getResources(), 10));
-        //mTxtSubTitle.setTextSize(Helper.getFontSize(getResources(), 4));
-        //mTxtAction.setTextSize(Helper.getFontSize(getResources(), 4));
 
         recyclerView = (ExpandedRecyclerView) findViewById(R.id.recycler_view);
         listener = new RecyclerTouchListener(mContext, recyclerView, new MenuItemClickListener() {
@@ -180,29 +176,31 @@ public class MenuItemActivity extends AppCompatActivity implements View.OnClickL
         recyclerView.addOnItemTouchListener(listener);
     }
 
-    /**
-     * Syncing data from server to inflate on listview.
-     */
-    private void syncData() {
+    private void syncData(String id) {
+        SelectedID = id;
         menuListVOs = new ArrayList<>();
-        mMenuAdapter = new MenuItemAdapter(mContext, menuListVOs);
+        mMenuItemAdapter = new MenuItemAdapter(mContext, menuListVOs);
 
         recyclerView.setHasFixedSize(true);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
-        recyclerView.setAdapter(mMenuAdapter);
+        recyclerView.setAdapter(mMenuItemAdapter);
         recyclerView.setNestedScrollingEnabled(false);
-        for (int i = 0; i < titles.length; i++) {
-            MenuListVO listVO = new MenuListVO();
-            listVO.setId(i + "");
-            listVO.setTitle(titles[i]);
-            listVO.setImg(titles[i] + "");
-
-            menuListVOs.add(listVO);
+        for (Products product : AppContoller.nearByVo.getProducts()) {
+            if (id.equalsIgnoreCase(product.getDispensary_id())) {
+                menuListVOs.add(product);
+            }
         }
-        mMenuAdapter.notifyDataSetChanged();
+        mMenuItemAdapter.notifyDataSetChanged();
+
+        for (Dispensaries dispensaries : AppContoller.nearByVo.getDispensaries()) {
+            if (id.equalsIgnoreCase(dispensaries.getDispensary().getId())) {
+                mDispensary = dispensaries.getDispensary();
+                break;
+            }
+        }
     }
 
     @Override

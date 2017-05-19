@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:attrs="http://schemas.android.com/apk/res-auto"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_splash"
     android:layout_width="match_parent"
@@ -19,9 +19,10 @@
         android:id="@+id/scrollView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/home_bottom_bar"
+        android:fillViewport="true"
         android:layout_below="@+id/toolbar"
-        android:fillViewport="true">
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -57,16 +58,16 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
                     android:gravity="center|bottom"
-                    android:textSize="@dimen/_12sdp"
                     android:text="Buy"
-                    android:textColor="#e80054" />
+                    android:textColor="#e80054"
+                    android:textSize="@dimen/_12sdp" />
             </LinearLayout>
 
 
             <android.support.v4.view.ViewPager
                 android:id="@+id/viewPager"
                 android:layout_width="match_parent"
-                android:layout_height="280dp"/>
+                android:layout_height="280dp" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -74,21 +75,18 @@
                 android:layout_weight="0.2"
                 android:orientation="vertical">
 
-                <com.rd.PageIndicatorView
-                    android:id="@+id/pageIndicatorView"
-                    android:layout_width="match_parent"
-                    android:layout_height="2dp"
+                <me.relex.circleindicator.CircleIndicator
+                    android:id="@+id/indicator"
+                    android:layout_width="wrap_content"
+                    android:layout_height="10dp"
                     android:layout_alignParentBottom="true"
                     android:layout_centerHorizontal="true"
                     android:layout_marginBottom="10dp"
-                    attrs:piv_animationType="worm"
-                    attrs:piv_dynamicCount="true"
-                    attrs:piv_interactiveAnimation="true"
-                    attrs:piv_padding="0dp"
-                    attrs:piv_radius="35dp"
-                    attrs:piv_selectedColor="#c7c7c7"
-                    attrs:piv_unselectedColor="#f2f2f2"
-                    attrs:piv_viewPager="@id/viewPager" />
+                    app:ci_animator="@animator/scale_with_alpha"
+                    app:ci_drawable="@color/selected"
+                    app:ci_drawable_unselected="@color/un_selected"
+                    app:ci_height="1dp"
+                    app:ci_width="25dp" />
             </LinearLayout>
 
             <LinearLayout
