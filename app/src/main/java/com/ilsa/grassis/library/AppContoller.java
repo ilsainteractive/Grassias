@@ -6,9 +6,11 @@ import android.support.multidex.MultiDex;
 import android.support.multidex.MultiDexApplication;
 
 import com.crashlytics.android.Crashlytics;
+import com.ilsa.grassis.apivo.Dispensary;
 import com.ilsa.grassis.apivo.UserVo;
 import com.ilsa.grassis.rootvo.NearByVo;
 import com.ilsa.grassis.rootvo.UserDataVO;
+import com.ilsa.grassis.unknow.Dispensaries;
 
 import java.util.ArrayList;
 
@@ -27,12 +29,16 @@ public class AppContoller extends MultiDexApplication {
     public static NearByVo nearByVo;
 
     public static ArrayList<Activity> DeadActivities;
+    public static ArrayList<Dispensaries> FavDispensariesIds;
+    public static ArrayList<Dispensary> FavDispensaries;
 
     @Override
     public void onCreate() {
         super.onCreate();
         Fabric.with(this, new Crashlytics());
         DeadActivities = new ArrayList<>();
+        FavDispensariesIds = new ArrayList<>();
+        FavDispensaries = new ArrayList<>();
     }
 
     @Override

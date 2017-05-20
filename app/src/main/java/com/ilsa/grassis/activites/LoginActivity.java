@@ -179,6 +179,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
                     if (AppContoller.userData.getUser() != null) {
                         AppContoller.IsLoggedIn = true;
+                        AppContoller.FavDispensariesIds = AppContoller.userData.getUser().getFavorites().getDispensaries();
                         ShPrefsHelper.setSharedPreferenceString(mContext, Constants.USER_VO, res);
                         Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
                         intent.putExtra("first_name", AppContoller.userData.getUser().getFirst_name());

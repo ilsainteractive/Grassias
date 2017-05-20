@@ -9,12 +9,13 @@ import java.util.ArrayList;
  * Created by SohailZahid on 5/4/2017.
  */
 
-public class Dispensary  {
+public class Dispensary {
     private Widgets widgets;
 
     private String instagram;
-
+    private String state_change;
     private String phone;
+
 
     private Location location;
 
@@ -109,6 +110,14 @@ public class Dispensary  {
 
     public String getId() {
         return id;
+    }
+
+    public String getState_change() {
+        return state_change;
+    }
+
+    public void setState_change(String state_change) {
+        this.state_change = state_change;
     }
 
     public void setId(String id) {

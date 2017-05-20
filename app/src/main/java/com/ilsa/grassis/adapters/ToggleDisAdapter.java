@@ -12,7 +12,8 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.ilsa.grassis.R;
 import com.ilsa.grassis.apivo.Dispensary;
 import com.ilsa.grassis.library.BoldSFTextView;
-import com.ilsa.grassis.rootvo.NearByVo;
+
+import java.util.ArrayList;
 
 import jp.wasabeef.glide.transformations.CropCircleTransformation;
 
@@ -21,12 +22,12 @@ import jp.wasabeef.glide.transformations.CropCircleTransformation;
  */
 public class ToggleDisAdapter extends RecyclerView.Adapter<ToggleDisAdapter.MyViewHolder> {
 
-    private NearByVo nearByVo;
+    private ArrayList<Dispensary> dispensaries;
     private Context mContext;
 
 
-    public ToggleDisAdapter(Context mContext, NearByVo nearByVo) {
-        this.nearByVo = nearByVo;
+    public ToggleDisAdapter(Context mContext, ArrayList<Dispensary> dispensaries) {
+        this.dispensaries = dispensaries;
         this.mContext = mContext;
     }
 
@@ -40,7 +41,7 @@ public class ToggleDisAdapter extends RecyclerView.Adapter<ToggleDisAdapter.MyVi
     @Override
     public void onBindViewHolder(final MyViewHolder holder, final int position) {
         try {
-            Dispensary dispensary = nearByVo.getDispensaries().get(position).getDispensary();
+            Dispensary dispensary = dispensaries.get(position);
             //Glide.with(mContext).load(multipleDealses);
             holder.name.setText(dispensary.getName());
             Glide.with(mContext).
@@ -55,7 +56,7 @@ public class ToggleDisAdapter extends RecyclerView.Adapter<ToggleDisAdapter.MyVi
 
     @Override
     public int getItemCount() {
-        return nearByVo.getDispensaries().size();
+        return dispensaries.size();
     }
 
     /**

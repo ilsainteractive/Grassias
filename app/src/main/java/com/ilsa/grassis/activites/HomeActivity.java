@@ -223,7 +223,17 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         });
         recyclerView.addOnItemTouchListener(listener);
 
-        ToggleDisAdapter adapter = new ToggleDisAdapter(mContext, AppContoller.nearByVo);
+        for (int i = 0; i < AppContoller.FavDispensariesIds.size(); i++) {
+            String id = AppContoller.FavDispensariesIds.get(i).getId();
+            for (int ii = 0; ii < AppContoller.nearByVo.getDispensaries().size(); ii++) {
+                if (AppContoller.nearByVo.getDispensaries().get(ii).getDispensary().getId().equalsIgnoreCase(id)) {
+                    AppContoller.FavDispensaries.add(AppContoller.nearByVo.getDispensaries().get(ii).getDispensary());
+                    break;
+                }
+            }
+        }
+
+        ToggleDisAdapter adapter = new ToggleDisAdapter(mContext, AppContoller.FavDispensaries);
         recyclerView.setAdapter(adapter);
 
         mpopupWindow = new PopupWindow(

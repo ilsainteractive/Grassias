@@ -3,6 +3,8 @@ package com.ilsa.grassis.apivo;
 import com.google.gson.annotations.SerializedName;
 import com.ilsa.grassis.unknow.Dispensaries;
 
+import java.util.ArrayList;
+
 /**
  * Created by Zeeshan Ali Basbasah on 5/4/2017.
  */
@@ -10,15 +12,15 @@ import com.ilsa.grassis.unknow.Dispensaries;
 
 public class Favorites {
     @SerializedName("dispensaries")
-    private com.ilsa.grassis.unknow.Dispensaries[] dispensaries;
+    private ArrayList<Dispensaries> dispensaries;
     @SerializedName("strands")
     private Strand[] strands;
 
-    public Dispensaries[] getDispensaries() {
+    public ArrayList<Dispensaries> getDispensaries() {
         return dispensaries;
     }
 
-    public void setDispensaries(Dispensaries[] dispensaries) {
+    public void setDispensaries(ArrayList<Dispensaries> dispensaries) {
         this.dispensaries = dispensaries;
     }
 

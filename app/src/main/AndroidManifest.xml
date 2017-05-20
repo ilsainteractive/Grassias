@@ -12,7 +12,8 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true">
-       <!-- android:theme="@style/NoActionBar"-->
+
+        <!-- android:theme="@style/NoActionBar" -->
         <activity
             android:name=".activites.SplashActivity"
             android:screenOrientation="portrait"
@@ -114,6 +115,9 @@
         <activity
             android:name=".activites.HistoryActivity"
             android:theme="@style/HomeTheme" />
+        <activity
+            android:name=".activites.EditProfileActivity"
+            android:theme="@style/HomeTheme"/>
     </application>
 
 </manifest>

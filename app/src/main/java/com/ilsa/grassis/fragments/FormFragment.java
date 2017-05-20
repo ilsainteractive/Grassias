@@ -1,9 +1,12 @@
 package com.ilsa.grassis.fragments;
 
+import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,13 +16,33 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.android.gms.maps.model.Marker;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.ilsa.grassis.R;
 import com.ilsa.grassis.activites.DispensaryInfoActivity;
+import com.ilsa.grassis.activites.HomeActivity;
+import com.ilsa.grassis.activites.LoginActivity;
 import com.ilsa.grassis.apivo.Dispensary;
+import com.ilsa.grassis.library.AppContoller;
 import com.ilsa.grassis.library.BoldSFTextView;
+import com.ilsa.grassis.library.Constants;
 import com.ilsa.grassis.library.RegularTextView;
+import com.ilsa.grassis.rootvo.UserDataVO;
+import com.ilsa.grassis.utils.Dailogs;
+import com.ilsa.grassis.utils.ShPrefsHelper;
+
+import org.json.JSONObject;
+
+import java.io.IOException;
 
 import jp.wasabeef.glide.transformations.CropCircleTransformation;
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 
 public class FormFragment extends Fragment {
 
@@ -68,14 +91,16 @@ public class FormFragment extends Fragment {
             public void onClick(View v) {
                 switch (v.getId()) {
                     case R.id.like:
-                        if (blank) {
+
+                        FavoriteHeartDispensary(dispensary.getId());
+                        /*if (blank) {
                             heart.setImageResource(R.mipmap.fillheart);
-                            blank=false;
+                            blank = false;
                         } else {
                             heart.setImageResource(R.mipmap.heart_icon_empty);
-                            blank=true;
+                            blank = true;
                         }
-                        Toast.makeText(getContext(), "Liked", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), "Liked", Toast.LENGTH_SHORT).show();*/
                         // DeleteAlarm(marker);
                         break;
                     case R.id.infoWindowMainLayoutId:
@@ -92,5 +117,65 @@ public class FormFragment extends Fragment {
         heart.setOnClickListener(onClickListener);
         view.findViewById(R.id.infoWindowMainLayoutId).setOnClickListener(onClickListener);
         /*view.findViewById(R.id.deleteIcon).setOnClickListener(onClickListener);*/
+    }
+
+    private void FavoriteHeartDispensary(String dispensaryId) {
+
+        final ProgressDialog pd = new ProgressDialog(getContext());
+        pd.setMessage(getString(R.string.Verifying_msg));
+        pd.setCancelable(false);
+        pd.show();
+
+        OkHttpClient client = new OkHttpClient();
+
+        Request request = new Request.Builder()
+                .url("http://kushmarketing.herokuapp.com/api/dispensary/" + dispensaryId + "/toggle_favorite")
+                .get()
+                .addHeader("accept", "application/vnd.kush_marketing.com; version=1")
+                .addHeader("authorization", "Bearer " + AppContoller.userData.getUser().getAccess_token())
+                .addHeader("x-client-email", AppContoller.userData.getUser().getEmail())
+                .addHeader("cache-control", "no-cache")
+                .addHeader("postman-token", "fd724e2e-add7-e5fd-2f92-e38aaa653b93")
+                .build();
+
+        client.newCall(request).enqueue(new Callback() {
+
+            @Override
+            public void onFailure(Call call, IOException e) {
+                e.printStackTrace();
+                pd.dismiss();
+            }
+
+            @Override
+            public void onResponse(Call call, final Response response) throws IOException {
+                pd.dismiss();
+                final String res = response.body().string().toString();
+                Log.i("response", res);
+                if (!response.isSuccessful()) {
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            try {
+                                JSONObject jsonObject = new JSONObject(res);
+                                JSONObject error = jsonObject.getJSONObject("error");
+                                String message = error.get("message").toString();
+                                Dailogs.ShowToast(getContext(), message, Constants.LONG_TIME);
+                            } catch (Exception e) {
+                            }
+                        }
+                    });
+                } else {
+                    Gson gson = new GsonBuilder().create();
+                    Dispensary dispensary = gson.fromJson(res, Dispensary.class);
+
+                    if (dispensary.getId() != null) {
+                        if (dispensary.getState_change().equalsIgnoreCase("favorited"))
+                            heart.setImageResource(R.mipmap.fillheart);
+                        else if (dispensary.getState_change().equalsIgnoreCase("unfavorited"))
+                            heart.setImageResource(R.mipmap.heart_icon_empty);
+                    }
+                }
+            }
+        });
     }
 }

@@ -245,8 +245,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
                 startActivity(intent2);
                 break;
             case R.id.profile_txt_editProfile:
-                Dailogs.ShowToast(mContext, "Edit Profile", Constants.SHORT_TIME);
-                break;
+                startActivity(new Intent(ProfileActivity.this, EditProfileActivity.class));
         }
     }
 
