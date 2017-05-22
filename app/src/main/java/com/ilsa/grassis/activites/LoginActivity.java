@@ -56,10 +56,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             finish();
         } else {
             AppContoller.IsLoggedIn = false;
-
             setContentView(R.layout.activity_login);
             InitComponents();
-            //ActionBarConfigs();
             AddListener();
         }
     }
@@ -72,20 +70,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         metUserName = (CustomEditText) findViewById(R.id.login_et_user_name);
         metPassword = (CustomEditText) findViewById(R.id.login_et_password);
         mTxtTitle = (BoldTextView) findViewById(R.id.login_txt_title);
-
-        //mTxtTitle.setTextSize(Helper.getFontSize(getResources(), 11));
-        //metUserName.setTextSize(Helper.getFontSize(getResources(), 4));
-        //metPassword.setTextSize(Helper.getFontSize(getResources(), 4));
-        //mTxtCreateAccount.setTextSize(Helper.getFontSize(getResources(), 4));
-        //mTxtSkipNow.setTextSize(Helper.getFontSize(getResources(), 4));
-        //mTxtGetStarted.setTextSize(Helper.getFontSize(getResources(), 4));
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
-//            mTxtTitle.setLetterSpacing(.05f * getResources().getDisplayMetrics().density);
-//            metUserName.setLetterSpacing(.02f * getResources().getDisplayMetrics().density);
-//            metPassword.setLetterSpacing(.02f * getResources().getDisplayMetrics().density);
-//            mTxtCreateAccount.setLetterSpacing(.02f * getResources().getDisplayMetrics().density);
-        }
     }
 
     private void AddListener() {
@@ -109,7 +93,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     Dailogs.ShowToast(mContext, getString(R.string.no_internet_msg), Constants.SHORT_TIME);
                 break;
             case R.id.login_txt_get_started:
-                // startActivity(new Intent(mContext, HomeActivity.class));
                 if (!metUserName.getText().toString().equalsIgnoreCase("")) { // any length validation on user or passwords add them below
                     if (!metPassword.getText().toString().equalsIgnoreCase("")) {
                         if (Helper.checkInternetConnection(mContext))

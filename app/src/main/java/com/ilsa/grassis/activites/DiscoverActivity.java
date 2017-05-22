@@ -170,57 +170,60 @@ public class DiscoverActivity extends AppCompatActivity implements View.OnClickL
             @Override
             protected void onPostExecute(GlideDrawable theBitmap) {
                 super.onPostExecute(theBitmap);
+                BitmapDescriptor markerIcon;
                 if (theBitmap != null) {
-                    latLng = new LatLng(dispensary.getLocation().getCoords().getLatitude(), dispensary.getLocation().getCoords().getLongitude());
-                    mSelectedId = dispensary.getId();
-                    MarkerOptions marker = new MarkerOptions().position(latLng);
-                    BitmapDescriptor markerIcon = Helper.getMarkerIconFromDrawable(theBitmap);
-                    marker.icon(markerIcon);
-                    marker.snippet(dispensary.getId());
-                    ArrayList<Marker> markers = new ArrayList<Marker>();
-                    markers.add(mMap.addMarker(marker));
-                    mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
-                        @Override
-                        public boolean onMarkerClick(final Marker marker) {
-                            mSelectedId = marker.getSnippet();
-                            if (!IsOpen) {
-                                Dispensary dispensary = null;
-                                for (int i = 0; i < mData.size(); i++) {
-                                    dispensary = mData.get(i);
-                                    if (dispensary.getId().equalsIgnoreCase(marker.getSnippet())) {
-                                        break;
-                                    }
+                    markerIcon = Helper.getMarkerIconFromDrawable(theBitmap);
+                } else {
+                    markerIcon = Helper.getMarkerIconFromDrawable(mContext.getDrawable(R.drawable.add));
+                }
+                latLng = new LatLng(dispensary.getLocation().getCoords().getLatitude(), dispensary.getLocation().getCoords().getLongitude());
+                mSelectedId = dispensary.getId();
+                MarkerOptions marker = new MarkerOptions().position(latLng);
+                marker.icon(markerIcon);
+                marker.snippet(dispensary.getId());
+                ArrayList<Marker> markers = new ArrayList<Marker>();
+                markers.add(mMap.addMarker(marker));
+                mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+                    @Override
+                    public boolean onMarkerClick(final Marker marker) {
+                        mSelectedId = marker.getSnippet();
+                        if (!IsOpen) {
+                            Dispensary dispensary = null;
+                            for (int i = 0; i < mData.size(); i++) {
+                                dispensary = mData.get(i);
+                                if (dispensary.getId().equalsIgnoreCase(marker.getSnippet())) {
+                                    break;
                                 }
-                                formWindow = new InfoWindow(marker.getPosition(), markerSpec, new FormFragment(dispensary, marker));
-                                infoWindowManager.toggle(formWindow, true);
-                                infoWindowManager.setWindowShowListener(new InfoWindowManager.WindowShowListener() {
-                                    @Override
-                                    public void onWindowShowStarted(@NonNull InfoWindow infoWindow) {
-
-                                    }
-
-                                    @Override
-                                    public void onWindowShown(@NonNull InfoWindow infoWindow) {
-                                        IsOpen = true;
-                                    }
-
-                                    @Override
-                                    public void onWindowHideStarted(@NonNull InfoWindow infoWindow) {
-                                        IsOpen = false;
-                                    }
-
-                                    @Override
-                                    public void onWindowHidden(@NonNull InfoWindow infoWindow) {
-
-                                    }
-                                });
                             }
-                            return false;
+                            formWindow = new InfoWindow(marker.getPosition(), markerSpec, new FormFragment(dispensary, marker));
+                            infoWindowManager.toggle(formWindow, true);
+                            infoWindowManager.setWindowShowListener(new InfoWindowManager.WindowShowListener() {
+                                @Override
+                                public void onWindowShowStarted(@NonNull InfoWindow infoWindow) {
+
+                                }
+
+                                @Override
+                                public void onWindowShown(@NonNull InfoWindow infoWindow) {
+                                    IsOpen = true;
+                                }
+
+                                @Override
+                                public void onWindowHideStarted(@NonNull InfoWindow infoWindow) {
+                                    IsOpen = false;
+                                }
+
+                                @Override
+                                public void onWindowHidden(@NonNull InfoWindow infoWindow) {
+
+                                }
+                            });
                         }
-                    });
-                    if (mapPos == mData.size() - 1) {
-                        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 13.0f));
+                        return false;
                     }
+                });
+                if (mapPos == mData.size() - 1) {
+                    mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 13.0f));
                 }
             }
         }.execute();

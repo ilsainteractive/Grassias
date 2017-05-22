@@ -2,7 +2,6 @@ package com.ilsa.grassis.apivo;
 
 import com.google.gson.annotations.SerializedName;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
@@ -298,10 +297,5 @@ public class Dispensary {
 
     public void setBackground(Background2 background) {
         this.background = background;
-    }
-
-    @Override
-    public String toString() {
-        return "ClassPojo [widgets = " + widgets + ", instagram = " + instagram + ", phone = " + phone + ", location = " + location + ", prefixes = " + prefixes + ", id = " + id + ", twitter = " + twitter + ", description = " + description + ", layout = " + layout + ", facebook = " + facebook + ", name = " + name + ", youtube = " + youtube + ", features = " + features + ", apple_app_store_url = " + apple_app_store_url + ", feature_settings = " + feature_settings + ", template = " + template + ", logo = " + logo + ", shades = " + shades + ", store_url = " + store_url + ", status = " + status + ", colors = " + colors + ", channels = " + channels + ", android_app_store_url = " + android_app_store_url + ", url = " + url + ", photos = " + photos + ", schedule = " + schedule + ", email = " + email + ", background = " + background + "]";
     }
 }
