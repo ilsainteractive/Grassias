@@ -25,17 +25,11 @@ import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.ilsa.grassis.R;
 import com.ilsa.grassis.adapters.MenuAdapter;
-import com.ilsa.grassis.apivo.Products;
 import com.ilsa.grassis.library.AppContoller;
-import com.ilsa.grassis.library.Constants;
 import com.ilsa.grassis.library.ExpandedRecyclerView;
 import com.ilsa.grassis.library.MediumTextView;
 import com.ilsa.grassis.library.MenuItemClickListener;
 import com.ilsa.grassis.library.RecyclerTouchListener;
-import com.ilsa.grassis.utils.Dailogs;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -58,7 +52,6 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
     private ExpandedRecyclerView recyclerView;
     private MenuAdapter mMenuAdapter;
 
-    private List<Products> menuListVOs;
     private ProgressBar progress;
 
     private RecyclerTouchListener listener;
@@ -127,8 +120,9 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
             @Override
             public void onClick(View view, int position) {
                 Intent intent = new Intent(mContext, MenuItemActivity.class);
-                intent.putExtra("dispensary_id", SelectedID);
-                intent.putExtra("dispensary_title", mDeals.getId());
+                intent.putExtra("dispensaryId", SelectedID);
+                intent.putExtra("category_id", AppContoller.MenuCategories.get(position).getId());
+                intent.putExtra("category_title", AppContoller.MenuCategories.get(position).getCategoryName());
                 startActivity(intent);
             }
 
@@ -141,7 +135,7 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
         progress.setVisibility(View.VISIBLE);
         Glide.with(mContext).load(getIntent().getStringExtra("dispensary_photo"))
                 .thumbnail(0.5f)
-                .crossFade().placeholder(R.mipmap.ic_launcher)
+                .crossFade().placeholder(R.mipmap.no_image)
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .listener(new RequestListener<String, GlideDrawable>() {
                     @Override
@@ -163,8 +157,7 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
      */
     private void syncData(String id) {
         SelectedID = id;
-        menuListVOs = new ArrayList<>();
-        mMenuAdapter = new MenuAdapter(mContext, menuListVOs);
+        mMenuAdapter = new MenuAdapter(mContext, AppContoller.MenuCategories);
 
         recyclerView.setHasFixedSize(true);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
@@ -173,13 +166,6 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(mMenuAdapter);
         recyclerView.setNestedScrollingEnabled(false);
-
-        for (Products product : AppContoller.nearByVo.getProducts()) {
-            if (id.equalsIgnoreCase(product.getDispensary_id())) {
-                menuListVOs.add(product);
-            }
-        }
-        mMenuAdapter.notifyDataSetChanged();
     }
 
     @Override
@@ -197,26 +183,10 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_menu, menu);
+        getMenuInflater().inflate(R.menu.menu_home, menu);
 
-        MenuItem myActionMenuItem = menu.findItem(R.id.menu_menu_action_search);
+        MenuItem myActionMenuItem = menu.findItem(R.id.action_search);
         mSearchView = (SearchView) myActionMenuItem.getActionView();
-
-        mSearchView.setOnSearchClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mtxtToolbarTitle.setVisibility(View.GONE);
-            }
-        });
-
-        mSearchView.setOnCloseListener(new SearchView.OnCloseListener() {
-            @Override
-            public boolean onClose() {
-                mtxtToolbarTitle.setVisibility(View.VISIBLE);
-                return false;
-            }
-        });
-
         mSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
@@ -260,8 +230,7 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
                 startActivity(new Intent(mContext, HomeActivity.class));
                 break;
             case R.id.home_btn_qr:
-                //startActivity(new Intent(mContext, DealsRewardActivity.class));
-                Dailogs.ShowToast(mContext, "QR Scan is not integrated.", Constants.SHORT_TIME);
+                startActivity(new Intent(mContext, DealsRewardActivity.class));
                 break;
         }
     }

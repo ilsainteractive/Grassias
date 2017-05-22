@@ -14,17 +14,17 @@ import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.ilsa.grassis.R;
-import com.ilsa.grassis.apivo.Products;
 import com.ilsa.grassis.library.RegularTextView;
+import com.ilsa.grassis.vo.MenuCategoriesVO;
 
-import java.util.List;
+import java.util.ArrayList;
 
 /**
  * Menu list adapter.
  */
 public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.MyViewHolder> {
 
-    private List<Products> menuList;
+    private ArrayList<MenuCategoriesVO> menuList;
     private Context mContext;
 
     /**
@@ -54,7 +54,7 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.MyViewHolder> 
      * @param mContext the mContext
      * @param menuList the menu list
      */
-    public MenuAdapter(Context mContext, List<Products> menuList) {
+    public MenuAdapter(Context mContext, ArrayList<MenuCategoriesVO> menuList) {
         this.menuList = menuList;
         this.mContext = mContext;
     }
@@ -69,12 +69,12 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.MyViewHolder> 
 
     @Override
     public void onBindViewHolder(final MyViewHolder holder, int position) {
-        Products product = menuList.get(position);
-        holder.title.setText(product.getName());
+        MenuCategoriesVO categoriesVO = menuList.get(position);
+        holder.title.setText(categoriesVO.getCategoryName());
         holder.progressBar.setVisibility(View.VISIBLE);
-        Glide.with(mContext).load(product.getBackground().getBackground().getLarge().getUrl())
+        Glide.with(mContext).load("")
                 .thumbnail(0.5f)
-                .crossFade()
+                .crossFade().placeholder(R.mipmap.no_image)
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .listener(new RequestListener<String, GlideDrawable>() {
                     @Override

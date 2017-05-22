@@ -237,8 +237,8 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
         if (AppContoller.FavDispensaries.size() < 1)
             switch_your_favorite_dis.setVisibility(View.GONE);
-        else
-            Toast.makeText(this, "No liked dispensary", Toast.LENGTH_SHORT).show();
+        //else
+        //Toast.makeText(this, "No liked dispensary", Toast.LENGTH_SHORT).show();
         ToggleDisAdapter adapter = new ToggleDisAdapter(mContext, AppContoller.FavDispensaries);
         recyclerView.setAdapter(adapter);
 

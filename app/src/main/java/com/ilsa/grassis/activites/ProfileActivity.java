@@ -118,7 +118,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
     private void GetProfileInfo() {
 
         final ProgressDialog pd = new ProgressDialog(ProfileActivity.this);
-        pd.setMessage(getString(R.string.Verifying_msg));
+        pd.setMessage(getString(R.string.processing));
         pd.setCancelable(false);
         pd.show();
 

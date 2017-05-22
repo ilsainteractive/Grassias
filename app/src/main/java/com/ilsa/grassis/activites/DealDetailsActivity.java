@@ -150,7 +150,7 @@ public class DealDetailsActivity extends AppCompatActivity implements View.OnCli
     private void RedeemWebService() {
 
         final ProgressDialog pd = new ProgressDialog(DealDetailsActivity.this);
-        pd.setMessage(getString(R.string.Verifying_msg));
+        pd.setMessage(getString(R.string.logging_in_msg));
         pd.setCancelable(false);
         pd.show();
 

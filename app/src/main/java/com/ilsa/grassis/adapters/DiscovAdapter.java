@@ -144,7 +144,7 @@ public class DiscovAdapter extends RecyclerView.Adapter<DiscovAdapter.MyViewHold
     private void FavoriteHeartDispensary(final String dispensaryId, final MyViewHolder holder) {
 
         final ProgressDialog pd = new ProgressDialog(mContext);
-        pd.setMessage(mContext.getString(R.string.Verifying_msg));
+        pd.setMessage(mContext.getString(R.string.processing));
         pd.setCancelable(false);
         pd.show();
 

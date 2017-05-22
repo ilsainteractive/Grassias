@@ -15,8 +15,8 @@
     <string name="skip_for_now">Skip for now</string>
     <string name="invalid_username">Invalid username</string>
     <string name="invalid_password">Invalid password</string>
-    <string name="Verifying_msg">Verifing...</string>
-    <string name="Logging_Out">Logging Out...</string>
+    <string name="logging_in_msg">Logging in...</string>
+    <string name="Logging_Out">Logging out...</string>
 
 
     <!--Signup Screen-->
@@ -56,5 +56,6 @@
     <!--Rewards-->
     <string name="getting_Rewards">Getting rewards...</string>
     <string name="no_offer_ava">No offer available.</string>
+    <string name="processing">Processing please wait....</string>
 
 </resources>

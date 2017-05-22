@@ -25,13 +25,11 @@ import com.ilsa.grassis.apivo.Dispensaries;
 import com.ilsa.grassis.apivo.Dispensary;
 import com.ilsa.grassis.apivo.Products;
 import com.ilsa.grassis.library.AppContoller;
-import com.ilsa.grassis.library.Constants;
 import com.ilsa.grassis.library.ExpandedRecyclerView;
 import com.ilsa.grassis.library.MediumTextView;
 import com.ilsa.grassis.library.MenuItemClickListener;
 import com.ilsa.grassis.library.RecyclerTouchListener;
 import com.ilsa.grassis.library.ThinTextView;
-import com.ilsa.grassis.utils.Dailogs;
 
 import java.util.ArrayList;
 
@@ -93,8 +91,7 @@ public class MenuItemActivity extends AppCompatActivity implements View.OnClickL
         isScrolled = false;
         initToolBar();
         InitComponents();
-        if (getIntent().getStringExtra("dispensary_id") != null)
-            syncData(getIntent().getStringExtra("dispensary_id"));
+        syncData(getIntent().getStringExtra("dispensaryId"), getIntent().getIntExtra("category_id", 0));
         initViews();
         SetTexts();
         AddListener();
@@ -102,7 +99,7 @@ public class MenuItemActivity extends AppCompatActivity implements View.OnClickL
 
     private void SetTexts() {
 
-        mtxtToolbarTitle.setText("Category Name");
+        mtxtToolbarTitle.setText(getIntent().getStringExtra("category_title"));
         mtxtTtile.setText(mDispensary.getName());
         //mTxtSubTitle.setText(mDispensary.getName());
     }
@@ -163,6 +160,8 @@ public class MenuItemActivity extends AppCompatActivity implements View.OnClickL
             public void onClick(View view, int position) {
                 Intent i = new Intent(mContext, MenuItemDetailsActivity.class);
                 i.putExtra("product_id", menuListVOs.get(position).getId());
+                i.putExtra("category_title", getIntent().getStringExtra("category_title"));
+                //i.putExtra("category_name", getIntent().getStringExtra("dispensary_title"));
                 startActivity(i);
             }
 
@@ -173,8 +172,8 @@ public class MenuItemActivity extends AppCompatActivity implements View.OnClickL
         recyclerView.addOnItemTouchListener(listener);
     }
 
-    private void syncData(String id) {
-        SelectedID = id;
+    private void syncData(String Dispensary_id, int Category_id) {
+        SelectedID = Dispensary_id;
         menuListVOs = new ArrayList<>();
         mMenuItemAdapter = new MenuItemAdapter(mContext, menuListVOs);
 
@@ -186,14 +185,15 @@ public class MenuItemActivity extends AppCompatActivity implements View.OnClickL
         recyclerView.setAdapter(mMenuItemAdapter);
         recyclerView.setNestedScrollingEnabled(false);
         for (Products product : AppContoller.nearByVo.getProducts()) {
-            if (id.equalsIgnoreCase(product.getDispensary_id())) {
+            if (Dispensary_id.equalsIgnoreCase(product.getDispensary_id()) && (Category_id + "").equalsIgnoreCase(product.getProduct_category_id())) {
                 menuListVOs.add(product);
             }
         }
+
         mMenuItemAdapter.notifyDataSetChanged();
 
         for (Dispensaries dispensaries : AppContoller.nearByVo.getDispensaries()) {
-            if (id.equalsIgnoreCase(dispensaries.getDispensary().getId())) {
+            if (Dispensary_id.equalsIgnoreCase(dispensaries.getDispensary().getId())) {
                 mDispensary = dispensaries.getDispensary();
                 break;
             }
@@ -249,8 +249,7 @@ public class MenuItemActivity extends AppCompatActivity implements View.OnClickL
                 startActivity(new Intent(mContext, HomeActivity.class));
                 break;
             case R.id.home_btn_qr:
-                //startActivity(new Intent(mContext, DealsRewardActivity.class));
-                Dailogs.ShowToast(mContext, "QR Scan is not integrated.", Constants.SHORT_TIME);
+                startActivity(new Intent(mContext, DealsRewardActivity.class));
                 break;
         }
     }

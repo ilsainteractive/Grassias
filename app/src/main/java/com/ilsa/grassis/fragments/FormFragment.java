@@ -133,7 +133,7 @@ public class FormFragment extends Fragment {
     private void FavoriteHeartDispensary(final String dispensaryId) {
 
         final ProgressDialog pd = new ProgressDialog(getContext());
-        pd.setMessage(getString(R.string.Verifying_msg));
+        pd.setMessage(getString(R.string.processing));
         pd.setCancelable(false);
         pd.show();
 

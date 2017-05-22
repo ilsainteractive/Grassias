@@ -7,10 +7,10 @@ import android.support.multidex.MultiDexApplication;
 
 import com.crashlytics.android.Crashlytics;
 import com.ilsa.grassis.apivo.Dispensary;
-import com.ilsa.grassis.apivo.UserVo;
 import com.ilsa.grassis.rootvo.NearByVo;
 import com.ilsa.grassis.rootvo.UserDataVO;
 import com.ilsa.grassis.unknow.Dispensaries;
+import com.ilsa.grassis.vo.MenuCategoriesVO;
 
 import java.util.ArrayList;
 
@@ -32,6 +32,9 @@ public class AppContoller extends MultiDexApplication {
     public static ArrayList<Dispensaries> FavDispensariesIds;
     public static ArrayList<Dispensary> FavDispensaries;
 
+    public static ArrayList<MenuCategoriesVO> MenuCategories;
+    public String[] CategoryName = {"", "Indica", "Sativa", "Hybrid", "Extract", "Edible", "Topicals", "Grow", "Gear"};
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -39,6 +42,15 @@ public class AppContoller extends MultiDexApplication {
         DeadActivities = new ArrayList<>();
         FavDispensariesIds = new ArrayList<>();
         FavDispensaries = new ArrayList<>();
+        MenuCategories = new ArrayList<>();
+        PopulateMenuCategories(MenuCategories);
+    }
+
+    private void PopulateMenuCategories(ArrayList<MenuCategoriesVO> menuCategories) {
+
+        for (int i = 1; i < CategoryName.length; i++) {
+            menuCategories.add(new MenuCategoriesVO(i, CategoryName[i]));
+        }
     }
 
     @Override

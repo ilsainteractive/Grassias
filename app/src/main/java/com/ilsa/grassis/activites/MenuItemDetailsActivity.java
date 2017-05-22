@@ -6,9 +6,16 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.ScrollView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.load.resource.drawable.GlideDrawable;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
 import com.ilsa.grassis.R;
 import com.ilsa.grassis.apivo.Products;
 import com.ilsa.grassis.library.AppContoller;
@@ -39,6 +46,8 @@ public class MenuItemDetailsActivity extends AppCompatActivity {
 
     private boolean isScrolled = false;
     private Products product;
+    private ImageView mProductImage;
+    private ProgressBar progress;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +61,36 @@ public class MenuItemDetailsActivity extends AppCompatActivity {
         if (getIntent().getStringExtra("product_id") != null)
             syncData(getIntent().getStringExtra("product_id"));
         InitComponents();
+        SetValues();
+    }
+
+    private void SetValues() {
+        progress.setVisibility(View.VISIBLE);
+        Glide.with(mContext).load(getIntent().getStringExtra("dispensary_photo"))
+                .thumbnail(0.5f)
+                .crossFade().placeholder(R.mipmap.no_image)
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .listener(new RequestListener<String, GlideDrawable>() {
+                    @Override
+                    public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
+                        progress.setVisibility(View.GONE);
+                        return false;
+                    }
+
+                    @Override
+                    public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
+                        progress.setVisibility(View.GONE);
+                        mProductImage.setVisibility(View.VISIBLE);
+                        return false;
+                    }
+                }).into(mProductImage);
+        mtxtToolbarTitle.setText(product.getName());
+        mtxtTtile.setText(product.getName());
+        mTxtSubTitle.setText(getIntent().getStringExtra("category_title"));
+        mtxtTHC.setText("THC: " + product.getThc());
+        mtxtCBD.setText("CBD: " + product.getCbd());
+        mtxtCBN.setText("CBN: " + product.getCbn());
+        mtxtDesc.setText(product.getDescription());
     }
 
     private void syncData(String product_id) {
@@ -59,7 +98,6 @@ public class MenuItemDetailsActivity extends AppCompatActivity {
         for (Products product : AppContoller.nearByVo.getProducts()) {
             if (product_id.equalsIgnoreCase(product.getId())) {
                 this.product = product;
-
                 break;
             }
         }
@@ -88,36 +126,15 @@ public class MenuItemDetailsActivity extends AppCompatActivity {
      */
     private void InitComponents() {
 
+        progress = (ProgressBar) findViewById(R.id.progress_detail);
+        mProductImage = (ImageView) findViewById(R.id.menu_item_details_img);
         mScrollView = (ScrollView) findViewById(R.id.scrollView);
         mImageLayout = (LinearLayout) findViewById(R.id.menu_item_details_img_layout);
-//        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
-//                Math.round(Helper.getFontSize(mContext.getResources(), 390)));
-//        mImageLayout.setLayoutParams(layoutParams);
-
         mTitleLayout = (LinearLayout) findViewById(R.id.menu_item_details_title_bar_layout);
-//        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
-//                Math.round(Helper.getFontSize(mContext.getResources(), 60)));
-//        params.setMargins(Math.round(Helper.getFontSize(mContext.getResources(), 15)), 0,
-//                Math.round(Helper.getFontSize(mContext.getResources(), 15)), 0);
-//        mTitleLayout.setLayoutParams(params);
-
         mPrecentLayout = (LinearLayout) findViewById(R.id.menu_item_details_precent_bar_layout);
-//        LinearLayout.LayoutParams paramsPrecent = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
-//                Math.round(Helper.getFontSize(mContext.getResources(), 45)));
-//        paramsPrecent.setMargins(Math.round(Helper.getFontSize(mContext.getResources(), 15)), 0,
-//                Math.round(Helper.getFontSize(mContext.getResources(), 15)), 0);
-//        mPrecentLayout.setLayoutParams(paramsPrecent);
-
         mValueBarLayout = (LinearLayout) findViewById(R.id.menu_item_details_values_bar_layout);
-//        LinearLayout.LayoutParams paramsValues = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
-//                Math.round(Helper.getFontSize(mContext.getResources(), 70)));
-//        mValueBarLayout.setLayoutParams(paramsValues);
-//        mValueBarLayout.setPadding(Math.round(Helper.getFontSize(mContext.getResources(), 15)), 0,
-//                Math.round(Helper.getFontSize(mContext.getResources(), 15)), 0);
 
         mtxtTtile = (SFUITextBold) findViewById(R.id.menu_item_details_txt_name);
-//        mtxtTtile.setTextSize(Helper.getFontSize(getResources(), 6));
-
         mTxtSubTitle = (ThinTextView) findViewById(R.id.menu_item_details_txt_sub_name);
 
         mtxtTHC = (MediumTextView) findViewById(R.id.menu_item_details_txt_thc);
@@ -125,14 +142,6 @@ public class MenuItemDetailsActivity extends AppCompatActivity {
         mtxtCBN = (MediumTextView) findViewById(R.id.menu_item_details_txt_cbn);
 
         mtxtDesc = (RegularTextView) findViewById(R.id.menu_item_details_txt_desc);
-//        mtxtDesc.setTextSize(Helper.getFontSize(getResources(), 5));
-
-//        mtxtTHC.setTextSize(Helper.getFontSize(getResources(), 6));
-//        mtxtTHC.setTypeface(mtxtTHC.getTypeface(), Typeface.BOLD);
-//        mtxtCBD.setTextSize(Helper.getFontSize(getResources(), 6));
-//        mtxtCBD.setTypeface(mtxtTHC.getTypeface(), Typeface.BOLD);
-//        mtxtCBN.setTextSize(Helper.getFontSize(getResources(), 6));
-//        mtxtCBN.setTypeface(mtxtTHC.getTypeface(), Typeface.BOLD);
 
         mtxtIngUnit1 = (RegularTextView) findViewById(R.id.menu_item_details_txt_ingredeants_unit1);
         mtxtIngUnit2 = (RegularTextView) findViewById(R.id.menu_item_details_txt_ingredeants_unit2);

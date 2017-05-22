@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -50,16 +49,18 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         mActivity = this;
 
         if (Helper.IsUserRegistered(mContext)) {
-            AppContoller.IsLoggedIn = true;
-            Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
-            startActivity(intent);
-            finish();
+            AutoLogin(AppContoller.userData);
         } else {
             AppContoller.IsLoggedIn = false;
             setContentView(R.layout.activity_login);
             InitComponents();
             AddListener();
         }
+    }
+
+
+    private void AutoLogin(UserDataVO dataVO) {
+        RequestLogin(mContext, Constants.AUTO_LOGIN, dataVO.getUser().getEmail(), ShPrefsHelper.getSharedPreferenceString(mContext, Constants.PASSWORD, ""));
     }
 
 
@@ -96,7 +97,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 if (!metUserName.getText().toString().equalsIgnoreCase("")) { // any length validation on user or passwords add them below
                     if (!metPassword.getText().toString().equalsIgnoreCase("")) {
                         if (Helper.checkInternetConnection(mContext))
-                            RequestLogin(metUserName.getText().toString(), metPassword.getText().toString(), mContext);
+                            RequestLogin(mContext, Constants.BUTTON_LOGIN, metUserName.getText().toString(), metPassword.getText().toString());
                         else
                             Dailogs.ShowToast(mContext, getString(R.string.no_internet_msg), Constants.SHORT_TIME);
                     } else {
@@ -109,10 +110,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         }
     }
 
-    private void RequestLogin(String userName, String password, final Context context) {
+    private void RequestLogin(final Context context, int type, String userName, final String password) {
 
         final ProgressDialog pd = new ProgressDialog(LoginActivity.this);
-        pd.setMessage(getString(R.string.Verifying_msg));
+        pd.setMessage(getString(R.string.logging_in_msg));
         pd.setCancelable(false);
         pd.show();
 
@@ -125,13 +126,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 .post(body)
                 .addHeader("accept", "application/vnd.kush_marketing.com; version=1")
                 .addHeader("content-type", "application/json")
-                .addHeader("cache-control", "no-cache")
-                .addHeader("postman-token", "250b8468-1abd-d85e-7408-4a80f3f8b37c")
                 .build();
 
-        //Response response = client.newCall(request).execute();
         client.newCall(request).enqueue(new Callback() {
-
             @Override
             public void onFailure(Call call, IOException e) {
                 e.printStackTrace();
@@ -140,7 +137,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
             @Override
             public void onResponse(Call call, final Response response) throws IOException {
-                pd.dismiss();
                 final String res = response.body().string().toString();
                 Log.i("response", res);
                 if (!response.isSuccessful()) {
@@ -148,6 +144,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         @Override
                         public void run() {
                             try {
+                                pd.dismiss();
                                 JSONObject jsonObject = new JSONObject(res);
                                 JSONObject error = jsonObject.getJSONObject("error");
                                 String message = error.get("message").toString();
@@ -164,6 +161,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         AppContoller.IsLoggedIn = true;
                         AppContoller.FavDispensariesIds = AppContoller.userData.getUser().getFavorites().getDispensaries();
                         ShPrefsHelper.setSharedPreferenceString(mContext, Constants.USER_VO, res);
+                        ShPrefsHelper.setSharedPreferenceString(mContext, Constants.PASSWORD, password);
+                        pd.dismiss();
                         Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
                         intent.putExtra("first_name", AppContoller.userData.getUser().getFirst_name());
                         intent.putExtra("last_name", AppContoller.userData.getUser().getLast_name());
