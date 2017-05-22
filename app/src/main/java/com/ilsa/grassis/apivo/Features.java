@@ -1,11 +1,13 @@
 package com.ilsa.grassis.apivo;
 
+import java.util.ArrayList;
+
 /**
  * Created by SohailZahid on 5/4/2017.
  */
 
 public class Features {
-    private Pricing[] pricing;
+    private ArrayList<Pricing> pricing;
 
     private Deal deal;
     private String id;
@@ -26,7 +28,7 @@ public class Features {
 
     private String description;
 
-    private Background2 background;
+    private Background3 background;
 
     private String name;
 
@@ -38,11 +40,11 @@ public class Features {
 
     private String product_category_id;
 
-    public Pricing[] getPricing() {
+    public ArrayList<Pricing> getPricing() {
         return pricing;
     }
 
-    public void setPricing(Pricing[] pricing) {
+    public void setPricing(ArrayList<Pricing> pricing) {
         this.pricing = pricing;
     }
 
@@ -86,11 +88,11 @@ public class Features {
         this.description = description;
     }
 
-    public Background2 getBackground() {
+    public Background3 getBackground() {
         return background;
     }
 
-    public void setBackground(Background2 background) {
+    public void setBackground(Background3 background) {
         this.background = background;
     }
 

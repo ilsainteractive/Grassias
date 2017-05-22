@@ -10,11 +10,12 @@ import android.widget.LinearLayout;
 import android.widget.ScrollView;
 
 import com.ilsa.grassis.R;
+import com.ilsa.grassis.apivo.Products;
+import com.ilsa.grassis.library.AppContoller;
 import com.ilsa.grassis.library.MediumTextView;
 import com.ilsa.grassis.library.RegularTextView;
 import com.ilsa.grassis.library.SFUITextBold;
 import com.ilsa.grassis.library.ThinTextView;
-import com.ilsa.grassis.utils.Helper;
 
 /**
  * Menu item details activity contain detail about single entity selected from menu list .
@@ -37,6 +38,7 @@ public class MenuItemDetailsActivity extends AppCompatActivity {
     private RegularTextView mtxtIngValue1, mtxtIngValue2, mtxtIngValue3, mtxtIngValue4, mtxtIngValue5;
 
     private boolean isScrolled = false;
+    private Products product;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,7 +49,20 @@ public class MenuItemDetailsActivity extends AppCompatActivity {
         mActivity = this;
         isScrolled = false;
         initToolBar();
+        if (getIntent().getStringExtra("product_id") != null)
+            syncData(getIntent().getStringExtra("product_id"));
         InitComponents();
+    }
+
+    private void syncData(String product_id) {
+
+        for (Products product : AppContoller.nearByVo.getProducts()) {
+            if (product_id.equalsIgnoreCase(product.getId())) {
+                this.product = product;
+
+                break;
+            }
+        }
     }
 
     /**

@@ -222,7 +222,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
             }
         });
         recyclerView.addOnItemTouchListener(listener);
-
+        AppContoller.FavDispensaries.clear();
         for (int i = 0; i < AppContoller.FavDispensariesIds.size(); i++) {
             String id = AppContoller.FavDispensariesIds.get(i).getId();
             for (int ii = 0; ii < AppContoller.nearByVo.getDispensaries().size(); ii++) {

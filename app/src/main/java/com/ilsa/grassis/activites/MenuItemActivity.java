@@ -137,7 +137,6 @@ public class MenuItemActivity extends AppCompatActivity implements View.OnClickL
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         mtxtToolbarTitle = (MediumTextView) toolbar.findViewById(R.id.toolbar_title);
         toolbar.setTitle("");
-        //mtxtToolbarTitle.setTextSize(Helper.getFontSize(mContext.getResources(), 6));
         toolbar.setNavigationIcon(R.mipmap.signup_back_arrow);
         setSupportActionBar(toolbar);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -148,9 +147,6 @@ public class MenuItemActivity extends AppCompatActivity implements View.OnClickL
         });
     }
 
-    /**
-     * Layout components initializing and bridging here.
-     */
     private void InitComponents() {
 
         mScrollView = (ScrollView) findViewById(R.id.scrollView);
@@ -165,12 +161,13 @@ public class MenuItemActivity extends AppCompatActivity implements View.OnClickL
         listener = new RecyclerTouchListener(mContext, recyclerView, new MenuItemClickListener() {
             @Override
             public void onClick(View view, int position) {
-                startActivity(new Intent(mContext, MenuItemDetailsActivity.class));
+                Intent i = new Intent(mContext, MenuItemDetailsActivity.class);
+                i.putExtra("product_id", menuListVOs.get(position).getId());
+                startActivity(i);
             }
 
             @Override
             public void onLongClick(View view, int position) {
-                //Toast.makeText(mContext, "long clicked " + position, Toast.LENGTH_SHORT).show();
             }
         });
         recyclerView.addOnItemTouchListener(listener);

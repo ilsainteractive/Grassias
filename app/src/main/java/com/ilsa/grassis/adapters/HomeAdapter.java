@@ -181,16 +181,19 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MyViewHolder> 
 
     private void initViews(MyViewHolder mHolder, NearByVo nearByVo, int pos) {
 
-        ArrayList<Products> list = new ArrayList<>();
-        for (Products product : nearByVo.getProducts()) {
-            if (nearByVo.getDispensaries().get(pos).getDispensary().getId().equalsIgnoreCase(product.getDispensary_id())) {
-                list.add(product);
-            }
-        }
+//        ArrayList<Products> list = new ArrayList<>();
+//        for (Products product : nearByVo.getProducts()) {
+//            if (nearByVo.getDispensaries().get(pos).getDispensary().getId().equalsIgnoreCase(product.getDispensary_id())) {
+//                list.add(product);
+//            }
+//        }
+        ArrayList<Features> list = new ArrayList<>();
+        list = dataList.getDispensaries().get(pos).getDispensary().getFeatures();
+
         if (list.size() > 0) {
             mHolder.mProductPagerLayout.setVisibility(View.VISIBLE);
             mHolder.mNoProductLayout.setVisibility(View.GONE);
-            MenuGalleryAdapter adapter = new MenuGalleryAdapter(mContext);
+            MenuGalleryAdapterFeatures adapter = new MenuGalleryAdapterFeatures(mContext);
             adapter.setData(list);
             mHolder.pager.setAdapter(adapter);
 
