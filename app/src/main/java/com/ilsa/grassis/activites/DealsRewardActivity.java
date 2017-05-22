@@ -196,7 +196,8 @@ public class DealsRewardActivity extends AppCompatActivity implements View.OnCli
                 onBackPressed();
                 break;
             case R.id.home_btn_qr:
-                Dailogs.ShowToast(mContext, "QR Scan is not integrated.", Constants.SHORT_TIME);
+                startActivity(new Intent(mContext, CodeScanner.class));
+               // Dailogs.ShowToast(mContext, "QR Scan is not integrated.", Constants.SHORT_TIME);
                 break;
         }
     }

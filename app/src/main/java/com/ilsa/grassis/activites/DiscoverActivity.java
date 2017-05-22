@@ -249,9 +249,9 @@ public class DiscoverActivity extends AppCompatActivity implements View.OnClickL
     }
 
     private void AddAdaptor(final ArrayList<Dispensary> mData, String type) {
-        discovAdapter = new DiscovAdapter(mContext, mData, type);
+        discovAdapter = new DiscovAdapter(mContext, mData, type,DiscoverActivity.this);
         recyclerView = (ExpandedRecyclerView) findViewById(R.id.recycler_view);
-        listener = new RecyclerTouchListener(mContext, recyclerView, new MenuItemClickListener() {
+       /* listener = new RecyclerTouchListener(mContext, recyclerView, new MenuItemClickListener() {
             @Override
             public void onClick(View view, int position) {
                 Intent intent = new Intent(mContext, DispensaryInfoActivity.class);
@@ -263,8 +263,8 @@ public class DiscoverActivity extends AppCompatActivity implements View.OnClickL
             public void onLongClick(View view, int position) {
                 //Toast.makeText(mContext, "long clicked " + position, Toast.LENGTH_SHORT).show();
             }
-        });
-        recyclerView.addOnItemTouchListener(listener);
+        });*/
+       // recyclerView.addOnItemTouchListener(listener);
         recyclerView.setHasFixedSize(true);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(mContext);
         recyclerView.setLayoutManager(mLayoutManager);
@@ -379,8 +379,8 @@ public class DiscoverActivity extends AppCompatActivity implements View.OnClickL
                 startActivity(new Intent(mContext, HomeActivity.class));
                 break;
             case R.id.home_btn_qr:
-                //startActivity(new Intent(mContext, DealsRewardActivity.class));
-                Dailogs.ShowToast(mContext, "QR Scan is not integrated.", Constants.SHORT_TIME);
+                startActivity(new Intent(mContext, CodeScanner.class));
+               // Dailogs.ShowToast(mContext, "QR Scan is not integrated.", Constants.SHORT_TIME);
                 break;
         }
     }

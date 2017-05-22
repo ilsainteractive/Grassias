@@ -24,6 +24,7 @@ import com.ilsa.grassis.library.BoldSFTextView;
 import com.ilsa.grassis.library.Constants;
 import com.ilsa.grassis.library.RegularTextView;
 import com.ilsa.grassis.rootvo.FavToggleDespVO;
+import com.ilsa.grassis.unknow.Dispensaries;
 import com.ilsa.grassis.utils.Dailogs;
 
 import org.json.JSONObject;
@@ -73,6 +74,27 @@ public class FormFragment extends Fragment {
 
         infoTitle.setText(this.dispensary.getName());
         infoaddress.setText(this.dispensary.getLocation().getAddress());
+        boolean contain = false;
+        for (int i = 0; i < AppContoller.FavDispensariesIds.size(); i++) {
+            if (AppContoller.FavDispensariesIds.get(i).getDispensary_id().equalsIgnoreCase(dispensary.getId())) {
+                contain = true;
+                break;
+            }
+        }
+
+        if (contain)
+            heart.setImageResource(R.mipmap.fillheart);
+        else
+            heart.setImageResource(R.mipmap.heart_icon_empty);
+
+/*
+
+        if (AppContoller.FavDispensariesIds.contains(dispensary.getId()))
+            heart.setImageResource(R.mipmap.fillheart);
+        else
+            heart.setImageResource(R.mipmap.heart_icon_empty);
+*/
+
 
         return view;
     }
@@ -87,17 +109,10 @@ public class FormFragment extends Fragment {
             public void onClick(View v) {
                 switch (v.getId()) {
                     case R.id.like:
-
-                        FavoriteHeartDispensary(dispensary.getId());
-                        /*if (blank) {
-                            heart.setImageResource(R.mipmap.fillheart);
-                            blank = false;
-                        } else {
-                            heart.setImageResource(R.mipmap.heart_icon_empty);
-                            blank = true;
-                        }
-                        Toast.makeText(getContext(), "Liked", Toast.LENGTH_SHORT).show();*/
-                        // DeleteAlarm(marker);
+                        if (AppContoller.IsLoggedIn && AppContoller.userData != null)
+                            FavoriteHeartDispensary(dispensary.getId());
+                        else
+                            Dailogs.ShowToast(getContext(), "You need to sign in or sign up before continuing", Constants.SHORT_TIME);
                         break;
                     case R.id.infoWindowMainLayoutId:
                         Intent intent = new Intent(getContext(), DispensaryInfoActivity.class);
@@ -115,7 +130,7 @@ public class FormFragment extends Fragment {
         /*view.findViewById(R.id.deleteIcon).setOnClickListener(onClickListener);*/
     }
 
-    private void FavoriteHeartDispensary(String dispensaryId) {
+    private void FavoriteHeartDispensary(final String dispensaryId) {
 
         final ProgressDialog pd = new ProgressDialog(getContext());
         pd.setMessage(getString(R.string.Verifying_msg));
@@ -168,9 +183,15 @@ public class FormFragment extends Fragment {
                         @Override
                         public void run() {
                             if (favToggleDespVO.getDispensary().getId() != null) {
-                                if (favToggleDespVO.getDispensary().getState_change().equalsIgnoreCase("favorited"))
+                                if (favToggleDespVO.getDispensary().getState_change().equalsIgnoreCase("favorited")) {
                                     heart.setImageResource(R.mipmap.fillheart);
-                                else if (favToggleDespVO.getDispensary().getState_change().equalsIgnoreCase("unfavorited"))
+
+                                    Dispensaries dispensariesLikedId = new Dispensaries();
+                                    dispensariesLikedId.setDispensary_id(dispensaryId);
+                                    AppContoller.FavDispensariesIds.add(dispensariesLikedId);
+
+                                } else if (favToggleDespVO.getDispensary().getState_change().equalsIgnoreCase("unfavorited"))
+
                                     heart.setImageResource(R.mipmap.heart_icon_empty);
                             }
                         }

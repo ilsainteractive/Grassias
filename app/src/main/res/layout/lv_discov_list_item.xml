@@ -9,58 +9,66 @@
     android:weightSum="10"
     tools:context="com.ilsa.grassis.activites.MenuItemActivity">
 
-    <ImageView
-        android:id="@+id/discov_map_item_lv_image"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_marginRight="@dimen/_2sdp"
-        android:layout_weight="2.2"
-        android:scaleType="centerInside"
-        android:src="@mipmap/map_dailog_popup_img" />
-
     <LinearLayout
+        android:id="@+id/mainLayout_id"
         android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="6.8"
-        android:orientation="vertical">
+        android:layout_height="wrap_content"
+        android:layout_weight="9">
 
-        <com.ilsa.grassis.library.BoldSFTextView
-            android:id="@+id/discov_map_item_lv_title"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_5sdp"
-            android:text="TITLE NAME HERE"
-            android:textColor="@color/txt_psd_color"
-            android:textSize="@dimen/_13sdp"></com.ilsa.grassis.library.BoldSFTextView>
+        <ImageView
+            android:id="@+id/discov_map_item_lv_image"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginRight="@dimen/_2sdp"
+            android:layout_marginEnd="@dimen/_2sdp"
+            android:layout_weight="2.2"
+            android:scaleType="centerInside"
+            android:src="@mipmap/map_dailog_popup_img" />
 
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_2sdp"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="6.8"
             android:orientation="vertical">
 
-            <com.ilsa.grassis.library.RegularTextView
-                android:id="@+id/discov_map_item_lv_add"
+            <com.ilsa.grassis.library.BoldSFTextView
+                android:id="@+id/discov_map_item_lv_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="1dp"
-                android:text="1658 W. 227th st. Torrance, CA 90501 "
+                android:layout_marginTop="@dimen/_5sdp"
+                android:text="TITLE NAME HERE"
                 android:textColor="@color/txt_psd_color"
-                android:textSize="@dimen/_10sdp" />
+                android:textSize="@dimen/_13sdp"/>
 
-            <com.ilsa.grassis.library.RegularTextView
-                android:id="@+id/discov_map_item_lv_timings"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_marginTop="1dp"
-                android:text="2.3 miles  |  OPEN till 8:00pm"
-                android:textColor="@color/txt_psd_color"
-                android:textSize="@dimen/_10sdp" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_2sdp"
+                android:orientation="vertical">
+
+                <com.ilsa.grassis.library.RegularTextView
+                    android:id="@+id/discov_map_item_lv_add"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="1dp"
+                    android:text="1658 W. 227th st. Torrance, CA 90501 "
+                    android:textColor="@color/txt_psd_color"
+                    android:textSize="@dimen/_10sdp" />
+
+                <com.ilsa.grassis.library.RegularTextView
+                    android:id="@+id/discov_map_item_lv_timings"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="1dp"
+                    android:text="2.3 miles  |  OPEN till 8:00pm"
+                    android:textColor="@color/txt_psd_color"
+                    android:textSize="@dimen/_10sdp" />
+            </LinearLayout>
         </LinearLayout>
     </LinearLayout>
 
     <ImageView
-        android:id="@+id/menu_item_lv_image_proceed"
+        android:id="@+id/discov_map_item_lv_image_proceed"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_gravity="center"

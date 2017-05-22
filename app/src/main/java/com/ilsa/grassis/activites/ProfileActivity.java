@@ -217,8 +217,9 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
                 startActivity(new Intent(mContext, HomeActivity.class));
                 break;
             case R.id.home_btn_qr:
+                startActivity(new Intent(mContext, CodeScanner.class));
                 //startActivity(new Intent(mContext, DealsRewardActivity.class));
-                Dailogs.ShowToast(mContext, "QR Scan is not integrated.", Constants.SHORT_TIME);
+                // Dailogs.ShowToast(mContext, "QR Scan is not integrated.", Constants.SHORT_TIME);
                 break;
             case R.id.logOut:
                 if (Helper.checkInternetConnection(mContext)) {
