@@ -20,6 +20,7 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
@@ -149,6 +150,9 @@ public class DispensaryInfoActivity extends AppCompatActivity implements OnMapRe
     @BindView(R.id.disInfo_btn_heart)
     ImageView heart;
 
+    @BindView(R.id.bottomLayout)
+    RelativeLayout relativeLayout;
+
     private GoogleMap mMap;
     private SearchView mSearchView;
     private String mDispensary_id;
@@ -188,7 +192,7 @@ public class DispensaryInfoActivity extends AppCompatActivity implements OnMapRe
 
         for (int i = 0; i < AppContoller.FavDispensariesIds.size(); i++) {
             if (AppContoller.FavDispensariesIds.get(i).getDispensary_id().equalsIgnoreCase(mDispensary_id)) {
-                heart.setImageResource(R.mipmap.fillheart);
+                relativeLayout.setVisibility(View.GONE);
                 break;
             }
         }
@@ -242,7 +246,7 @@ public class DispensaryInfoActivity extends AppCompatActivity implements OnMapRe
         mAddToFav.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               // Dailogs.ShowToast(mContext, "Favorites Api is not working", Toast.LENGTH_LONG);
+                // Dailogs.ShowToast(mContext, "Favorites Api is not working", Toast.LENGTH_LONG);
             }
         });
 
@@ -458,14 +462,15 @@ public class DispensaryInfoActivity extends AppCompatActivity implements OnMapRe
                         public void run() {
                             if (favToggleDespVO.getDispensary().getId() != null) {
                                 if (favToggleDespVO.getDispensary().getState_change().equalsIgnoreCase("favorited")) {
-                                    heart.setImageResource(R.mipmap.fillheart);
+                                    // heart.setImageResource(R.mipmap.fillheart);
 
+                                    relativeLayout.setVisibility(View.GONE);
                                     Dispensaries dispensariesLikedId = new Dispensaries();
                                     dispensariesLikedId.setDispensary_id(dispensaryId);
                                     AppContoller.FavDispensariesIds.add(dispensariesLikedId);
 
                                 } else if (favToggleDespVO.getDispensary().getState_change().equalsIgnoreCase("unfavorited")) {
-                                    heart.setImageResource(R.mipmap.heart_icon_empty);
+                                    // heart.setImageResource(R.mipmap.heart_icon_empty);
 
                                     for (int i = 0; i < AppContoller.FavDispensariesIds.size(); i++) {
                                         if (AppContoller.FavDispensariesIds.get(i).getDispensary_id().equalsIgnoreCase(dispensaryId)) {
