@@ -183,9 +183,9 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_home, menu);
+        getMenuInflater().inflate(R.menu.menu_menu, menu);
 
-        MenuItem myActionMenuItem = menu.findItem(R.id.action_search);
+        MenuItem myActionMenuItem = menu.findItem(R.id.menu_menu_action_search);
         mSearchView = (SearchView) myActionMenuItem.getActionView();
         mSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
@@ -202,6 +202,22 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
                 return false;
             }
         });
+
+        mSearchView.setOnSearchClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mtxtToolbarTitle.setVisibility(View.GONE);
+            }
+        });
+
+        mSearchView.setOnCloseListener(new SearchView.OnCloseListener() {
+            @Override
+            public boolean onClose() {
+                mtxtToolbarTitle.setVisibility(View.VISIBLE);
+                return false;
+            }
+        });
+
         return true;
     }
 
@@ -233,5 +249,15 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
                 startActivity(new Intent(mContext, DealsRewardActivity.class));
                 break;
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+
+        if (mtxtToolbarTitle.getVisibility() == View.GONE) {
+            mSearchView.onActionViewCollapsed();
+            mtxtToolbarTitle.setVisibility(View.VISIBLE);
+        } else
+            super.onBackPressed();
     }
 }

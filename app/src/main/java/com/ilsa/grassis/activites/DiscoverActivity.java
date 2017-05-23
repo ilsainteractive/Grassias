@@ -11,6 +11,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.DividerItemDecoration;
@@ -174,7 +175,7 @@ public class DiscoverActivity extends AppCompatActivity implements View.OnClickL
                 if (theBitmap != null) {
                     markerIcon = Helper.getMarkerIconFromDrawable(theBitmap);
                 } else {
-                    markerIcon = Helper.getMarkerIconFromDrawable(mContext.getDrawable(R.drawable.add));
+                    markerIcon = Helper.getMarkerIconFromDrawable(ContextCompat.getDrawable(mContext, R.drawable.add));
                 }
                 latLng = new LatLng(dispensary.getLocation().getCoords().getLatitude(), dispensary.getLocation().getCoords().getLongitude());
                 mSelectedId = dispensary.getId();
@@ -249,7 +250,7 @@ public class DiscoverActivity extends AppCompatActivity implements View.OnClickL
     }
 
     private void AddAdaptor(final ArrayList<Dispensary> mData, String type) {
-        discovAdapter = new DiscovAdapter(mContext, mData, type,DiscoverActivity.this);
+        discovAdapter = new DiscovAdapter(mContext, mData, type, DiscoverActivity.this);
         recyclerView = (ExpandedRecyclerView) findViewById(R.id.recycler_view);
        /* listener = new RecyclerTouchListener(mContext, recyclerView, new MenuItemClickListener() {
             @Override
@@ -264,7 +265,7 @@ public class DiscoverActivity extends AppCompatActivity implements View.OnClickL
                 //Toast.makeText(mContext, "long clicked " + position, Toast.LENGTH_SHORT).show();
             }
         });*/
-       // recyclerView.addOnItemTouchListener(listener);
+        // recyclerView.addOnItemTouchListener(listener);
         recyclerView.setHasFixedSize(true);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(mContext);
         recyclerView.setLayoutManager(mLayoutManager);
@@ -381,7 +382,7 @@ public class DiscoverActivity extends AppCompatActivity implements View.OnClickL
                 break;
             case R.id.home_btn_qr:
                 startActivity(new Intent(mContext, CodeScanner.class));
-               // Dailogs.ShowToast(mContext, "QR Scan is not integrated.", Constants.SHORT_TIME);
+                // Dailogs.ShowToast(mContext, "QR Scan is not integrated.", Constants.SHORT_TIME);
                 break;
         }
     }
@@ -396,5 +397,11 @@ public class DiscoverActivity extends AppCompatActivity implements View.OnClickL
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onResume() {
+        discovAdapter.notifyDataSetChanged();
+        super.onResume();
     }
 }

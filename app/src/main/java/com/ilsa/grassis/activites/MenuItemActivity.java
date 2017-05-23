@@ -230,7 +230,33 @@ public class MenuItemActivity extends AppCompatActivity implements View.OnClickL
                 return false;
             }
         });
+
+        mSearchView.setOnSearchClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mtxtToolbarTitle.setVisibility(View.GONE);
+            }
+        });
+
+        mSearchView.setOnCloseListener(new SearchView.OnCloseListener() {
+            @Override
+            public boolean onClose() {
+                mtxtToolbarTitle.setVisibility(View.VISIBLE);
+                return false;
+            }
+        });
+
         return true;
+    }
+
+    @Override
+    public void onBackPressed() {
+
+        if (mtxtToolbarTitle.getVisibility() == View.GONE) {
+            mSearchView.onActionViewCollapsed();
+            mtxtToolbarTitle.setVisibility(View.VISIBLE);
+        } else
+            super.onBackPressed();
     }
 
     @Override

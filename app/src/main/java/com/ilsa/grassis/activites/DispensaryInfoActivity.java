@@ -1,6 +1,7 @@
 package com.ilsa.grassis.activites;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
@@ -8,10 +9,12 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -29,7 +32,10 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.ilsa.grassis.R;
+import com.ilsa.grassis.adapters.DiscovAdapter;
 import com.ilsa.grassis.adapters.MenuGalleryAdapter;
 import com.ilsa.grassis.apivo.Dispensary;
 import com.ilsa.grassis.library.AppContoller;
@@ -38,15 +44,25 @@ import com.ilsa.grassis.library.MediumTextView;
 import com.ilsa.grassis.library.RegularTextView;
 import com.ilsa.grassis.library.SFUITextBold;
 import com.ilsa.grassis.library.ThinTextView;
+import com.ilsa.grassis.rootvo.FavToggleDespVO;
+import com.ilsa.grassis.unknow.Dispensaries;
 import com.ilsa.grassis.utils.Dailogs;
 import com.ilsa.grassis.utils.Helper;
 
+import org.json.JSONObject;
+
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import jp.wasabeef.glide.transformations.CropCircleTransformation;
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
 /**
  * The type Dispensary info activity.
@@ -130,6 +146,9 @@ public class DispensaryInfoActivity extends AppCompatActivity implements OnMapRe
     @BindView(R.id.add_to_fav)
     LinearLayout mAddToFav;
 
+    @BindView(R.id.disInfo_btn_heart)
+    ImageView heart;
+
     private GoogleMap mMap;
     private SearchView mSearchView;
     private String mDispensary_id;
@@ -142,6 +161,7 @@ public class DispensaryInfoActivity extends AppCompatActivity implements OnMapRe
         ButterKnife.bind(this);
 
         mContext = this;
+        mActivity = this;
         SyncData();
         initToolBar();
         InitComponents();
@@ -163,6 +183,13 @@ public class DispensaryInfoActivity extends AppCompatActivity implements OnMapRe
                     mDispensary = AppContoller.nearByVo.getDispensaries().get(i).getDispensary();
                     break;
                 }
+            }
+        }
+
+        for (int i = 0; i < AppContoller.FavDispensariesIds.size(); i++) {
+            if (AppContoller.FavDispensariesIds.get(i).getDispensary_id().equalsIgnoreCase(mDispensary_id)) {
+                heart.setImageResource(R.mipmap.fillheart);
+                break;
             }
         }
     }
@@ -215,7 +242,14 @@ public class DispensaryInfoActivity extends AppCompatActivity implements OnMapRe
         mAddToFav.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Dailogs.ShowToast(mContext, "Favorites Api is not working", Toast.LENGTH_LONG);
+               // Dailogs.ShowToast(mContext, "Favorites Api is not working", Toast.LENGTH_LONG);
+            }
+        });
+
+        heart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FavoriteHeartDispensary(mDispensary_id);
             }
         });
     }
@@ -350,7 +384,12 @@ public class DispensaryInfoActivity extends AppCompatActivity implements OnMapRe
 
                     MarkerOptions marker = new MarkerOptions().position(latLng);
                     // Bitmap mBitmap = addBorderToBitmap(drawableToBitmap(theBitmap));
-                    BitmapDescriptor markerIcon = Helper.getMarkerIconFromDrawable(theBitmap);
+                    BitmapDescriptor markerIcon;
+                    if (theBitmap != null) {
+                        markerIcon = Helper.getMarkerIconFromDrawable(theBitmap);
+                    } else {
+                        markerIcon = Helper.getMarkerIconFromDrawable(ContextCompat.getDrawable(mContext, R.drawable.add));
+                    }
                     marker.icon(markerIcon);
                     mMap.addMarker(marker);
                     mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15.0f));
@@ -363,5 +402,83 @@ public class DispensaryInfoActivity extends AppCompatActivity implements OnMapRe
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_dispensory, menu);
         return true;
+    }
+
+    private void FavoriteHeartDispensary(final String dispensaryId) {
+
+        final ProgressDialog pd = new ProgressDialog(mContext);
+        pd.setMessage(mContext.getString(R.string.processing));
+        pd.setCancelable(false);
+        pd.show();
+
+        OkHttpClient client = new OkHttpClient();
+
+        Request request = new Request.Builder()
+                .url("http://kushmarketing.herokuapp.com/api/dispensary/" + dispensaryId + "/toggle_favorite")
+                .get()
+                .addHeader("accept", "application/vnd.kush_marketing.com; version=1")
+                .addHeader("authorization", "Bearer " + AppContoller.userData.getUser().getAccess_token())
+                .addHeader("x-client-email", AppContoller.userData.getUser().getEmail())
+                .addHeader("cache-control", "no-cache")
+                .addHeader("postman-token", "fd724e2e-add7-e5fd-2f92-e38aaa653b93")
+                .build();
+
+        client.newCall(request).enqueue(new Callback() {
+
+            @Override
+            public void onFailure(Call call, IOException e) {
+                e.printStackTrace();
+                pd.dismiss();
+            }
+
+            @Override
+            public void onResponse(Call call, final Response response) throws IOException {
+                pd.dismiss();
+                final String res = response.body().string().toString();
+                Log.i("response", res);
+                if (!response.isSuccessful()) {
+                    mActivity.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            try {
+                                JSONObject jsonObject = new JSONObject(res);
+                                JSONObject error = jsonObject.getJSONObject("error");
+                                String message = error.get("message").toString();
+                                Dailogs.ShowToast(mContext, message, Constants.LONG_TIME);
+                            } catch (Exception e) {
+                            }
+                        }
+                    });
+                } else {
+                    Gson gson = new GsonBuilder().create();
+                    final FavToggleDespVO favToggleDespVO = gson.fromJson(res, FavToggleDespVO.class);
+
+                    mActivity.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            if (favToggleDespVO.getDispensary().getId() != null) {
+                                if (favToggleDespVO.getDispensary().getState_change().equalsIgnoreCase("favorited")) {
+                                    heart.setImageResource(R.mipmap.fillheart);
+
+                                    Dispensaries dispensariesLikedId = new Dispensaries();
+                                    dispensariesLikedId.setDispensary_id(dispensaryId);
+                                    AppContoller.FavDispensariesIds.add(dispensariesLikedId);
+
+                                } else if (favToggleDespVO.getDispensary().getState_change().equalsIgnoreCase("unfavorited")) {
+                                    heart.setImageResource(R.mipmap.heart_icon_empty);
+
+                                    for (int i = 0; i < AppContoller.FavDispensariesIds.size(); i++) {
+                                        if (AppContoller.FavDispensariesIds.get(i).getDispensary_id().equalsIgnoreCase(dispensaryId)) {
+                                            AppContoller.FavDispensariesIds.remove(i);
+                                            break;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    });
+                }
+            }
+        });
     }
 }
