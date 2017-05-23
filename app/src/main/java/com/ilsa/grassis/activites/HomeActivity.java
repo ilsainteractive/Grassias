@@ -204,6 +204,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(LAYOUT_INFLATER_SERVICE);
         View customView = inflater.inflate(R.layout.popupwindow_listview, null);
         ExpandedRecyclerView recyclerView = (ExpandedRecyclerView) customView.findViewById(R.id.recycler_viewId);  // List defined in XML ( See Below )
+        TextView switch_your_favorite_dis = (TextView) customView.findViewById(R.id.switch_your_favorite_dis);
         recyclerView.setHasFixedSize(true);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(mContext);
         recyclerView.setLayoutManager(mLayoutManager);
@@ -223,8 +224,9 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         });
         recyclerView.addOnItemTouchListener(listener);
         AppContoller.FavDispensaries.clear();
+        AppContoller.FavDispensariesIds = AppContoller.userData.getUser().getFavorites().getDispensaries();
         for (int i = 0; i < AppContoller.FavDispensariesIds.size(); i++) {
-            String id = AppContoller.FavDispensariesIds.get(i).getId();
+            String id = AppContoller.FavDispensariesIds.get(i).getDispensary_id();
             for (int ii = 0; ii < AppContoller.nearByVo.getDispensaries().size(); ii++) {
                 if (AppContoller.nearByVo.getDispensaries().get(ii).getDispensary().getId().equalsIgnoreCase(id)) {
                     AppContoller.FavDispensaries.add(AppContoller.nearByVo.getDispensaries().get(ii).getDispensary());
@@ -233,6 +235,10 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
             }
         }
 
+        if (AppContoller.FavDispensaries.size() < 1)
+            switch_your_favorite_dis.setVisibility(View.GONE);
+        else
+            Toast.makeText(this, "No liked dispensary", Toast.LENGTH_SHORT).show();
         ToggleDisAdapter adapter = new ToggleDisAdapter(mContext, AppContoller.FavDispensaries);
         recyclerView.setAdapter(adapter);
 
