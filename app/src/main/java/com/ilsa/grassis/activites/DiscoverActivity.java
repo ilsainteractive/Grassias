@@ -312,6 +312,7 @@ public class DiscoverActivity extends AppCompatActivity implements View.OnClickL
             @Override
             public void onClick(View view) {
                 if (IsMapView) {
+                    discovAdapter.notifyDataSetChanged();
                     recyclerView.setVisibility(View.VISIBLE);
                     mapView.setVisibility(View.GONE);
                     fab.setImageResource(R.mipmap.fab_map);

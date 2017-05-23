@@ -24,6 +24,7 @@ import com.ilsa.grassis.library.BoldSFTextView;
 import com.ilsa.grassis.library.Constants;
 import com.ilsa.grassis.library.RegularTextView;
 import com.ilsa.grassis.rootvo.FavToggleDespVO;
+import com.ilsa.grassis.unknow.Dispensaries;
 import com.ilsa.grassis.utils.Dailogs;
 import com.ilsa.grassis.utils.Helper;
 
@@ -75,6 +76,21 @@ public class DiscovAdapter extends RecyclerView.Adapter<DiscovAdapter.MyViewHold
             holder.title.setText(dispensary.getName());
             holder.add.setText(dispensary.getDescription());
             holder.timing.setText(Helper.getBoldedText("2.3 miles  |  OPEN till 8:00pm", 14, 19));
+
+            boolean contain = false;
+            for (int i = 0; i < AppContoller.FavDispensariesIds.size(); i++) {
+                if (AppContoller.FavDispensariesIds.get(i).getDispensary_id().equalsIgnoreCase(dispensary.getId())) {
+                    contain = true;
+                    break;
+                }
+            }
+
+            if (contain)
+                holder.icon.setImageResource(R.mipmap.fillheart);
+            else
+                holder.icon.setImageResource(R.mipmap.heart_icon_empty);
+
+
             holder.icon.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -125,7 +141,7 @@ public class DiscovAdapter extends RecyclerView.Adapter<DiscovAdapter.MyViewHold
         }
     }
 
-    private void FavoriteHeartDispensary(String dispensaryId, final MyViewHolder holder) {
+    private void FavoriteHeartDispensary(final String dispensaryId, final MyViewHolder holder) {
 
         final ProgressDialog pd = new ProgressDialog(mContext);
         pd.setMessage(mContext.getString(R.string.Verifying_msg));
@@ -178,10 +194,23 @@ public class DiscovAdapter extends RecyclerView.Adapter<DiscovAdapter.MyViewHold
                         @Override
                         public void run() {
                             if (favToggleDespVO.getDispensary().getId() != null) {
-                                if (favToggleDespVO.getDispensary().getState_change().equalsIgnoreCase("favorited"))
+                                if (favToggleDespVO.getDispensary().getState_change().equalsIgnoreCase("favorited")) {
                                     holder.icon.setImageResource(R.mipmap.fillheart);
-                                else if (favToggleDespVO.getDispensary().getState_change().equalsIgnoreCase("unfavorited"))
+
+                                    Dispensaries dispensariesLikedId = new Dispensaries();
+                                    dispensariesLikedId.setDispensary_id(dispensaryId);
+                                    AppContoller.FavDispensariesIds.add(dispensariesLikedId);
+
+                                } else if (favToggleDespVO.getDispensary().getState_change().equalsIgnoreCase("unfavorited")) {
                                     holder.icon.setImageResource(R.mipmap.heart_icon_empty);
+
+                                    for (int i = 0; i < AppContoller.FavDispensariesIds.size(); i++) {
+                                        if (AppContoller.FavDispensariesIds.get(i).getDispensary_id().equalsIgnoreCase(dispensaryId)) {
+                                            AppContoller.FavDispensariesIds.remove(i);
+                                            break;
+                                        }
+                                    }
+                                }
                             }
                         }
                     });

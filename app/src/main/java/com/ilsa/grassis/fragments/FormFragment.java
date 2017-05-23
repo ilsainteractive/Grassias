@@ -190,9 +190,16 @@ public class FormFragment extends Fragment {
                                     dispensariesLikedId.setDispensary_id(dispensaryId);
                                     AppContoller.FavDispensariesIds.add(dispensariesLikedId);
 
-                                } else if (favToggleDespVO.getDispensary().getState_change().equalsIgnoreCase("unfavorited"))
-
+                                } else if (favToggleDespVO.getDispensary().getState_change().equalsIgnoreCase("unfavorited")) {
                                     heart.setImageResource(R.mipmap.heart_icon_empty);
+
+                                    for (int i = 0; i < AppContoller.FavDispensariesIds.size(); i++) {
+                                        if (AppContoller.FavDispensariesIds.get(i).getDispensary_id().equalsIgnoreCase(dispensaryId)) {
+                                            AppContoller.FavDispensariesIds.remove(i);
+                                            break;
+                                        }
+                                    }
+                                }
                             }
                         }
                     });
