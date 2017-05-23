@@ -197,10 +197,26 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_home, menu);
+        getMenuInflater().inflate(R.menu.menu_menu, menu);
 
-        MenuItem myActionMenuItem = menu.findItem(R.id.action_search);
+        MenuItem myActionMenuItem = menu.findItem(R.id.menu_menu_action_search);
         mSearchView = (SearchView) myActionMenuItem.getActionView();
+
+        mSearchView.setOnSearchClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mtxtToolbarTitle.setVisibility(View.GONE);
+            }
+        });
+
+        mSearchView.setOnCloseListener(new SearchView.OnCloseListener() {
+            @Override
+            public boolean onClose() {
+                mtxtToolbarTitle.setVisibility(View.VISIBLE);
+                return false;
+            }
+        });
+
         mSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
