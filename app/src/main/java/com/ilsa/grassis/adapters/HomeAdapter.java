@@ -2,6 +2,7 @@ package com.ilsa.grassis.adapters;
 
 import android.content.Context;
 import android.content.Intent;
+import android.location.Location;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -17,6 +18,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
+import com.google.android.gms.maps.model.LatLng;
 import com.ilsa.grassis.R;
 import com.ilsa.grassis.activites.MenuActivity;
 import com.ilsa.grassis.apivo.Dispensaries;
@@ -29,9 +31,12 @@ import com.ilsa.grassis.library.ThinTextView;
 import com.ilsa.grassis.rootvo.NearByVo;
 import com.ilsa.grassis.utils.Dailogs;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 
 import jp.wasabeef.glide.transformations.CropCircleTransformation;
 import me.relex.circleindicator.CircleIndicator;
@@ -170,12 +175,96 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MyViewHolder> 
 
     private void setTexts(MyViewHolder mHolder, Dispensary dispensary) {
         mHolder.mDespensoryTitle.setText(dispensary.getName());
-        if (dispensary.getSchedule().getMon_open() != null)
-            mHolder.mDespensoryAddresse.setText((Integer.parseInt(dispensary.getLocation().getNearby_radius()) / 1000)
-                    + " miles | OPEN till " + dispensary.getSchedule().getMon_open().substring(dispensary.getSchedule().getMon_open().indexOf("T") + 1, dispensary.getSchedule().getMon_open().indexOf("T") + 6));
-        else {
-            mHolder.mDespensoryAddresse.setText((Integer.parseInt(dispensary.getLocation().getNearby_radius()) / 1000)
+        int disInMiles = distanceOfLocation(31.53102, 74.35236, dispensary.getLocation().getCoords().getLatitude(), dispensary.getLocation().getCoords().getLongitude());
+        if (dispensary.getSchedule().getMon_open() != null) {
+
+            Calendar calendar = Calendar.getInstance();
+            int day = calendar.get(Calendar.DAY_OF_WEEK);
+
+            switch (day) {
+                case Calendar.SUNDAY:
+                    mHolder.mDespensoryAddresse.setText(disInMiles
+                            + " miles | OPEN till " + timeFormat24To12(dispensary.getSchedule().getSun_close().substring(dispensary.getSchedule().getSun_close().indexOf("T") + 1, dispensary.getSchedule().getSun_close().indexOf("T") + 6)));
+                    break;
+                case Calendar.MONDAY:
+                    mHolder.mDespensoryAddresse.setText(disInMiles
+                            + " miles | OPEN till " + timeFormat24To12(dispensary.getSchedule().getMon_close().substring(dispensary.getSchedule().getMon_close().indexOf("T") + 1, dispensary.getSchedule().getMon_close().indexOf("T") + 6)));
+                    break;
+                case Calendar.TUESDAY:
+                    mHolder.mDespensoryAddresse.setText(disInMiles
+                            + " miles | OPEN till " + timeFormat24To12(dispensary.getSchedule().getTue_close().substring(dispensary.getSchedule().getTue_close().indexOf("T") + 1, dispensary.getSchedule().getTue_close().indexOf("T") + 6)));
+                    break;
+                case Calendar.WEDNESDAY:
+                    mHolder.mDespensoryAddresse.setText(disInMiles
+                            + " miles | OPEN till " + timeFormat24To12(dispensary.getSchedule().getWed_close().substring(dispensary.getSchedule().getWed_close().indexOf("T") + 1, dispensary.getSchedule().getWed_close().indexOf("T") + 6)));
+                    break;
+                case Calendar.THURSDAY:
+                    mHolder.mDespensoryAddresse.setText(disInMiles
+                            + " miles | OPEN till " + timeFormat24To12(dispensary.getSchedule().getThu_close().substring(dispensary.getSchedule().getThu_close().indexOf("T") + 1, dispensary.getSchedule().getThu_close().indexOf("T") + 6)));
+                    break;
+                case Calendar.FRIDAY:
+                    mHolder.mDespensoryAddresse.setText(disInMiles
+                            + " miles | OPEN till " + timeFormat24To12(dispensary.getSchedule().getFri_close().substring(dispensary.getSchedule().getFri_close().indexOf("T") + 1, dispensary.getSchedule().getFri_close().indexOf("T") + 6)));
+                    break;
+                case Calendar.SATURDAY:
+                    //dispensary.getLocation().getCoords().getLatitude()
+                    mHolder.mDespensoryAddresse.setText(disInMiles
+                            + " miles | OPEN till " + timeFormat24To12(dispensary.getSchedule().getSat_close().substring(dispensary.getSchedule().getSat_close().indexOf("T") + 1, dispensary.getSchedule().getSat_close().indexOf("T") + 6)));
+                    break;
+            }
+        } else {
+            mHolder.mDespensoryAddresse.setText(disInMiles
                     + " miles");
+        }
+    }
+
+    private int distanceOfLocation(double lat1, double lon1, double lat2, double lon2) {
+        Location loc1 = new Location("");
+        loc1.setLatitude(lat1);
+        loc1.setLongitude(lon1);
+
+        Location loc2 = new Location("");
+        loc2.setLatitude(lat2);
+        loc2.setLongitude(lon2);
+
+
+        float meter = loc1.distanceTo(loc2);
+        return (int)(meter * 0.00062137119);
+    }
+
+    private String timeFormat24To12(String timein24Format) {
+        String timein12Format = null;
+        try {
+
+            final SimpleDateFormat sdf = new SimpleDateFormat("H:mm");
+            final Date dateObj = sdf.parse(timein24Format);
+            timein12Format = new SimpleDateFormat("K:mm a").format(dateObj);
+        } catch (Exception e) {
+        }
+
+        return timein12Format;
+    }
+
+
+    private void getCurrentDay() {
+        Calendar calendar = Calendar.getInstance();
+        int day = calendar.get(Calendar.DAY_OF_WEEK);
+
+        switch (day) {
+            case Calendar.SUNDAY:
+                break;
+            case Calendar.MONDAY:
+                break;
+            case Calendar.TUESDAY:
+                break;
+            case Calendar.WEDNESDAY:
+                break;
+            case Calendar.THURSDAY:
+                break;
+            case Calendar.FRIDAY:
+                break;
+            case Calendar.SATURDAY:
+                break;
         }
     }
 
