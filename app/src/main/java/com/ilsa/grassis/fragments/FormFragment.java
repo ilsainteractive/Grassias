@@ -67,7 +67,7 @@ public class FormFragment extends Fragment {
         heart = (ImageView) view.findViewById(R.id.like);
 
         Glide.with(getContext()).
-                load(this.dispensary.getLogo().getSmall())
+                load(this.dispensary.getLogo().getSmall()).placeholder(R.mipmap.ic_launcher)
                 .bitmapTransform(new CropCircleTransformation(getContext()))
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .into(profile_image);

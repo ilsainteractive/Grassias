@@ -17,7 +17,6 @@ import com.google.gson.GsonBuilder;
 import com.ilsa.grassis.R;
 import com.ilsa.grassis.activites.DiscoverActivity;
 import com.ilsa.grassis.activites.DispensaryInfoActivity;
-import com.ilsa.grassis.apivo.Active;
 import com.ilsa.grassis.apivo.Dispensary;
 import com.ilsa.grassis.library.AppContoller;
 import com.ilsa.grassis.library.BoldSFTextView;
@@ -141,7 +140,7 @@ public class DiscovAdapter extends RecyclerView.Adapter<DiscovAdapter.MyViewHold
         }
     }
 
-    private void FavoriteHeartDispensary(final String dispensaryId, final MyViewHolder holder) {
+    private void FavoriteHeartDispensary(String dispensaryId, final MyViewHolder holder) {
 
         final ProgressDialog pd = new ProgressDialog(mContext);
         pd.setMessage(mContext.getString(R.string.processing));
@@ -152,7 +151,7 @@ public class DiscovAdapter extends RecyclerView.Adapter<DiscovAdapter.MyViewHold
 
         Request request = new Request.Builder()
                 .url("http://kushmarketing.herokuapp.com/api/dispensary/" + dispensaryId + "/toggle_favorite")
-                .get()
+                .get().tag(dispensaryId)
                 .addHeader("accept", "application/vnd.kush_marketing.com; version=1")
                 .addHeader("authorization", "Bearer " + AppContoller.userData.getUser().getAccess_token())
                 .addHeader("x-client-email", AppContoller.userData.getUser().getEmail())
@@ -170,7 +169,6 @@ public class DiscovAdapter extends RecyclerView.Adapter<DiscovAdapter.MyViewHold
 
             @Override
             public void onResponse(Call call, final Response response) throws IOException {
-                pd.dismiss();
                 final String res = response.body().string().toString();
                 Log.i("response", res);
                 if (!response.isSuccessful()) {
@@ -178,6 +176,7 @@ public class DiscovAdapter extends RecyclerView.Adapter<DiscovAdapter.MyViewHold
                         @Override
                         public void run() {
                             try {
+                                pd.dismiss();
                                 JSONObject jsonObject = new JSONObject(res);
                                 JSONObject error = jsonObject.getJSONObject("error");
                                 String message = error.get("message").toString();
@@ -189,27 +188,38 @@ public class DiscovAdapter extends RecyclerView.Adapter<DiscovAdapter.MyViewHold
                 } else {
                     Gson gson = new GsonBuilder().create();
                     final FavToggleDespVO favToggleDespVO = gson.fromJson(res, FavToggleDespVO.class);
-
+                    final String Dispensary_id = (String) call.request().tag();
                     activity.runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
                             if (favToggleDespVO.getDispensary().getId() != null) {
                                 if (favToggleDespVO.getDispensary().getState_change().equalsIgnoreCase("favorited")) {
-                                    holder.icon.setImageResource(R.mipmap.fillheart);
 
                                     Dispensaries dispensariesLikedId = new Dispensaries();
-                                    dispensariesLikedId.setDispensary_id(dispensaryId);
+                                    //dispensariesLikedId.setUser_id(favToggleDespVO.getDispensary());
+                                    dispensariesLikedId.setDispensary_id(Dispensary_id);
+                                    dispensariesLikedId.setDispensary_id(Dispensary_id);
                                     AppContoller.FavDispensariesIds.add(dispensariesLikedId);
+                                    AppContoller.FavDispensaries.add(favToggleDespVO.getDispensary());
+                                    holder.icon.setImageResource(R.mipmap.fillheart);
+                                    pd.dismiss();
 
                                 } else if (favToggleDespVO.getDispensary().getState_change().equalsIgnoreCase("unfavorited")) {
-                                    holder.icon.setImageResource(R.mipmap.heart_icon_empty);
 
                                     for (int i = 0; i < AppContoller.FavDispensariesIds.size(); i++) {
-                                        if (AppContoller.FavDispensariesIds.get(i).getDispensary_id().equalsIgnoreCase(dispensaryId)) {
+                                        if (AppContoller.FavDispensariesIds.get(i).getDispensary_id().equalsIgnoreCase(Dispensary_id)) {
                                             AppContoller.FavDispensariesIds.remove(i);
                                             break;
                                         }
                                     }
+                                    for (int i = 0; i < AppContoller.FavDispensaries.size(); i++) {
+                                        if (AppContoller.FavDispensaries.get(i).getId().equalsIgnoreCase(Dispensary_id)) {
+                                            AppContoller.FavDispensaries.remove(i);
+                                            break;
+                                        }
+                                    }
+                                    pd.dismiss();
+                                    holder.icon.setImageResource(R.mipmap.heart_icon_empty);
                                 }
                             }
                         }

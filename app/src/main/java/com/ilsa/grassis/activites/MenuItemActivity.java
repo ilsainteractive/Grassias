@@ -17,6 +17,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ScrollView;
+import android.widget.TextView;
 
 import com.ilsa.grassis.R;
 import com.ilsa.grassis.adapters.MenuGalleryAdapter;
@@ -65,6 +66,8 @@ public class MenuItemActivity extends AppCompatActivity implements View.OnClickL
     private boolean isScrolled = false;
     private String SelectedID = "";
 
+    private TextView emptyView;
+
     @BindView(R.id.home_btn_dispensory)
     ImageView mDiscover;
 
@@ -92,8 +95,6 @@ public class MenuItemActivity extends AppCompatActivity implements View.OnClickL
         initToolBar();
         InitComponents();
         syncData(getIntent().getStringExtra("dispensaryId"), getIntent().getIntExtra("category_id", 0));
-        initViews();
-        SetTexts();
         AddListener();
     }
 
@@ -104,21 +105,6 @@ public class MenuItemActivity extends AppCompatActivity implements View.OnClickL
         //mTxtSubTitle.setText(mDispensary.getName());
     }
 
-    private void initViews() {
-        if (menuListVOs.size() > 0) {
-            //mHolder.mProductPagerLayout.setVisibility(View.VISIBLE);
-            //mHolder.mNoProductLayout.setVisibility(View.GONE);
-            MenuGalleryAdapter adapter = new MenuGalleryAdapter(mContext);
-            adapter.setData(menuListVOs);
-            mViewPager.setAdapter(adapter);
-
-            pageIndicatorView.setViewPager(mViewPager);
-            adapter.registerDataSetObserver(pageIndicatorView.getDataSetObserver());
-        } else {
-            //mHolder.mNoProductLayout.setVisibility(View.VISIBLE);
-            //mHolder.mProductPagerLayout.setVisibility(View.GONE);
-        }
-    }
 
     private void AddListener() {
         mDiscover.setOnClickListener(this);
@@ -146,6 +132,8 @@ public class MenuItemActivity extends AppCompatActivity implements View.OnClickL
 
     private void InitComponents() {
 
+        emptyView = (TextView) findViewById(R.id.menu_item_empty_view);
+        emptyView.setVisibility(View.GONE);
         mScrollView = (ScrollView) findViewById(R.id.scrollView);
         mViewPager = (ViewPager) findViewById(R.id.viewPager);
         pageIndicatorView = (CircleIndicator) findViewById(R.id.indicator);
@@ -190,13 +178,24 @@ public class MenuItemActivity extends AppCompatActivity implements View.OnClickL
             }
         }
 
-        mMenuItemAdapter.notifyDataSetChanged();
+        if (menuListVOs.size() > 0) {
+            mMenuItemAdapter.notifyDataSetChanged();
 
-        for (Dispensaries dispensaries : AppContoller.nearByVo.getDispensaries()) {
-            if (Dispensary_id.equalsIgnoreCase(dispensaries.getDispensary().getId())) {
-                mDispensary = dispensaries.getDispensary();
-                break;
+            for (Dispensaries dispensaries : AppContoller.nearByVo.getDispensaries()) {
+                if (Dispensary_id.equalsIgnoreCase(dispensaries.getDispensary().getId())) {
+                    mDispensary = dispensaries.getDispensary();
+                    break;
+                }
             }
+            SetTexts();
+            MenuGalleryAdapter adapter = new MenuGalleryAdapter(mContext);
+            adapter.setData(menuListVOs);
+            mViewPager.setAdapter(adapter);
+
+            pageIndicatorView.setViewPager(mViewPager);
+            adapter.registerDataSetObserver(pageIndicatorView.getDataSetObserver());
+        } else {
+            emptyView.setVisibility(View.VISIBLE);
         }
     }
 
@@ -245,7 +244,6 @@ public class MenuItemActivity extends AppCompatActivity implements View.OnClickL
                 return false;
             }
         });
-
         return true;
     }
 

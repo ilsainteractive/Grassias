@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <com.ilsa.grassis.library.RegularTextView
+        android:id="@+id/menu_item_details_txt_ingredeants_unit4"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:gravity="bottom|center|left"
+        android:paddingLeft="@dimen/_5sdp"
+        android:paddingRight="@dimen/_5sdp"
+        android:text="1/2"
+        android:textColor="@color/black"
+        android:textSize="@dimen/_10sdp" />
+
+    <com.ilsa.grassis.library.RegularTextView
+        android:id="@+id/menu_item_details_txt_ingredeants_unit4_value"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:gravity="top|center|left"
+        android:paddingLeft="@dimen/_5sdp"
+        android:paddingRight="@dimen/_5sdp"
+        android:text="195.00"
+        android:textColor="@color/black"
+        android:textSize="@dimen/_12sdp" />
+</LinearLayout>

@@ -117,7 +117,10 @@
             android:theme="@style/HomeTheme" />
         <activity
             android:name=".activites.EditProfileActivity"
-            android:theme="@style/HomeTheme"/>
+            android:theme="@style/HomeTheme" />
+        <activity
+            android:name=".activites.FavritesActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/HomeTheme" />
     </application>
-
 </manifest>

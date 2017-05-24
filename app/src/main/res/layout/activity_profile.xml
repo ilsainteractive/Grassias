@@ -193,6 +193,7 @@
                     android:background="#c8c8c8" />
 
                 <LinearLayout
+                    android:id="@+id/mFavorite"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/_48sdp"
                     android:layout_marginBottom="@dimen/_7sdp"

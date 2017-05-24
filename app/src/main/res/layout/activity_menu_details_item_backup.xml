@@ -146,25 +146,153 @@
                     android:textStyle="bold" />
             </LinearLayout>
 
-            <HorizontalScrollView
-                android:id="@+id/hsv"
+            <LinearLayout
+                android:id="@+id/menu_item_details_values_bar_layout"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_45sdp"
-                android:layout_alignParentTop="true"
                 android:background="#f4f4f4"
-                android:fillViewport="true"
-                android:measureAllChildren="false"
+                android:orientation="horizontal"
                 android:paddingLeft="@dimen/_12sdp"
-                android:paddingRight="@dimen/_12sdp"
-                android:scrollbars="none">
+                android:paddingRight="@dimen/_12sdp">
 
                 <LinearLayout
-                    android:id="@+id/my_prining"
-                    android:layout_width="match_parent"
-                    android:layout_marginTop="@dimen/_5sdp"
+                    android:id="@+id/menu_item_details_pricing_1"
+                    android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:orientation="horizontal"></LinearLayout>
-            </HorizontalScrollView>
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <com.ilsa.grassis.library.RegularTextView
+                        android:id="@+id/menu_item_details_txt_ingredeants_unit1"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:gravity="bottom"
+                        android:text="1G"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/_10sdp" />
+
+                    <com.ilsa.grassis.library.RegularTextView
+                        android:id="@+id/menu_item_details_txt_ingredeants_unit1_value"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:gravity="top"
+                        android:text="18.00"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/_12sdp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/menu_item_details_pricing_2"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <com.ilsa.grassis.library.RegularTextView
+                        android:id="@+id/menu_item_details_txt_ingredeants_unit2"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:gravity="bottom"
+                        android:text="1/8"
+                        android:textSize="@dimen/_10sdp" />
+
+                    <com.ilsa.grassis.library.RegularTextView
+                        android:id="@+id/menu_item_details_txt_ingredeants_unit2_value"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:gravity="top"
+                        android:text="50.00"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/_12sdp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/menu_item_details_pricing_3"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <com.ilsa.grassis.library.RegularTextView
+                        android:id="@+id/menu_item_details_txt_ingredeants_unit3"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:gravity="bottom"
+                        android:text="1/4"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/_10sdp" />
+
+                    <com.ilsa.grassis.library.RegularTextView
+                        android:id="@+id/menu_item_details_txt_ingredeants_unit3_value"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:gravity="top"
+                        android:text="100.00"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/_12sdp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/menu_item_details_pricing_5"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <com.ilsa.grassis.library.RegularTextView
+                        android:id="@+id/menu_item_details_txt_ingredeants_unit4"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:gravity="bottom"
+                        android:text="1/2"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/_10sdp" />
+
+                    <com.ilsa.grassis.library.RegularTextView
+                        android:id="@+id/menu_item_details_txt_ingredeants_unit4_value"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:gravity="top"
+                        android:text="195.00"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/_12sdp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <com.ilsa.grassis.library.RegularTextView
+                        android:id="@+id/menu_item_details_txt_ingredeants_unit5"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:gravity="bottom"
+                        android:text="OZ"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/_10sdp" />
+
+                    <com.ilsa.grassis.library.RegularTextView
+                        android:id="@+id/menu_item_details_txt_ingredeants_unit5_value"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:gravity="top"
+                        android:text="380.00"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/_12sdp" />
+                </LinearLayout>
+            </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -185,5 +313,4 @@
         </LinearLayout>
     </ScrollView>
 </LinearLayout>
-
 

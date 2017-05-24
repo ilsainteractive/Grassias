@@ -107,5 +107,14 @@
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:layout_alignParentBottom="true" />
-</RelativeLayout>
 
+    <TextView
+        android:id="@+id/menu_item_empty_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/home_bottom_bar"
+        android:layout_below="@+id/toolbar"
+        android:background="@color/white"
+        android:gravity="center"
+        android:text="No result found." />
+</RelativeLayout>

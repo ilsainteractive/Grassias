@@ -31,9 +31,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
-import com.appolica.interactiveinfowindow.InfoWindow;
-import com.appolica.interactiveinfowindow.InfoWindowManager;
-import com.appolica.interactiveinfowindow.fragment.MapInfoWindowFragment;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.resource.drawable.GlideDrawable;
@@ -105,20 +102,8 @@ public class DispensaryActivity extends AppCompatActivity implements OnMapReadyC
 
     private String mSelectedId = "";
 
-//    @BindView(R.id.dispensary_map_btm_section)
-//    LinearLayout mBtmSec;
-
-    //@BindView(R.id.dispensary_map_btm_section_next)
-    //LinearLayout mBtmSecNext;
-
     @BindView(R.id.dispensary_map_btm_section_txt_next)
     RegularTextView mtxtBtmSecNext;
-
-    //@BindView(R.id.dispensary_map_btm_section_title)
-    //RegularTextView mtxtBtmSecTitle;
-
-    //@BindView(R.id.dispensary_map_btm_section_sub_title)
-    //ThinTextView mtxtBtmSecSubTitle;
 
     @BindView(R.id.home_lv_bottom_section_2)
     LinearLayout mLayoutBottomSection;
@@ -211,22 +196,7 @@ public class DispensaryActivity extends AppCompatActivity implements OnMapReadyC
      * Layout components initializing and bridging here.
      */
     private void InitComponents() {
-        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
-//        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
-//                Math.round(Helper.getFontSize(mContext.getResources(), 90)));
-        //params.alignWithParent = RelativeLayout.ALIGN_PARENT_BOTTOM;
-//        params.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
-//        mBtmSec.setLayoutParams(params);
 
-        // int padding = Math.round(Helper.getFontSize(mContext.getResources(), 19));
-        //int paddingTopBtm = Math.round(Helper.getFontSize(mContext.getResources(), 19));
-        //mBtmSecNext.setPadding(0, paddingTopBtm, 0, paddingTopBtm);
-        //mtxtBtmSecNext.setTextSize(Helper.getFontSize(mContext.getResources(), 5.5));
-        //mtxtBtmSecTitle.setTextSize(Helper.getFontSize(mContext.getResources(), 6));
-        //mtxtBtmSecSubTitle.setTextSize(Helper.getFontSize(mContext.getResources(), 3.0));
-
-
-        //Bottom Section
         mLayoutBottomSection.setVisibility(View.INVISIBLE);
         mtxtSelecTitle.setTextSize(Helper.getFontSize(mContext.getResources(), 6.2)); //6.5 psd
         mtxtSelecAddresse.setTextSize(Helper.getFontSize(mContext.getResources(), 3.6));

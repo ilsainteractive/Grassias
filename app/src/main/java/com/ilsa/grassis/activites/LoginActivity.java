@@ -58,11 +58,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         }
     }
 
-
     private void AutoLogin(UserDataVO dataVO) {
         RequestLogin(mContext, Constants.AUTO_LOGIN, dataVO.getUser().getEmail(), ShPrefsHelper.getSharedPreferenceString(mContext, Constants.PASSWORD, ""));
     }
-
 
     private void InitComponents() {
         mTxtCreateAccount = (RegularTextView) findViewById(R.id.login_txt_create_account);

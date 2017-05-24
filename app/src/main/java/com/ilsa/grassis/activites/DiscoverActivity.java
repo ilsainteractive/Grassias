@@ -11,7 +11,6 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.DividerItemDecoration;
@@ -46,7 +45,6 @@ import com.ilsa.grassis.library.AppContoller;
 import com.ilsa.grassis.library.BoldSFTextView;
 import com.ilsa.grassis.library.Constants;
 import com.ilsa.grassis.library.ExpandedRecyclerView;
-import com.ilsa.grassis.library.MenuItemClickListener;
 import com.ilsa.grassis.library.RecyclerTouchListener;
 import com.ilsa.grassis.library.RegularTextView;
 import com.ilsa.grassis.rootvo.NearByVo;
@@ -129,7 +127,7 @@ public class DiscoverActivity extends AppCompatActivity implements View.OnClickL
     private void SyncData() {
 
         if (AppContoller.nearByVo == null) {
-            //getNearByDespensories(new Location("asd"));
+            finish();
         } else {
             setMapAndList(AppContoller.nearByVo, Constants.STORE_FRONT);
         }
@@ -159,7 +157,7 @@ public class DiscoverActivity extends AppCompatActivity implements View.OnClickL
                 try {
                     return Glide.
                             with(mContext).
-                            load(dispensary.getLogo().getSmall())
+                            load(dispensary.getLogo().getSmall()).placeholder(R.mipmap.ic_launcher)
                             .bitmapTransform(new CropCircleTransformation(mContext))
                             .diskCacheStrategy(DiskCacheStrategy.ALL)
                             .into(100, 100).get();
@@ -175,7 +173,7 @@ public class DiscoverActivity extends AppCompatActivity implements View.OnClickL
                 if (theBitmap != null) {
                     markerIcon = Helper.getMarkerIconFromDrawable(theBitmap);
                 } else {
-                    markerIcon = Helper.getMarkerIconFromDrawable(ContextCompat.getDrawable(mContext, R.drawable.add));
+                    markerIcon = Helper.getMarkerIconFromDrawable(mContext.getDrawable(R.mipmap.ic_launcher));
                 }
                 latLng = new LatLng(dispensary.getLocation().getCoords().getLatitude(), dispensary.getLocation().getCoords().getLongitude());
                 mSelectedId = dispensary.getId();
@@ -252,20 +250,6 @@ public class DiscoverActivity extends AppCompatActivity implements View.OnClickL
     private void AddAdaptor(final ArrayList<Dispensary> mData, String type) {
         discovAdapter = new DiscovAdapter(mContext, mData, type, DiscoverActivity.this);
         recyclerView = (ExpandedRecyclerView) findViewById(R.id.recycler_view);
-       /* listener = new RecyclerTouchListener(mContext, recyclerView, new MenuItemClickListener() {
-            @Override
-            public void onClick(View view, int position) {
-                Intent intent = new Intent(mContext, DispensaryInfoActivity.class);
-                intent.putExtra("dispensary_id", mData.get(position).getId());
-                startActivity(intent);
-            }
-
-            @Override
-            public void onLongClick(View view, int position) {
-                //Toast.makeText(mContext, "long clicked " + position, Toast.LENGTH_SHORT).show();
-            }
-        });*/
-        // recyclerView.addOnItemTouchListener(listener);
         recyclerView.setHasFixedSize(true);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(mContext);
         recyclerView.setLayoutManager(mLayoutManager);
@@ -397,11 +381,5 @@ public class DiscoverActivity extends AppCompatActivity implements View.OnClickL
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    protected void onResume() {
-        discovAdapter.notifyDataSetChanged();
-        super.onResume();
     }
 }

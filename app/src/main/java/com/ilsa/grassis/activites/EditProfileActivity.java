@@ -16,6 +16,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Base64;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -86,7 +87,6 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnCli
         }
 
         InItComponent();
-        setFonts();
         AddListener();
 
         Glide.with(this).load(AppContoller.userData.getUser().getAvatar().getSmall())
@@ -221,17 +221,6 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnCli
         }
     }
 
-    private void setFonts() {
-
-        /*name.setTypeface(Typefaces.get(this, Typefaces.OPENSANS_RAGULAR));
-        lastName.setTypeface(Typefaces.get(this, Typefaces.OPENSANS_RAGULAR));
-        emailAddress.setTypeface(Typefaces.get(this, Typefaces.OPENSANS_RAGULAR));
-        phoneNumber.setTypeface(Typefaces.get(this, Typefaces.OPENSANS_RAGULAR));
-        connectWithFb.setTypeface(Typefaces.get(this, Typefaces.OPENSANS_BOLD));
-        saveButton.setTypeface(Typefaces.get(this, Typefaces.OPENSANS_BOLD));*/
-    }
-
-
     @Override
     @SuppressLint("NewApi")
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -274,109 +263,15 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnCli
 
 
     private void UpdatedProfile(final String nameString, final String lastnameString, final String day, final String month, final String year, final String emailString, final String genderstring, final String imageString) {
-
-      /*  final ProgressDialog pd = new ProgressDialog(EditProfileActivity.this);
-        pd.setMessage("Please Wait");
-        pd.show();
-
-        String m = "0";
-        if (month.equalsIgnoreCase("January"))
-            m = "1";
-        else if (month.equalsIgnoreCase("February"))
-            m = "2";
-        else if (month.equalsIgnoreCase("March"))
-            m = "3";
-        else if (month.equalsIgnoreCase("April"))
-            m = "4";
-        else if (month.equalsIgnoreCase("May"))
-            m = "5";
-        else if (month.equalsIgnoreCase("June"))
-            m = "6";
-        else if (month.equalsIgnoreCase("July"))
-            m = "7";
-        else if (month.equalsIgnoreCase("September"))
-            m = "8";
-        else if (month.equalsIgnoreCase("October"))
-            m = "9";
-        else if (month.equalsIgnoreCase("November"))
-            m = "10";
-        else if (month.equalsIgnoreCase("December"))
-            m = "11";
-        else if (month.equalsIgnoreCase("January"))
-            m = "12";
-
-        final String dob = year + "-" + m + "-" + day;
-
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, Constants.BASE_URL + "updateProfile",
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        pd.dismiss();
-                        try {
-                            JSONObject jsonObject = new JSONObject(response);
-                            if (jsonObject.get("success").toString().equalsIgnoreCase("true")) {
-
-                                Gson gson = new GsonBuilder().create();
-                                UserVo userVo = gson.fromJson(jsonObject.getJSONObject("data").getJSONObject("User").toString(), UserVo.class);
-                                SharedPreferenceHelper.setSharedPreferenceString(mContext, Constants.USER_TOKEN, userVo.getUser_token());
-                                SharedPreferenceHelper.setSharedPreferenceString(mContext, Constants.USER_FIRST_NAME, userVo.getFirstName());
-                                SharedPreferenceHelper.setSharedPreferenceString(mContext, Constants.USER_LAST_NAME, userVo.getLastName());
-                                SharedPreferenceHelper.setSharedPreferenceString(mContext, Constants.USER_EMAIL, userVo.getEmail());
-                                SharedPreferenceHelper.setSharedPreferenceString(mContext, Constants.USER_PICTURE, userVo.getPicture());
-                                SharedPreferenceHelper.setSharedPreferenceString(mContext, Constants.USER_ID, userVo.getId());
-
-                                if (!userVo.getDob_date().equalsIgnoreCase(""))
-                                    SharedPreferenceHelper.setSharedPreferenceInt(ProfileActivity.this, Constants.USER_DAY, Integer.parseInt(userVo.getDob_date()));
-                                if (!userVo.getDob_month().equalsIgnoreCase(""))
-                                    SharedPreferenceHelper.setSharedPreferenceInt(ProfileActivity.this, Constants.USER_MONTH, Integer.parseInt(userVo.getDob_month()));
-                                if (!userVo.getDob_year().equalsIgnoreCase(""))
-                                    SharedPreferenceHelper.setSharedPreferenceInt(ProfileActivity.this, Constants.USER_YEAR, Integer.parseInt(userVo.getDob_year()));
-                                if (!userVo.getDob().equalsIgnoreCase(""))
-                                    SharedPreferenceHelper.setSharedPreferenceString(mContext, Constants.USER_DOB, userVo.getDob());
-                                if (!userVo.getGender().equalsIgnoreCase(""))
-                                    SharedPreferenceHelper.setSharedPreferenceString(mContext, Constants.USER_GENDER, userVo.getGender());
-
-                                AppController.IsUserUpdated = true;
-                                Toast.makeText(mContext, jsonObject.get("message").toString(), Toast.LENGTH_LONG).show();
-                            } else {
-                                Toast.makeText(mContext, jsonObject.get("message").toString(), Toast.LENGTH_LONG).show();
-                            }
-                        } catch (JSONException ignored) {
-                        }
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        pd.dismiss();
-                        AppController.IsUserUpdated = false;
-                        Toast.makeText(ProfileActivity.this, error.getMessage(), Toast.LENGTH_LONG).show();
-                    }
-                }) {
-            @Override
-            protected Map<String, String> getParams() {
-                Map<String, String> params = new HashMap<String, String>();
-
-                params.put("data[api_key]", Constants.API_KEY);
-                params.put("data[User][user_token]", SharedPreferenceHelper.getSharedPreferenceString(ProfileActivity.this, "USER_TOKEN", null));
-                params.put("data[User][firstName]", nameString);
-                params.put("data[User][lastName]", lastnameString);
-                params.put("data[User][email]", emailString);
-                params.put("data[User][dob]", dob);
-                params.put("data[User][gender]", genderstring);
-
-                if (is_Image_picked)
-                    params.put("picture", imageString);
-                return params;
-            }
-        };
-        stringRequest.setRetryPolicy(new DefaultRetryPolicy(
-                10000,
-                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
-                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-        RequestQueue requestQueue = Volley.newRequestQueue(this);
-        requestQueue.add(stringRequest);*/
     }
 
-
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                onBackPressed();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
 }

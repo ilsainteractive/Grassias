@@ -190,30 +190,16 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case R.id.toolbar_heart:
                 if (isHeartBlank) {
-
-                    AppContoller.FavDispensaries.clear();
-                    AppContoller.FavDispensariesIds = AppContoller.userData.getUser().getFavorites().getDispensaries();
-                    for (int i = 0; i < AppContoller.FavDispensariesIds.size(); i++) {
-                        String id = AppContoller.FavDispensariesIds.get(i).getDispensary_id();
-                        for (int ii = 0; ii < AppContoller.nearByVo.getDispensaries().size(); ii++) {
-                            if (AppContoller.nearByVo.getDispensaries().get(ii).getDispensary().getId().equalsIgnoreCase(id)) {
-                                AppContoller.FavDispensaries.add(AppContoller.nearByVo.getDispensaries().get(ii).getDispensary());
-                                break;
-                            }
-                        }
-                    }
-
-                    if (AppContoller.FavDispensaries.size() < 1) {
+                    if (AppContoller.FavDispensaries.size() > 0) {
+                        heart.setImageResource(R.mipmap.fillheart);
+                        isHeartBlank = false;
+                        openPopUpWindow();
+                    } else {
                         switch_your_favorite_dis.setVisibility(View.GONE);
                         Toast.makeText(this, "No liked dispensary", Toast.LENGTH_SHORT).show();
                         heart.setImageResource(R.mipmap.heart_icon_empty);
                         isHeartBlank = true;
-                    } else {
-                        heart.setImageResource(R.mipmap.fillheart);
-                        isHeartBlank = false;
-                        openPopUpWindow();
                     }
-
                 } else {
                     isHeartBlank = true;
                     mpopupWindow.dismiss();
@@ -242,7 +228,6 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void openPopUpWindow() {
-        // List defined in XML ( See Below )
         recyclerView.setHasFixedSize(true);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(mContext);
         recyclerView.setLayoutManager(mLayoutManager);
@@ -262,22 +247,6 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         });
         recyclerView.addOnItemTouchListener(listener);
 
-       /* AppContoller.FavDispensaries.clear();
-        AppContoller.FavDispensariesIds = AppContoller.userData.getUser().getFavorites().getDispensaries();
-        for (int i = 0; i < AppContoller.FavDispensariesIds.size(); i++) {
-            String id = AppContoller.FavDispensariesIds.get(i).getDispensary_id();
-            for (int ii = 0; ii < AppContoller.nearByVo.getDispensaries().size(); ii++) {
-                if (AppContoller.nearByVo.getDispensaries().get(ii).getDispensary().getId().equalsIgnoreCase(id)) {
-                    AppContoller.FavDispensaries.add(AppContoller.nearByVo.getDispensaries().get(ii).getDispensary());
-                    break;
-                }
-            }
-        }
-
-        if (AppContoller.FavDispensaries.size() < 1)
-            switch_your_favorite_dis.setVisibility(View.GONE);
-        //else
-        //Toast.makeText(this, "No liked dispensary", Toast.LENGTH_SHORT).show();*/
         ToggleDisAdapter adapter = new ToggleDisAdapter(mContext, AppContoller.FavDispensaries);
         recyclerView.setAdapter(adapter);
 
@@ -469,9 +438,17 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                             mActivity.runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
-                                    pd.dismiss();
+                                    AppContoller.FavDispensaries.clear();
+                                    for (int i = 0; i < AppContoller.FavDispensariesIds.size(); i++) {
+                                        for (int ii = 0; ii < AppContoller.nearByVo.getDispensaries().size(); ii++) {
+                                            if (AppContoller.nearByVo.getDispensaries().get(ii).getDispensary().getId().equalsIgnoreCase(AppContoller.FavDispensariesIds.get(i).getDispensary_id())) {
+                                                AppContoller.FavDispensaries.add(AppContoller.nearByVo.getDispensaries().get(ii).getDispensary());
+                                                break;
+                                            }
+                                        }
+                                    }
                                     setAdaptorAndViews(AppContoller.nearByVo);
-
+                                    pd.dismiss();
                                 }
                             });
 

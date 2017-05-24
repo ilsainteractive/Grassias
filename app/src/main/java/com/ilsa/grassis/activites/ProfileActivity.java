@@ -40,14 +40,10 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
-/**
- * Menu activity contains list of items.
- */
 public class ProfileActivity extends AppCompatActivity implements View.OnClickListener {
 
     private Context mContext;
     private Activity mActivity;
-
     private ScrollView mScrollView;
     private boolean isScrolled = false;
 
@@ -69,28 +65,22 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
     MediumTextView mtxtPolicy;
     @BindView(R.id.profile_member_layout)
     LinearLayout mLayoutMember;
-
-    //
     @BindView(R.id.home_btn_dispensory)
     ImageView mDiscover;
-
     @BindView(R.id.home_btn_profile)
     ImageView mProfile;
-
     @BindView(R.id.home_btn_deals)
     ImageView mDeals;
-
     @BindView(R.id.home_btn_home)
     ImageView mHome;
-
     @BindView(R.id.home_btn_qr)
     ImageView mQr;
-
     @BindView(R.id.profile_txt_editProfile)
     RegularTextView editProfile;
-
     @BindView(R.id.logOut)
     RegularTextView logOut;
+    @BindView(R.id.mFavorite)
+    LinearLayout mFavorite;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -101,10 +91,10 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         mContext = this;
         mActivity = this;
         isScrolled = false;
+
         InitComponents();
         AddListener();
         LoasUserInfo();
-        // GetProfileInfo();
     }
 
     private void LoasUserInfo() {
@@ -173,14 +163,8 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         });
     }
 
-    /**
-     * Layout components initializing and bridging here.
-     */
     private void InitComponents() {
-        // mtxtMemberStatus.setTextSize(Helper.getFontSize(mContext.getResources(), 5.5));
-        // mtxtTermsCondition.setTextSize(Helper.getFontSize(mContext.getResources(), 5.5));
     }
-
 
     private void AddListener() {
         mLayoutMember.setOnClickListener(this);
@@ -208,7 +192,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
                 startActivity(new Intent(mContext, DiscoverActivity.class));
                 break;
             case R.id.home_btn_profile:
-//                startActivity(new Intent(mContext, ProfileActivity.class));
+                //startActivity(new Intent(mContext, ProfileActivity.class));
                 break;
             case R.id.home_btn_deals:
                 startActivity(new Intent(mContext, DealsRewardActivity.class));
@@ -218,8 +202,6 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
                 break;
             case R.id.home_btn_qr:
                 startActivity(new Intent(mContext, CodeScanner.class));
-                //startActivity(new Intent(mContext, DealsRewardActivity.class));
-                // Dailogs.ShowToast(mContext, "QR Scan is not integrated.", Constants.SHORT_TIME);
                 break;
             case R.id.logOut:
                 if (Helper.checkInternetConnection(mContext)) {
@@ -231,7 +213,12 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
                 Dailogs.ShowToast(mContext, "History", Constants.SHORT_TIME);
                 break;
             case R.id.profile_txt_favorite:
-                Dailogs.ShowToast(mContext, "Favorties", Constants.SHORT_TIME);
+                if (AppContoller.FavDispensaries.size() > 0) {
+                    Intent i = new Intent(mContext, FavritesActivity.class);
+                    startActivity(i);
+                } else {
+                    Dailogs.ShowToast(mContext, "No favorites found.", Constants.SHORT_TIME);
+                }
                 break;
             case R.id.profile_txt_trem_condition:
                 Intent intent = new Intent(ProfileActivity.this, BrowserActivity.class);

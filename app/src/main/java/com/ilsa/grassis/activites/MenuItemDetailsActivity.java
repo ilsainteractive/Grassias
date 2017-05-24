@@ -5,7 +5,9 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -34,7 +36,7 @@ public class MenuItemDetailsActivity extends AppCompatActivity {
 
     private Toolbar toolbar;
     private ScrollView mScrollView;
-    private LinearLayout mImageLayout, mTitleLayout, mPrecentLayout, mValueBarLayout;
+    private LinearLayout mImageLayout, mTitleLayout, mPrecentLayout, mValueBarLayout, mPricingLayout;
 
     private MediumTextView mtxtToolbarTitle;
     private SFUITextBold mtxtTtile;
@@ -48,6 +50,7 @@ public class MenuItemDetailsActivity extends AppCompatActivity {
     private Products product;
     private ImageView mProductImage;
     private ProgressBar progress;
+    private HorizontalScrollView horizontalScrollView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,10 +90,36 @@ public class MenuItemDetailsActivity extends AppCompatActivity {
         mtxtToolbarTitle.setText(product.getName());
         mtxtTtile.setText(product.getName());
         mTxtSubTitle.setText(getIntent().getStringExtra("category_title"));
-        mtxtTHC.setText("THC: " + product.getThc());
-        mtxtCBD.setText("CBD: " + product.getCbd());
-        mtxtCBN.setText("CBN: " + product.getCbn());
+        if (product.getThc() != null)
+            mtxtTHC.setText("THC: " + product.getThc());
+        else
+            mtxtTHC.setText("THC: ---%");
+        if (product.getCbd() != null)
+            mtxtCBD.setText("CBD: " + product.getCbd());
+        else
+            mtxtCBD.setText("CBD: ---%");
+        if (product.getCbn() != null)
+            mtxtCBN.setText("CBN: " + product.getCbn());
+        else
+            mtxtCBN.setText("CBN: ---%");
         mtxtDesc.setText(product.getDescription());
+        AddPricingScroll(product);
+    }
+
+    private void AddPricingScroll(Products product) {
+
+        LayoutInflater linf = (LayoutInflater) getApplicationContext().getSystemService(
+                Context.LAYOUT_INFLATER_SERVICE);
+        for (int i = 0; i < product.getPricing().size(); i++) {
+
+            View layout = linf.inflate(R.layout.lv_item_pricing, null, false);
+            RegularTextView unit = (RegularTextView) layout.findViewById(R.id.menu_item_details_txt_ingredeants_unit4);
+            RegularTextView unit_values = (RegularTextView) layout.findViewById(R.id.menu_item_details_txt_ingredeants_unit4_value);
+
+            unit.setText(product.getPricing().get(i).getAmount());
+            unit_values.setText(product.getPricing().get(i).getValue_cents());
+            mPricingLayout.addView(layout);
+        }
     }
 
     private void syncData(String product_id) {
@@ -126,6 +155,8 @@ public class MenuItemDetailsActivity extends AppCompatActivity {
      */
     private void InitComponents() {
 
+        mPricingLayout = (LinearLayout) findViewById(R.id.my_prining);
+        horizontalScrollView = (HorizontalScrollView) findViewById(R.id.hsv);
         progress = (ProgressBar) findViewById(R.id.progress_detail);
         mProductImage = (ImageView) findViewById(R.id.menu_item_details_img);
         mScrollView = (ScrollView) findViewById(R.id.scrollView);

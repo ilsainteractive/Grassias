@@ -14,7 +14,17 @@
         android:layout_height="match_parent"
         android:layout_weight="1.5"
         android:gravity="center"
-        android:src="@mipmap/menu_item_lv_img_demo" />
+        android:src="@mipmap/menu_item_lv_img_demo"
+        android:visibility="visible" />
+
+    <ProgressBar
+        android:id="@+id/progress_product"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_weight="1.5"
+        android:gravity="center"
+        android:visibility="gone" />
 
     <com.ilsa.grassis.library.RegularTextView
         android:id="@+id/menu_item_lv_txt"
@@ -25,8 +35,8 @@
         android:paddingLeft="@dimen/_15sdp"
         android:paddingRight="@dimen/_15sdp"
         android:text="Extracts"
-        android:textSize="@dimen/_15sdp"
-        android:textColor="@color/black" />
+        android:textColor="@color/black"
+        android:textSize="@dimen/_15sdp" />
 
     <ImageView
         android:id="@+id/menu_item_lv_image_proceed"
