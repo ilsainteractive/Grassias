@@ -122,5 +122,9 @@
             android:name=".activites.FavritesActivity"
             android:screenOrientation="portrait"
             android:theme="@style/HomeTheme" />
+        <activity
+            android:name=".activites.PointBalanceActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
     </application>
+
 </manifest>

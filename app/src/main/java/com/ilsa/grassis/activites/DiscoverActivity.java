@@ -11,6 +11,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.DividerItemDecoration;
@@ -173,7 +174,7 @@ public class DiscoverActivity extends AppCompatActivity implements View.OnClickL
                 if (theBitmap != null) {
                     markerIcon = Helper.getMarkerIconFromDrawable(theBitmap);
                 } else {
-                    markerIcon = Helper.getMarkerIconFromDrawable(mContext.getDrawable(R.mipmap.ic_launcher));
+                    markerIcon = Helper.getMarkerIconFromDrawable(ContextCompat.getDrawable(mContext, R.mipmap.ic_launcher));
                 }
                 latLng = new LatLng(dispensary.getLocation().getCoords().getLatitude(), dispensary.getLocation().getCoords().getLongitude());
                 mSelectedId = dispensary.getId();

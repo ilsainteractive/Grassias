@@ -1,12 +1,17 @@
 package com.ilsa.grassis.activites;
 
+import android.Manifest;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.DividerItemDecoration;
@@ -24,6 +29,11 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationListener;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationServices;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.ilsa.grassis.R;
@@ -55,7 +65,9 @@ import okhttp3.Response;
 /**
  * Home activity.
  */
-public class HomeActivity extends AppCompatActivity implements View.OnClickListener {
+public class HomeActivity extends AppCompatActivity implements View.OnClickListener, GoogleApiClient.ConnectionCallbacks,
+        GoogleApiClient.OnConnectionFailedListener,
+        LocationListener {
 
     private Context mContext;
     private Activity mActivity;
@@ -102,6 +114,12 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     View customView;
     ExpandedRecyclerView recyclerView;
 
+    private GoogleApiClient mGoogleApiClient;
+    private LocationRequest mLocationRequest;
+    public static double currentLatitude;
+    public static double currentLongitude;
+    private static final int REQUEST_RUNTIME_PERMISSION = 123;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -111,10 +129,41 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         mContext = this;
         mActivity = this;
 
-        initToolBar();
+        if (Helper.checkInternetConnection(mContext)) {
+            if (Helper.isLocationEnabled(mContext)) {
+                if (Helper.CheckPermission(mContext, Manifest.permission.ACCESS_FINE_LOCATION)) {
+
+                    mGoogleApiClient = new GoogleApiClient.Builder(this)
+                            .addConnectionCallbacks(this)
+                            .addOnConnectionFailedListener(this)
+                            .addApi(LocationServices.API)
+                            .build();
+
+                    // Create the LocationRequest object
+                    mLocationRequest = LocationRequest.create()
+                            .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
+                            .setInterval(10 * 1000)        // 10 seconds, in milliseconds
+                            .setFastestInterval(1 * 1000); // 1 second, in milliseconds
+
+                    initToolBar();
+                    InitComponents();
+                    AddListener();
+                    SyncData();
+                } else {
+                    Helper.RequestPermission(mActivity, Manifest.permission.ACCESS_FINE_LOCATION, REQUEST_RUNTIME_PERMISSION);
+                }
+            } else {
+                Helper.showSettingsAlert(mContext);
+            }
+        } else {
+            Helper.ShowToast(mContext, getString(R.string.no_internet_msg));
+        }
+
+
+      /*  initToolBar();
         InitComponents();
         AddListener();
-        SyncData();
+        SyncData();*/
     }
 
     private void SyncData() {
@@ -258,6 +307,8 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         if (Build.VERSION.SDK_INT >= 21) {
             mpopupWindow.setElevation(5.0f);
         }
+
+        mpopupWindow.setOutsideTouchable(true);
         mpopupWindow.showAsDropDown(toolbar);
     }
 
@@ -472,7 +523,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         notFoundText.setVisibility(View.GONE);
         mRecyclerView.setVisibility(View.VISIBLE);
 
-        homeAdapter = new HomeAdapter(mContext, nearByVo);
+        homeAdapter = new HomeAdapter(mContext, nearByVo,currentLatitude,currentLongitude);
         mRecyclerView.setHasFixedSize(true);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
         mRecyclerView.setLayoutManager(mLayoutManager);
@@ -488,4 +539,52 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
             mtxtToolbarTitle.setText("Guest");
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (mGoogleApiClient != null)
+            mGoogleApiClient.connect();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        //Disconnect from API onPause()
+        if (mGoogleApiClient != null && mGoogleApiClient.isConnected()) {
+            LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this);
+            mGoogleApiClient.disconnect();
+        }
+    }
+
+    @Override
+    public void onConnected(@Nullable Bundle bundle) {
+        if (ContextCompat.checkSelfPermission(mContext,
+                Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            Location location = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+            if (location == null) {
+                LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);
+            } else {
+                //If everything went fine lets get latitude and longitude
+                currentLatitude = location.getLatitude();
+                currentLongitude = location.getLongitude();
+              //  Toast.makeText(this, currentLatitude + " WORKS " + currentLongitude + "", Toast.LENGTH_LONG).show();
+            }
+        }
+    }
+
+    @Override
+    public void onConnectionSuspended(int i) {
+
+    }
+
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+
+    }
+
+    @Override
+    public void onLocationChanged(Location location) {
+        currentLatitude = location.getLatitude();
+        currentLongitude = location.getLongitude();
+    }
 }

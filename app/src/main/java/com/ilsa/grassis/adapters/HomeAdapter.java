@@ -21,6 +21,7 @@ import com.bumptech.glide.request.target.Target;
 import com.google.android.gms.maps.model.LatLng;
 import com.ilsa.grassis.R;
 import com.ilsa.grassis.activites.MenuActivity;
+import com.ilsa.grassis.activites.PointBalanceActivity;
 import com.ilsa.grassis.apivo.Dispensaries;
 import com.ilsa.grassis.apivo.Dispensary;
 import com.ilsa.grassis.apivo.Features;
@@ -48,6 +49,8 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MyViewHolder> 
 
     private NearByVo dataList;
     private Context mContext;
+    private double currentLatitude;
+    private double currentLongitude;
 
     /**
      * Instantiates a new Menu item adapter.
@@ -55,15 +58,18 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MyViewHolder> 
      * @param mContext the mContext
      * @param dataList the menu list
      */
-    public HomeAdapter(Context mContext, NearByVo dataList) {
+    public HomeAdapter(Context mContext, NearByVo dataList, double currentLatitude, double currentLongitude) {
         this.dataList = dataList;
         this.mContext = mContext;
-        Collections.sort(dataList.getDispensaries(), new Comparator<Dispensaries>() {
+        this.currentLatitude = currentLatitude;
+        this.currentLongitude = currentLongitude;
+        //sorting
+       /* Collections.sort(dataList.getDispensaries(), new Comparator<Dispensaries>() {
             @Override
             public int compare(Dispensaries o1, Dispensaries o2) {
                 return o2.getDispensary().getId().compareTo(o1.getDispensary().getId());
             }
-        });
+        });*/
     }
 
     @Override
@@ -175,7 +181,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MyViewHolder> 
 
     private void setTexts(MyViewHolder mHolder, Dispensary dispensary) {
         mHolder.mDespensoryTitle.setText(dispensary.getName());
-        int disInMiles = distanceOfLocation(31.53102, 74.35236, dispensary.getLocation().getCoords().getLatitude(), dispensary.getLocation().getCoords().getLongitude());
+        int disInMiles = distanceOfLocation(this.currentLatitude, this.currentLongitude, dispensary.getLocation().getCoords().getLatitude(), dispensary.getLocation().getCoords().getLongitude());
         if (dispensary.getSchedule().getMon_open() != null) {
 
             Calendar calendar = Calendar.getInstance();
@@ -229,7 +235,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MyViewHolder> 
 
 
         float meter = loc1.distanceTo(loc2);
-        return (int)(meter * 0.00062137119);
+        return (int) (meter * 0.00062137119);
     }
 
     private String timeFormat24To12(String timein24Format) {
@@ -243,29 +249,6 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MyViewHolder> 
         }
 
         return timein12Format;
-    }
-
-
-    private void getCurrentDay() {
-        Calendar calendar = Calendar.getInstance();
-        int day = calendar.get(Calendar.DAY_OF_WEEK);
-
-        switch (day) {
-            case Calendar.SUNDAY:
-                break;
-            case Calendar.MONDAY:
-                break;
-            case Calendar.TUESDAY:
-                break;
-            case Calendar.WEDNESDAY:
-                break;
-            case Calendar.THURSDAY:
-                break;
-            case Calendar.FRIDAY:
-                break;
-            case Calendar.SATURDAY:
-                break;
-        }
     }
 
     private void initViews(MyViewHolder mHolder, NearByVo nearByVo, int pos) {
@@ -352,6 +335,14 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MyViewHolder> 
             mOfferNo = (BoldSFTextView) view.findViewById(R.id.home_lv_bottom_section_2_txt_per);
             mOfferOff = (ThinTextView) view.findViewById(R.id.home_lv_bottom_section_2_txt_off);
             mOfferName = (ThinTextView) view.findViewById(R.id.home_lv_bottom_section_2_txt_products);
+
+            mDespensoryCart.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(mContext, PointBalanceActivity.class);
+                    mContext.startActivity(intent);
+                }
+            });
         }
     }
 }

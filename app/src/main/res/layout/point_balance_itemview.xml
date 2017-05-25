@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/card_view"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        card_view:cardCornerRadius="4dp">
+
+        <ImageView
+            android:id="@+id/point_balance_img"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/home_list_bottom_back" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <com.ilsa.grassis.library.BoldSFTextView
+                android:id="@+id/point_balance_txt_point"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:text="100" />
+
+            <com.ilsa.grassis.library.BoldSFTextView
+                android:id="@+id/point_balance_txt_pointText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:text="PNTS" />
+        </LinearLayout>
+
+        <com.ilsa.grassis.library.BoldSFTextView
+            android:id="@+id/point_balance_txt_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Pre Roll Joint" />
+
+        <com.ilsa.grassis.library.MediumTextView
+            android:id="@+id/point_balance_txt_weight"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="1 Joint" />
+
+        <com.ilsa.grassis.library.RegularTextView
+            android:id="@+id/logOut"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/round_edge_red"
+            android:gravity="center"
+            android:padding="@dimen/_12sdp"
+            android:text="REDEEM"
+            android:textColor="#de071d"
+            android:textSize="@dimen/_14sdp" />
+    </android.support.v7.widget.CardView>
+</LinearLayout>
