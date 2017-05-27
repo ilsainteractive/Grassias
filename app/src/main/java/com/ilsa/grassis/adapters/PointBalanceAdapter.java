@@ -49,7 +49,7 @@ public class PointBalanceAdapter extends RecyclerView.Adapter<PointBalanceAdapte
     public void onBindViewHolder(MyViewHolder1 holder, int position) {
         Dispensary dispensary = nearByVo.getDispensaries().get(position).getDispensary();
 
-        holder.point.setText(dispensary.getName());
+        //holder.point.setText(dispensary.getName());
 
     }
 

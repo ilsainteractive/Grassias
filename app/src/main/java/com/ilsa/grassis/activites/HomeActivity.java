@@ -201,7 +201,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void AddListener() {
-        // mImgDetail.setOnClickListener(this);
+
         mDiscover.setOnClickListener(this);
         mProfile.setOnClickListener(this);
         mDeals.setOnClickListener(this);
@@ -308,7 +308,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
             mpopupWindow.setElevation(5.0f);
         }
 
-        mpopupWindow.setOutsideTouchable(true);
+       // mpopupWindow.setOutsideTouchable(true);
         mpopupWindow.showAsDropDown(toolbar);
     }
 

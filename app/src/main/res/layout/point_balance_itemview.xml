@@ -2,61 +2,90 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:gravity="center_horizontal"
     android:orientation="vertical">
 
     <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
         android:id="@+id/card_view"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
-        card_view:cardCornerRadius="4dp">
-
-        <ImageView
-            android:id="@+id/point_balance_img"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@mipmap/home_list_bottom_back" />
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/_5sdp">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="vertical">
 
-            <com.ilsa.grassis.library.BoldSFTextView
-                android:id="@+id/point_balance_txt_point"
-                android:layout_width="wrap_content"
+            <ImageView
+                android:id="@+id/point_balance_img"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_150sdp"
+                android:layout_gravity="center_horizontal"
+                android:scaleType="centerCrop"
+                android:src="@mipmap/home_list_bottom_back" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal"
-                android:text="100" />
+                android:layout_marginTop="@dimen/_15sdp"
+                android:orientation="horizontal">
+
+                <com.ilsa.grassis.library.BoldSFTextView
+                    android:id="@+id/point_balance_txt_point"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/_15sdp"
+                    android:text="100"
+                    android:textColor="#ec2a70" />
+
+                <com.ilsa.grassis.library.BoldSFTextView
+                    android:id="@+id/point_balance_txt_pointText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/_10sdp"
+                    android:paddingTop="@dimen/_2sdp"
+                    android:layout_alignTop="@+id/point_balance_txt_point"
+                    android:layout_toRightOf="@+id/point_balance_txt_point"
+                    android:layout_toEndOf="@+id/point_balance_txt_point"
+                    android:text="PNTS"
+                    android:textColor="#ec2a70" />
+            </RelativeLayout>
 
             <com.ilsa.grassis.library.BoldSFTextView
-                android:id="@+id/point_balance_txt_pointText"
-                android:layout_width="wrap_content"
+                android:id="@+id/point_balance_txt_name"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal"
-                android:text="PNTS" />
+                android:text="Pre Roll Joint"
+                android:textColor="@color/black" />
+
+            <com.ilsa.grassis.library.MediumTextView
+                android:id="@+id/point_balance_txt_weight"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:text="1 Joint"
+                android:textColor="@color/black" />
+
+            <com.ilsa.grassis.library.RegularTextView
+                android:id="@+id/logOut"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="@dimen/_10sdp"
+                android:layout_marginLeft="@dimen/_30sdp"
+                android:layout_marginRight="@dimen/_30sdp"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:background="@drawable/round_edge_red"
+                android:gravity="center"
+                android:paddingBottom="@dimen/_5sdp"
+                android:paddingLeft="@dimen/_20sdp"
+                android:paddingRight="@dimen/_20sdp"
+                android:paddingTop="@dimen/_5sdp"
+                android:text="REDEEM"
+                android:textColor="#ec2a70"
+                android:textSize="@dimen/_12sdp" />
         </LinearLayout>
-
-        <com.ilsa.grassis.library.BoldSFTextView
-            android:id="@+id/point_balance_txt_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Pre Roll Joint" />
-
-        <com.ilsa.grassis.library.MediumTextView
-            android:id="@+id/point_balance_txt_weight"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="1 Joint" />
-
-        <com.ilsa.grassis.library.RegularTextView
-            android:id="@+id/logOut"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/round_edge_red"
-            android:gravity="center"
-            android:padding="@dimen/_12sdp"
-            android:text="REDEEM"
-            android:textColor="#de071d"
-            android:textSize="@dimen/_14sdp" />
     </android.support.v7.widget.CardView>
 </LinearLayout>

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_splash"
+    android:layout_width="match_parent"
+    android:layout_height="?attr/actionBarSize"
+    tools:context="com.ilsa.grassis.activites.HomeActivity">
+
+    <LinearLayout
+        android:id="@+id/add_to_fav"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#e6252b2b"
+        android:gravity="center"
+        android:padding="15dp">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal|center_vertical">
+
+            <com.ilsa.grassis.library.RegularTextView
+                android:id="@+id/point_balance_txt_AddPoint"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="ADD POINTS"
+                android:textColor="@color/white" />
+        </LinearLayout>
+    </LinearLayout>
+</RelativeLayout>

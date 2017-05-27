@@ -45,6 +45,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
@@ -291,6 +292,7 @@ public class DispensaryActivity extends AppCompatActivity implements OnMapReadyC
                                     public void run() {
                                         pd.dismiss();
                                         if (AppContoller.userData.getUser().getState_change().equalsIgnoreCase("registered")) {
+                                            AppContoller.IsLoggedIn = true;
                                             Intent i = new Intent(mContext, HomeActivity.class);
                                             startActivity(i);
                                             for (Activity activity : DeadActivities) {
@@ -563,13 +565,21 @@ public class DispensaryActivity extends AppCompatActivity implements OnMapReadyC
             @Override
             protected void onPostExecute(Bitmap theBitmap) {
                 super.onPostExecute(theBitmap);
+                BitmapDescriptor markerIcon;
+                if (theBitmap != null) {
+                    markerIcon = BitmapDescriptorFactory.fromBitmap(theBitmap);
+                } else {
+                    theBitmap = Helper.getBitmapFromDrawable(ContextCompat.getDrawable(mContext, R.mipmap.ic_launcher));
+                }
 
                 latLng = new LatLng(dispensary.getLocation().getCoords().getLatitude(), dispensary.getLocation().getCoords().getLongitude());
                 mSelectedId = dispensary.getId();
 
                 MarkerOptions marker = new MarkerOptions().position(latLng);
                 markersBitmaps.put(dispensary.getId(), theBitmap);
-                Bitmap mBitmap = addBorderToBitmap(theBitmap, getColor(R.color.selected));
+
+                // Add Border to marker icon
+                Bitmap mBitmap = addBorderToBitmap(theBitmap, ContextCompat.getColor(mContext, R.color.selected));
                 marker.icon(BitmapDescriptorFactory.fromBitmap(mBitmap));
                 marker.snippet(dispensary.getId());
                 mMap.addMarker(marker);
@@ -589,14 +599,14 @@ public class DispensaryActivity extends AppCompatActivity implements OnMapReadyC
                             if (dispensary1.getId().equalsIgnoreCase(marker.getSnippet())) {
                                 mSelectedId = dispensary1.getId();
                                 UpdateBannerSection(mSelectedId);
-                                Bitmap mBitmap = addBorderToBitmap(markersBitmaps.get(dispensary1.getId()), getColor(R.color.baseColor));
+                                Bitmap mBitmap = addBorderToBitmap(markersBitmaps.get(dispensary1.getId()), ContextCompat.getColor(mContext, R.color.baseColor));
                                 markr.icon(BitmapDescriptorFactory.fromBitmap(mBitmap));
                                 markr.snippet(dispensary1.getId());
                                 mMap.addMarker(markr);
 
                             } else {
 
-                                Bitmap mBitmap = addBorderToBitmap(markersBitmaps.get(dispensary1.getId()), getColor(R.color.selected));
+                                Bitmap mBitmap = addBorderToBitmap(markersBitmaps.get(dispensary1.getId()), ContextCompat.getColor(mContext, R.color.selected));
                                 markr.icon(BitmapDescriptorFactory.fromBitmap(mBitmap));
                                 markr.snippet(dispensary1.getId());
                                 mMap.addMarker(markr);

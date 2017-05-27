@@ -3,6 +3,7 @@ package com.ilsa.grassis.activites;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -15,7 +16,9 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
 import android.util.Base64;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -27,16 +30,34 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.BitmapImageViewTarget;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.ilsa.grassis.R;
 import com.ilsa.grassis.library.AppContoller;
+import com.ilsa.grassis.library.Constants;
+import com.ilsa.grassis.rootvo.UserDataVO;
 import com.ilsa.grassis.utils.Dailogs;
+import com.ilsa.grassis.utils.Helper;
+import com.ilsa.grassis.utils.ShPrefsHelper;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
+import org.json.JSONObject;
+
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 
 public class EditProfileActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -52,12 +73,14 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnCli
 
     private boolean is_Image_picked = false;
     Context mContext;
+    private Activity mActivity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_profile);
         mContext = this;
+        mActivity = this;
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.editToolbar);
         setSupportActionBar(toolbar);
@@ -130,28 +153,107 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnCli
                 break;
             case R.id.activity_log_in_SaveButton:
 
-                Dailogs.ShowToast(mContext, "Service is not functional", Toast.LENGTH_SHORT);
-                //UpdateUser();
+                // Dailogs.ShowToast(mContext, "Service is not functional", Toast.LENGTH_SHORT);
+                UpdateUser();
                 break;
         }
     }
 
+    private boolean IsFieldValid(Editable editable, int whoHasFocus) {
+        switch (whoHasFocus) {
+            case Constants.SIGNUP_FIRST_NAME:
+                if (!editable.toString().equalsIgnoreCase("")) {
+                    if (editable.length() > Constants.FIELD_VALIDATION_LENGTH_MIN && editable.length() < Constants.FIELD_VALIDATION_LENGTH_MAX)
+                        return true;
+                    else
+                        return false;
+                } else {
+                    return false;
+                }
+            case Constants.SIGNUP_LAST_NAME:
+                if (!editable.toString().equalsIgnoreCase("")) {
+                    if (editable.length() > Constants.FIELD_VALIDATION_LENGTH_MIN && editable.length() < Constants.FIELD_VALIDATION_LENGTH_MAX)
+                        return true;
+                    else
+                        return false;
+                } else {
+                    return false;
+                }
+            case Constants.SIGNUP_USER_NAME:
+                if (!editable.toString().equalsIgnoreCase("")) {
+                    if (editable.length() > Constants.FIELD_USER_NAME_VALIDATION_LENGTH_MIN && editable.length() < Constants.FIELD_USER_NAME_VALIDATION_LENGTH_MAX)
+                        return true;
+                    else
+                        return false;
+                } else {
+                    return false;
+                }
+            case Constants.SIGNUP_EMAIL_VALIDATION:
+
+                if (!editable.toString().equalsIgnoreCase("")) {
+
+                    return emailValidator(editable.toString());
+                } else {
+                    return false;
+                }
+            case Constants.SIGNUP_PHONE_VALIDATION:
+                if (!editable.toString().equalsIgnoreCase("")) {
+                    if (editable.length() > Constants.FIELD_PHONE_VALIDATION_LENGTH_MIN && editable.length() < Constants.FIELD_PHONE_VALIDATION_LENGTH_MAX)
+                        return true;
+                    else
+                        return false;
+                } else {
+                    return false;
+                }
+            case Constants.SIGNUP_PASSWORD_VALIDATION:
+                if (!editable.toString().equalsIgnoreCase("")) {
+                    if (editable.length() > Constants.FIELD_PASSWORD_VALIDATION_LENGTH_MIN && editable.length() < Constants.FIELD_PASSWORD_VALIDATION_LENGTH_MAX)
+                        return true;
+                    else
+                        return false;
+                } else {
+                    return false;
+                }
+        }
+        return false;
+    }
+
+    public boolean emailValidator(String email) {
+        Pattern pattern;
+        Matcher matcher;
+        final String EMAIL_PATTERN = "^[_A-Za-z0-9-]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
+        pattern = Pattern.compile(EMAIL_PATTERN);
+        matcher = pattern.matcher(email);
+        return matcher.matches();
+    }
+
+
     void UpdateUser() {
-        if (!(name.getText().toString().equalsIgnoreCase(""))) {
 
-            if (!(lastName.getText().toString().equalsIgnoreCase(""))) {
-
-                if (!(emailAddress.getText().toString().equalsIgnoreCase(""))) {
-
-                    UpdatedProfile(name.getText().toString(), lastName.getText().toString(), spinDays.getSelectedItem().toString(), spinMonths.getSelectedItem().toString(), spinYear.getSelectedItem().toString(), emailAddress.getText().toString(), spingender.getSelectedItem().toString(), image);
-                } else
-                    Toast.makeText(EditProfileActivity.this, "Email is Empty", Toast.LENGTH_SHORT).show();
-
-            } else
-                Toast.makeText(EditProfileActivity.this, "Last Name is Empty", Toast.LENGTH_SHORT).show();
-
-        } else
-            Toast.makeText(EditProfileActivity.this, "Name is Empty", Toast.LENGTH_SHORT).show();
+        if (IsFieldValid(name.getEditableText(), Constants.SIGNUP_FIRST_NAME)) {
+            if (IsFieldValid(lastName.getEditableText(), Constants.SIGNUP_LAST_NAME)) {
+                if (IsFieldValid(userName.getEditableText(), Constants.SIGNUP_USER_NAME)) {
+                    if (IsFieldValid(emailAddress.getEditableText(), Constants.SIGNUP_EMAIL_VALIDATION)) {
+                        if (IsFieldValid(phoneNumber.getEditableText(), Constants.SIGNUP_PHONE_VALIDATION)) {
+                            if (Helper.checkInternetConnection(mContext)) {
+                                UpdatedProfile(name.getText().toString(), lastName.getText().toString(), userName.getText().toString(), emailAddress.getText().toString(), phoneNumber.getText().toString());
+                            } else
+                                Dailogs.ShowToast(mContext, getString(R.string.no_internet_msg), Constants.SHORT_TIME);
+                        } else {
+                            phoneNumber.setError("Length must be between 8 to 11 character");
+                        }
+                    } else {
+                        emailAddress.setError(getString(R.string.invalid_email));
+                    }
+                } else {
+                    userName.setError("Length must be between 5 to 14 character");
+                }
+            } else {
+                lastName.setError("Length must be between 3 to 9 character");
+            }
+        } else {
+            name.setError("Length must be between 3 to 9 character");
+        }
     }
 
     private String convertToBase64(String imagePath) {
@@ -240,7 +342,7 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnCli
                 image = convertToBase64(result.getUri().getPath());
                 is_Image_picked = true;
 
-                Toast.makeText(this, "Cropping successful, Sample: " + result.getSampleSize(), Toast.LENGTH_LONG).show();
+                //  Toast.makeText(this, "Cropping successful, Sample: " + result.getSampleSize(), Toast.LENGTH_LONG).show();
             } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
                 Toast.makeText(this, "Cropping failed: " + result.getError(), Toast.LENGTH_LONG).show();
             }
@@ -261,8 +363,74 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnCli
                 .start(this);
     }
 
+    private void UpdatedProfile(String firstName, String lastName, String userName, String email, String phoneNumber) {
 
-    private void UpdatedProfile(final String nameString, final String lastnameString, final String day, final String month, final String year, final String emailString, final String genderstring, final String imageString) {
+        final ProgressDialog pd = new ProgressDialog(EditProfileActivity.this);
+        pd.setMessage("Updating...");
+        pd.setCancelable(false);
+        pd.show();
+
+        OkHttpClient client = new OkHttpClient();
+
+        MediaType mediaType = MediaType.parse("application/json");
+        RequestBody body = RequestBody.create(mediaType, "{\n  \"user\": {\n    \"first_name\": \"" + firstName + "\",\n    \"last_name\": \"" + lastName + "\",\n    \"email\": \"" + email + "\",\n    \"phone_number\": \"" + phoneNumber + "\",\n    \"username\": \"" + userName + "\"\n  }\n}");
+        Request request = new Request.Builder()
+                .url("http://kushmarketing.herokuapp.com/api/users/me")
+                .put(body)
+                .addHeader("accept", "application/vnd.kush_marketing.com; version=1")
+                .addHeader("authorization", "Bearer " + AppContoller.userData.getUser().getAccess_token())
+                .addHeader("x-client-email", AppContoller.userData.getUser().getEmail())
+                .addHeader("content-type", "application/json")
+                .addHeader("cache-control", "no-cache")
+                .addHeader("postman-token", "595b4ebe-7a87-23b6-a62e-57da5bff19a1")
+                .build();
+
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                e.printStackTrace();
+                pd.dismiss();
+            }
+
+            @Override
+            public void onResponse(Call call, final Response response) throws IOException {
+                final String res = response.body().string().toString();
+                Log.i("response", res);
+                if (!response.isSuccessful()) {
+                    mActivity.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            try {
+                                pd.dismiss();
+                                JSONObject jsonObject = new JSONObject(res);
+                                JSONObject error = jsonObject.getJSONObject("error");
+                                String message = error.get("message").toString();
+                                Dailogs.ShowToast(mContext, message, Constants.LONG_TIME);
+                            } catch (Exception e) {
+                            }
+                        }
+                    });
+                } else {
+                    pd.dismiss();
+
+                    Gson gson = new GsonBuilder().create();
+                    UserDataVO userDatavo = gson.fromJson(res, UserDataVO.class);
+
+                    if (userDatavo.getUser() != null) {
+                        // AppContoller.IsLoggedIn = true;
+                        // AppContoller.FavDispensariesIds = AppContoller.userData.getUser().getFavorites().getDispensaries();
+
+                        userDatavo.getUser().setAccess_token(AppContoller.userData.getUser().getAccess_token());
+                        userDatavo.getUser().setToken(AppContoller.userData.getUser().getToken());
+
+                        AppContoller.userData = userDatavo;
+                        ShPrefsHelper.setSharedPreferenceString(mContext, Constants.USER_VO, userDatavo.toString());
+                        // ShPrefsHelper.setSharedPreferenceString(mContext, Constants.PASSWORD, password);
+                        pd.dismiss();
+                    }
+                }
+            }
+        });
     }
 
     @Override
