@@ -293,8 +293,8 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
             @Override
             public void onClick(View view, int position) {
 
-                Toast.makeText(HomeActivity.this,AppContoller.FavDispensaries.get(position).getId() , Toast.LENGTH_SHORT).show();
-                 switchDefaultDispensary(AppContoller.FavDispensaries.get(position).getId());
+                Toast.makeText(HomeActivity.this, AppContoller.FavDispensaries.get(position).getId(), Toast.LENGTH_SHORT).show();
+                switchDefaultDispensary(AppContoller.FavDispensaries.get(position).getId());
 
 
             }
@@ -333,7 +333,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         OkHttpClient client = new OkHttpClient();
 
         MediaType mediaType = MediaType.parse("application/json");
-        RequestBody body = RequestBody.create(mediaType, "{\n  \"user\": {\n    \"dispensary_id\": "+dispensaryId+"\n  }\n}");
+        RequestBody body = RequestBody.create(mediaType, "{\n  \"user\": {\n    \"dispensary_id\": " + dispensaryId + "\n  }\n}");
         Request request = new Request.Builder()
                 .url("http://kushmarketing.herokuapp.com/api/users/me")
                 .put(body)
@@ -373,7 +373,17 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                 } else {
                     pd.dismiss();
                     Gson gson = new GsonBuilder().create();
-                    AppContoller.userData = gson.fromJson(res, UserDataVO.class);
+                    UserDataVO userDataUpdated = gson.fromJson(res, UserDataVO.class);
+
+                    userDataUpdated.getUser().setAccess_token(AppContoller.userData.getUser().getAccess_token());
+                    userDataUpdated.getUser().setAccess_token(AppContoller.userData.getUser().getToken());
+                    userDataUpdated.getUser().setState_change("logged_in");
+
+                    Gson gson1 = new Gson();
+                    String jsonRes = gson1.toJson(userDataUpdated);
+                   // String jsonRes1 = gson1.toString(userDataUpdated);
+
+                    ShPrefsHelper.setSharedPreferenceString(mContext, Constants.USER_VO, jsonRes);
                 }
             }
         });
