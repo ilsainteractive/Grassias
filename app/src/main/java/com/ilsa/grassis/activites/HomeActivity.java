@@ -39,6 +39,7 @@ import com.google.gson.GsonBuilder;
 import com.ilsa.grassis.R;
 import com.ilsa.grassis.adapters.HomeAdapter;
 import com.ilsa.grassis.adapters.ToggleDisAdapter;
+import com.ilsa.grassis.apivo.Dispensary;
 import com.ilsa.grassis.library.AppContoller;
 import com.ilsa.grassis.library.BoldSFTextView;
 import com.ilsa.grassis.library.Constants;
@@ -47,8 +48,10 @@ import com.ilsa.grassis.library.MenuItemClickListener;
 import com.ilsa.grassis.library.RecyclerTouchListener;
 import com.ilsa.grassis.library.RegularTextView;
 import com.ilsa.grassis.rootvo.NearByVo;
+import com.ilsa.grassis.rootvo.UserDataVO;
 import com.ilsa.grassis.utils.Dailogs;
 import com.ilsa.grassis.utils.Helper;
+import com.ilsa.grassis.utils.ShPrefsHelper;
 
 import org.json.JSONObject;
 
@@ -58,8 +61,10 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import okhttp3.Call;
 import okhttp3.Callback;
+import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
+import okhttp3.RequestBody;
 import okhttp3.Response;
 
 /**
@@ -84,6 +89,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     private HomeAdapter homeAdapter;
     private NearByVo searchNearByVo;
     private ProgressDialog pd;
+    ToggleDisAdapter adapter;
 
     RecyclerView mRecyclerView;
 
@@ -286,7 +292,11 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         listener = new RecyclerTouchListener(mContext, recyclerView, new MenuItemClickListener() {
             @Override
             public void onClick(View view, int position) {
-                Toast.makeText(HomeActivity.this, "Toggle service issue", Toast.LENGTH_SHORT).show();
+
+                Toast.makeText(HomeActivity.this,AppContoller.FavDispensaries.get(position).getId() , Toast.LENGTH_SHORT).show();
+                 switchDefaultDispensary(AppContoller.FavDispensaries.get(position).getId());
+
+
             }
 
             @Override
@@ -296,7 +306,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         });
         recyclerView.addOnItemTouchListener(listener);
 
-        ToggleDisAdapter adapter = new ToggleDisAdapter(mContext, AppContoller.FavDispensaries);
+        adapter = new ToggleDisAdapter(mContext, AppContoller.FavDispensaries);
         recyclerView.setAdapter(adapter);
 
         mpopupWindow = new PopupWindow(
@@ -308,8 +318,65 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
             mpopupWindow.setElevation(5.0f);
         }
 
-       // mpopupWindow.setOutsideTouchable(true);
+        // mpopupWindow.setOutsideTouchable(true);
         mpopupWindow.showAsDropDown(toolbar);
+    }
+
+
+    private void switchDefaultDispensary(String dispensaryId) {
+
+        final ProgressDialog pd = new ProgressDialog(HomeActivity.this);
+        pd.setMessage(getString(R.string.logging_in_msg));
+        pd.setCancelable(false);
+        pd.show();
+
+        OkHttpClient client = new OkHttpClient();
+
+        MediaType mediaType = MediaType.parse("application/json");
+        RequestBody body = RequestBody.create(mediaType, "{\n  \"user\": {\n    \"dispensary_id\": "+dispensaryId+"\n  }\n}");
+        Request request = new Request.Builder()
+                .url("http://kushmarketing.herokuapp.com/api/users/me")
+                .put(body)
+                .addHeader("accept", "application/vnd.kush_marketing.com; version=1")
+                .addHeader("authorization", "Bearer " + AppContoller.userData.getUser().getAccess_token())
+                .addHeader("x-client-email", AppContoller.userData.getUser().getEmail())
+                .addHeader("content-type", "application/json")
+                .addHeader("cache-control", "no-cache")
+                .addHeader("postman-token", "8d9edac2-4da7-5b6a-d296-afded0e02ff8")
+                .build();
+
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                e.printStackTrace();
+                pd.dismiss();
+            }
+
+            @Override
+            public void onResponse(Call call, final Response response) throws IOException {
+                final String res = response.body().string().toString();
+                Log.i("response", res);
+                if (!response.isSuccessful()) {
+                    mActivity.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            try {
+                                pd.dismiss();
+                                JSONObject jsonObject = new JSONObject(res);
+                                JSONObject error = jsonObject.getJSONObject("error");
+                                String message = error.get("message").toString();
+                                Dailogs.ShowToast(mContext, message, Constants.LONG_TIME);
+                            } catch (Exception e) {
+                            }
+                        }
+                    });
+                } else {
+                    pd.dismiss();
+                    Gson gson = new GsonBuilder().create();
+                    AppContoller.userData = gson.fromJson(res, UserDataVO.class);
+                }
+            }
+        });
     }
 
     @Override
@@ -523,7 +590,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         notFoundText.setVisibility(View.GONE);
         mRecyclerView.setVisibility(View.VISIBLE);
 
-        homeAdapter = new HomeAdapter(mContext, nearByVo,currentLatitude,currentLongitude);
+        homeAdapter = new HomeAdapter(mContext, nearByVo, currentLatitude, currentLongitude);
         mRecyclerView.setHasFixedSize(true);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
         mRecyclerView.setLayoutManager(mLayoutManager);
@@ -567,7 +634,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                 //If everything went fine lets get latitude and longitude
                 currentLatitude = location.getLatitude();
                 currentLongitude = location.getLongitude();
-              //  Toast.makeText(this, currentLatitude + " WORKS " + currentLongitude + "", Toast.LENGTH_LONG).show();
+                //  Toast.makeText(this, currentLatitude + " WORKS " + currentLongitude + "", Toast.LENGTH_LONG).show();
             }
         }
     }

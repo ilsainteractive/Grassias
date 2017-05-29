@@ -37,8 +37,12 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.ilsa.grassis.R;
 import com.ilsa.grassis.adapters.DiscovAdapter;
+import com.ilsa.grassis.adapters.HomeAdapter;
 import com.ilsa.grassis.adapters.MenuGalleryAdapter;
+import com.ilsa.grassis.adapters.MenuGalleryAdapterFeatures;
 import com.ilsa.grassis.apivo.Dispensary;
+import com.ilsa.grassis.apivo.Features;
+import com.ilsa.grassis.apivo.Products;
 import com.ilsa.grassis.library.AppContoller;
 import com.ilsa.grassis.library.Constants;
 import com.ilsa.grassis.library.MediumTextView;
@@ -46,6 +50,7 @@ import com.ilsa.grassis.library.RegularTextView;
 import com.ilsa.grassis.library.SFUITextBold;
 import com.ilsa.grassis.library.ThinTextView;
 import com.ilsa.grassis.rootvo.FavToggleDespVO;
+import com.ilsa.grassis.rootvo.NearByVo;
 import com.ilsa.grassis.unknow.Dispensaries;
 import com.ilsa.grassis.utils.Dailogs;
 import com.ilsa.grassis.utils.Helper;
@@ -59,6 +64,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import jp.wasabeef.glide.transformations.CropCircleTransformation;
+import me.relex.circleindicator.CircleIndicator;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.OkHttpClient;
@@ -108,9 +114,9 @@ public class DispensaryInfoActivity extends AppCompatActivity implements OnMapRe
     /**
      * The Pager layout.
      */
-    @BindView(R.id.viewPager)
+  /*  @BindView(R.id.viewPager)
     ViewPager pager_layout;
-
+*/
     @BindView(R.id.editProfile)
     MediumTextView mtxtMenuView;
 
@@ -158,6 +164,11 @@ public class DispensaryInfoActivity extends AppCompatActivity implements OnMapRe
     private String mDispensary_id;
     private Dispensary mDispensary;
 
+    ViewPager pager;
+    CircleIndicator pageIndicatorView;
+    RelativeLayout mProductPagerLayout;
+    LinearLayout mNoProductLayout;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -197,6 +208,7 @@ public class DispensaryInfoActivity extends AppCompatActivity implements OnMapRe
             }
         }
     }
+
 
     private void addListener() {
 
@@ -279,6 +291,11 @@ public class DispensaryInfoActivity extends AppCompatActivity implements OnMapRe
 
     private void InitComponents() {
 
+        pager = (ViewPager) findViewById(R.id.viewPager2);
+        pageIndicatorView = (CircleIndicator) findViewById(R.id.pageIndicatorView2);
+        mProductPagerLayout = (RelativeLayout) findViewById(R.id.pagerViewMainLayout);
+        mNoProductLayout = (LinearLayout) findViewById(R.id.home_lv_bottom_pager_no_item);
+
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
@@ -335,11 +352,32 @@ public class DispensaryInfoActivity extends AppCompatActivity implements OnMapRe
     }
 
     private void initViews() {
-        MenuGalleryAdapter adapter = new MenuGalleryAdapter(mContext);
+        MenuGalleryAdapter adapter2 = new MenuGalleryAdapter(mContext);
         //adapter.setData(createPageList());
 
-        ViewPager pager = (ViewPager) findViewById(R.id.viewPager);
-        pager.setAdapter(adapter);
+        ArrayList<Products> list = new ArrayList<>();
+        // list = AppContoller.nearByVo.getProducts();
+
+        for (Products product : AppContoller.nearByVo.getProducts()) {
+            if (mDispensary.getId().equalsIgnoreCase(product.getDispensary_id())) {
+                list.add(product);
+            }
+        }
+
+        if (list.size() > 0) {
+            mProductPagerLayout.setVisibility(View.VISIBLE);
+            mNoProductLayout.setVisibility(View.GONE);
+            // MenuGalleryAdapterFeatures adapter2 = new MenuGalleryAdapterFeatures(mContext);
+            adapter2.setData(list);
+            pager.setAdapter(adapter2);
+
+            pageIndicatorView.setViewPager(pager);
+            adapter2.registerDataSetObserver(pageIndicatorView.getDataSetObserver());
+        } else {
+            mNoProductLayout.setVisibility(View.VISIBLE);
+            mProductPagerLayout.setVisibility(View.GONE);
+        }
+
     }
 
     @NonNull

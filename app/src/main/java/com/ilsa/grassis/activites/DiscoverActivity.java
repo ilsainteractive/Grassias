@@ -383,4 +383,10 @@ public class DiscoverActivity extends AppCompatActivity implements View.OnClickL
         int id = item.getItemId();
         return super.onOptionsItemSelected(item);
     }
+
+    @Override
+    protected void onResume() {
+        discovAdapter.notifyDataSetChanged();
+        super.onResume();
+    }
 }

@@ -401,6 +401,7 @@ public class DispensaryActivity extends AppCompatActivity implements OnMapReadyC
         super.onResume();
         if (mGoogleApiClient != null)
             mGoogleApiClient.connect();
+
     }
 
     @Override

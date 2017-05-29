@@ -13,6 +13,7 @@
         layout="@layout/toolbar_dispensory_info" />
 
     <ScrollView
+        android:id="@+id/mainScrollView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/toolbar"
@@ -327,30 +328,55 @@
                     xmlns:tools="http://schemas.android.com/tools"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/_315sdp"
+                    android:id="@+id/pagerViewMainLayout"
                     android:layout_marginBottom="@dimen/_20sdp"
                     android:orientation="horizontal">
 
                     <android.support.v4.view.ViewPager
-                        android:id="@+id/viewPager"
+                        android:id="@+id/viewPager2"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent" />
+                        android:layout_height="wrap_content"
+                        android:layout_above="@+id/pageIndicatorView2" />
 
                     <me.relex.circleindicator.CircleIndicator
-                        android:id="@+id/pageIndicatorView"
+                        android:id="@+id/pageIndicatorView2"
                         android:layout_width="wrap_content"
                         android:layout_height="10dp"
                         android:layout_alignParentBottom="true"
                         android:layout_centerHorizontal="true"
-                        android:layout_marginBottom="10dp"
+                        android:layout_marginBottom="@dimen/_35sdp"
                         app:ci_animator="@animator/scale_with_alpha"
                         app:ci_drawable="@color/selected"
                         app:ci_drawable_unselected="@color/un_selected"
                         app:ci_height="1dp"
                         app:ci_width="25dp" />
                 </RelativeLayout>
+
+                <LinearLayout
+                    android:id="@+id/home_lv_bottom_pager_no_item"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_150sdp"
+                    android:visibility="gone">
+
+                    <com.ilsa.grassis.library.RegularTextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:text="No products found." />
+
+                </LinearLayout>
+
             </LinearLayout>
+
+
         </RelativeLayout>
+
+
     </ScrollView>
+
+
+
+
 
     <RelativeLayout
         android:id="@+id/bottomLayout"
@@ -364,7 +390,6 @@
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_marginTop="574dp" />
+            android:layout_alignParentStart="true" />
     </RelativeLayout>
 </RelativeLayout>
