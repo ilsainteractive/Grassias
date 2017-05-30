@@ -186,7 +186,7 @@ public class RewardFrag extends Fragment {
                     Gson gson = new GsonBuilder().create();
                     GetAllRewards[] getAllRewardses = gson.fromJson(res, GetAllRewards[].class);
 
-                    rewardAdapter = new RewardAdapter(mContext, getAllRewardses);
+                    rewardAdapter = new RewardAdapter(mContext, getAllRewardses,mActivity);
                     mActivity.runOnUiThread(new Runnable() {
                         @Override
                         public void run() {

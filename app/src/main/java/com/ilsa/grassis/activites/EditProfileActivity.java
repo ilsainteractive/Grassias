@@ -96,7 +96,9 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnCli
 
             @Override
             public void onClick(View v) {
+                Intent intent1 = new Intent(EditProfileActivity.this, ProfileActivity.class);
                 finish();
+                startActivity(intent1);
             }
         });
 
@@ -422,10 +424,13 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnCli
 
                         userDatavo.getUser().setAccess_token(AppContoller.userData.getUser().getAccess_token());
                         userDatavo.getUser().setToken(AppContoller.userData.getUser().getToken());
+                        userDatavo.getUser().setState_change("logged_in");
+
+                        Gson gson1 = new Gson();
+                        String jsonRes = gson1.toJson(userDatavo);
 
                         AppContoller.userData = userDatavo;
-                        ShPrefsHelper.setSharedPreferenceString(mContext, Constants.USER_VO, userDatavo.toString());
-                        // ShPrefsHelper.setSharedPreferenceString(mContext, Constants.PASSWORD, password);
+                        ShPrefsHelper.setSharedPreferenceString(mContext, Constants.USER_VO, jsonRes);
                         pd.dismiss();
                     }
                 }
@@ -441,5 +446,13 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnCli
                 return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent intent1 = new Intent(EditProfileActivity.this, ProfileActivity.class);
+        finish();
+        startActivity(intent1);
+        super.onBackPressed();
     }
 }

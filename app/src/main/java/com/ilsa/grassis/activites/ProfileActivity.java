@@ -233,7 +233,9 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
                 startActivity(intent2);
                 break;
             case R.id.profile_txt_editProfile:
-                startActivity(new Intent(ProfileActivity.this, EditProfileActivity.class));
+               Intent intent1=new Intent(ProfileActivity.this, EditProfileActivity.class);
+                finish();
+                startActivity(intent1);
         }
     }
 
@@ -299,5 +301,4 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         });
 
     }
-
 }

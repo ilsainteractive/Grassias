@@ -376,13 +376,13 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                     UserDataVO userDataUpdated = gson.fromJson(res, UserDataVO.class);
 
                     userDataUpdated.getUser().setAccess_token(AppContoller.userData.getUser().getAccess_token());
-                    userDataUpdated.getUser().setAccess_token(AppContoller.userData.getUser().getToken());
+                    userDataUpdated.getUser().setToken(AppContoller.userData.getUser().getToken());
                     userDataUpdated.getUser().setState_change("logged_in");
 
                     Gson gson1 = new Gson();
                     String jsonRes = gson1.toJson(userDataUpdated);
-                   // String jsonRes1 = gson1.toString(userDataUpdated);
 
+                    AppContoller.userData = userDataUpdated;
                     ShPrefsHelper.setSharedPreferenceString(mContext, Constants.USER_VO, jsonRes);
                 }
             }
