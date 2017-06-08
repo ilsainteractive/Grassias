@@ -310,6 +310,8 @@ public class DispensaryInfoActivity extends AppCompatActivity implements OnMapRe
             LinearLayout.LayoutParams params1 = new LinearLayout.LayoutParams(Math.round(Helper.getFontSize(mContext.getResources(), 150)),
                     Math.round(Helper.getFontSize(mContext.getResources(), 150)));
             imageView.setLayoutParams(params1);
+
+
             scroll_layout.addView(imageView);
         }
         back.setOnClickListener(new View.OnClickListener() {

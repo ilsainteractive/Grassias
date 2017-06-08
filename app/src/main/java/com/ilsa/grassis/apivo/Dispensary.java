@@ -298,4 +298,9 @@ public class Dispensary {
     public void setBackground(Background2 background) {
         this.background = background;
     }
+
+    public void setAllVariableEmpty()
+    {
+
+    }
 }

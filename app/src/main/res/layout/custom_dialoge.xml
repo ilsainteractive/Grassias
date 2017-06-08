@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="@dimen/_10sdp"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="You have items from other dispensary in your cart" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:layout_marginBottom="@dimen/_10sdp"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:orientation="horizontal">
+
+        <com.ilsa.grassis.library.RegularTextView
+            android:id="@+id/checkOutItems"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/_10sdp"
+            android:layout_marginRight="@dimen/_10sdp"
+            android:background="@drawable/round_edge_rectangle_base"
+            android:gravity="center"
+            android:padding="@dimen/_10sdp"
+            android:text="CheckOut"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_12sdp" />
+
+        <com.ilsa.grassis.library.RegularTextView
+            android:id="@+id/clearItems"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/_10sdp"
+            android:layout_marginRight="@dimen/_10sdp"
+            android:background="@drawable/round_edge_rectangle_base"
+            android:gravity="center"
+            android:padding="@dimen/_10sdp"
+            android:text="Clear"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_12sdp" />
+
+        <com.ilsa.grassis.library.RegularTextView
+            android:id="@+id/cancelDialoge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/round_edge_rectangle_base"
+            android:gravity="center"
+            android:padding="@dimen/_10sdp"
+            android:text="Cancel"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_12sdp" />
+    </LinearLayout>
+</LinearLayout>

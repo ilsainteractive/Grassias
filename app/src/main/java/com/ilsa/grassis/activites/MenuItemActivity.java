@@ -1,10 +1,13 @@
 package com.ilsa.grassis.activites;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.DividerItemDecoration;
@@ -18,6 +21,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.ilsa.grassis.R;
 import com.ilsa.grassis.adapters.MenuGalleryAdapter;
@@ -30,7 +34,12 @@ import com.ilsa.grassis.library.ExpandedRecyclerView;
 import com.ilsa.grassis.library.MediumTextView;
 import com.ilsa.grassis.library.MenuItemClickListener;
 import com.ilsa.grassis.library.RecyclerTouchListener;
+import com.ilsa.grassis.library.RegularTextView;
 import com.ilsa.grassis.library.ThinTextView;
+import com.ilsa.grassis.vo.OrderManager;
+import com.ilsa.grassis.vo.OrderUserProducts;
+
+import android.text.TextUtils;
 
 import java.util.ArrayList;
 
@@ -53,7 +62,7 @@ public class MenuItemActivity extends AppCompatActivity implements View.OnClickL
     CircleIndicator pageIndicatorView;
 
     private MediumTextView mtxtToolbarTitle;
-    private ThinTextView mtxtTtile, mTxtSubTitle, mTxtAction;
+    private ThinTextView mtxtTtile, mTxtSubTitle, mTxtActionBuy;
 
     private ExpandedRecyclerView recyclerView;
     private MenuItemAdapter mMenuItemAdapter;
@@ -83,6 +92,8 @@ public class MenuItemActivity extends AppCompatActivity implements View.OnClickL
     @BindView(R.id.home_btn_qr)
     ImageView mQr;
 
+    String dispensaryId;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -94,6 +105,8 @@ public class MenuItemActivity extends AppCompatActivity implements View.OnClickL
         isScrolled = false;
         initToolBar();
         InitComponents();
+        dispensaryId = getIntent().getStringExtra("dispensaryId");
+
         syncData(getIntent().getStringExtra("dispensaryId"), getIntent().getIntExtra("category_id", 0));
         AddListener();
     }
@@ -113,6 +126,7 @@ public class MenuItemActivity extends AppCompatActivity implements View.OnClickL
         mHome.setOnClickListener(this);
         mQr.setOnClickListener(this);
         mHome.setImageResource(R.mipmap.home_icon1);
+        mTxtActionBuy.setOnClickListener(this);
     }
 
     public void initToolBar() {
@@ -140,7 +154,7 @@ public class MenuItemActivity extends AppCompatActivity implements View.OnClickL
 
         mtxtTtile = (ThinTextView) findViewById(R.id.menu_item_title);
         mTxtSubTitle = (ThinTextView) findViewById(R.id.menu_item_sub_title);
-        mTxtAction = (ThinTextView) findViewById(R.id.menu_item_action);
+        mTxtActionBuy = (ThinTextView) findViewById(R.id.menu_item_action_buy);
 
         recyclerView = (ExpandedRecyclerView) findViewById(R.id.recycler_view);
         listener = new RecyclerTouchListener(mContext, recyclerView, new MenuItemClickListener() {
@@ -149,6 +163,7 @@ public class MenuItemActivity extends AppCompatActivity implements View.OnClickL
                 Intent i = new Intent(mContext, MenuItemDetailsActivity.class);
                 i.putExtra("product_id", menuListVOs.get(position).getId());
                 i.putExtra("category_title", getIntent().getStringExtra("category_title"));
+                i.putExtra("DISPENSARY_ID", dispensaryId);
                 //i.putExtra("category_name", getIntent().getStringExtra("dispensary_title"));
                 startActivity(i);
             }
@@ -275,6 +290,102 @@ public class MenuItemActivity extends AppCompatActivity implements View.OnClickL
             case R.id.home_btn_qr:
                 startActivity(new Intent(mContext, DealsRewardActivity.class));
                 break;
+            case R.id.menu_item_action_buy:
+
+                //Toast.makeText(this, menuListVOs.get(mViewPager.getCurrentItem()).getId(), Toast.LENGTH_SHORT).show();
+                boolean added = true;
+                for (int i = 0; i < AppContoller.orderManager.getProductses().size(); i++) {
+                    if (AppContoller.orderManager.getProductses().get(i).getId().equalsIgnoreCase(menuListVOs.get(mViewPager.getCurrentItem()).getId())) {
+                        added = false;
+                    }
+                }
+
+                if (added) {
+
+                    if (TextUtils.isEmpty(AppContoller.orderManager.getDispensary().getId())) {
+                        AppContoller.orderManager.getProductses().add(menuListVOs.get(mViewPager.getCurrentItem()));
+                        AppContoller.orderManager.getDispensary().setId(dispensaryId);
+
+                        Intent intent = new Intent(MenuItemActivity.this, AddToCart.class);
+                        startActivity(intent);
+                    } else if (AppContoller.orderManager.getDispensary().getId().equalsIgnoreCase(dispensaryId)) {
+                        AppContoller.orderManager.getProductses().add(menuListVOs.get(mViewPager.getCurrentItem()));
+                        AppContoller.orderManager.getDispensary().setId(dispensaryId);
+
+                        Intent intent = new Intent(MenuItemActivity.this, AddToCart.class);
+                        startActivity(intent);
+                    } else
+                        changeDispensaryDialog();
+                } else
+                    CartAlertDialog();
+                break;
         }
+    }
+
+    private void changeDispensaryDialog() {
+
+        final Dialog dialog = new Dialog(mContext);
+        dialog.setContentView(R.layout.custom_dialoge);
+        dialog.setTitle("Sorry!");
+
+        // set the custom dialog components - text, image and button
+        RegularTextView checkOutItems = (RegularTextView) dialog.findViewById(R.id.checkOutItems);
+        RegularTextView clearItems = (RegularTextView) dialog.findViewById(R.id.clearItems);
+        RegularTextView cancelDialoge = (RegularTextView) dialog.findViewById(R.id.cancelDialoge);
+
+        checkOutItems.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                dialog.dismiss();
+                Intent intent = new Intent(MenuItemActivity.this, AddToCart.class);
+                startActivity(intent);
+            }
+        });
+        clearItems.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                dialog.dismiss();
+                AppContoller.orderUserProducts = new OrderUserProducts();
+                AppContoller.orderManager = new OrderManager();
+
+            }
+        });
+        cancelDialoge.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+
+
+        dialog.show();
+    }
+
+
+    private void CartAlertDialog() {
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+                mContext);
+
+        // set title
+        alertDialogBuilder.setTitle("Sorry!");
+
+        // set dialog message
+        alertDialogBuilder
+                .setMessage("This Product already added in your cart")
+                .setCancelable(false)
+                .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+
+                        dialog.cancel();
+                    }
+                });
+
+        AlertDialog alertDialog = alertDialogBuilder.create();
+
+        // show it
+        alertDialog.show();
+
     }
 }

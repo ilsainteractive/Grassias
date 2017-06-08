@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<android.support.v7.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:local="http://schemas.android.com/tools"
+    android:id="@+id/toolbar_top"
+    android:layout_width="match_parent"
+    android:layout_height="?attr/actionBarSize"
+    android:background="@color/white"
+    android:minHeight="?attr/actionBarSize"
+    local:theme="@style/AppActionBarTheme">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/add_to_cart_Img_backArrow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:paddingEnd="@dimen/_10sdp"
+            android:paddingLeft="@dimen/_5sdp"
+            android:paddingRight="@dimen/_10sdp"
+            android:paddingStart="@dimen/_5sdp"
+            android:scaleType="center"
+            android:src="@mipmap/back_arrow" />
+
+        <com.ilsa.grassis.library.RegularTextView
+            android:id="@+id/toolbar_title_dump"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_gravity="center"
+            android:text="Your Cart"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_16sdp" />
+
+        <ImageView
+            android:id="@+id/addToCart_toolbar_Img"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="@dimen/_10sdp"
+            android:layout_marginRight="@dimen/_10sdp"
+            android:scaleType="center"
+            android:src="@mipmap/mail_icon" />
+
+    </RelativeLayout>
+
+</android.support.v7.widget.Toolbar>

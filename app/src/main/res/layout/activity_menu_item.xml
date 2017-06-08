@@ -54,7 +54,7 @@
                     android:textSize="@dimen/_12sdp" />
 
                 <com.ilsa.grassis.library.ThinTextView
-                    android:id="@+id/menu_item_action"
+                    android:id="@+id/menu_item_action_buy"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"

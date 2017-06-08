@@ -11,6 +11,8 @@ import com.ilsa.grassis.rootvo.NearByVo;
 import com.ilsa.grassis.rootvo.UserDataVO;
 import com.ilsa.grassis.unknow.Dispensaries;
 import com.ilsa.grassis.vo.MenuCategoriesVO;
+import com.ilsa.grassis.vo.OrderManager;
+import com.ilsa.grassis.vo.OrderUserProducts;
 
 import java.util.ArrayList;
 
@@ -27,6 +29,8 @@ public class AppContoller extends MultiDexApplication {
     public static boolean IsLoggedIn;
     public static UserDataVO userData;
     public static NearByVo nearByVo;
+    public static OrderManager orderManager;
+    public static OrderUserProducts orderUserProducts;
 
     public static ArrayList<Activity> DeadActivities;
     public static ArrayList<Dispensaries> FavDispensariesIds;
@@ -44,6 +48,8 @@ public class AppContoller extends MultiDexApplication {
         FavDispensaries = new ArrayList<>();
         MenuCategories = new ArrayList<>();
         PopulateMenuCategories(MenuCategories);
+        orderManager = new OrderManager();
+        orderUserProducts = new OrderUserProducts();
     }
 
     private void PopulateMenuCategories(ArrayList<MenuCategoriesVO> menuCategories) {

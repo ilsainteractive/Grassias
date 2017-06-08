@@ -1,10 +1,15 @@
 package com.ilsa.grassis.activites;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.HorizontalScrollView;
@@ -12,6 +17,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.ScrollView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -25,6 +32,8 @@ import com.ilsa.grassis.library.MediumTextView;
 import com.ilsa.grassis.library.RegularTextView;
 import com.ilsa.grassis.library.SFUITextBold;
 import com.ilsa.grassis.library.ThinTextView;
+import com.ilsa.grassis.vo.OrderManager;
+import com.ilsa.grassis.vo.OrderUserProducts;
 
 /**
  * Menu item details activity contain detail about single entity selected from menu list .
@@ -51,6 +60,8 @@ public class MenuItemDetailsActivity extends AppCompatActivity {
     private ImageView mProductImage;
     private ProgressBar progress;
     private HorizontalScrollView horizontalScrollView;
+    private RegularTextView BuyItem;
+    private String dispensaryId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,9 +74,111 @@ public class MenuItemDetailsActivity extends AppCompatActivity {
         initToolBar();
         if (getIntent().getStringExtra("product_id") != null)
             syncData(getIntent().getStringExtra("product_id"));
+
+        dispensaryId = getIntent().getStringExtra("DISPENSARY_ID");
         InitComponents();
         SetValues();
+
+        BuyItem.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                boolean added = true;
+                for (int i = 0; i < AppContoller.orderManager.getProductses().size(); i++) {
+                    if (AppContoller.orderManager.getProductses().get(i).getId().equalsIgnoreCase(product.getId())) {
+                        added = false;
+                    }
+                }
+                if (added) {
+
+                    if (TextUtils.isEmpty(AppContoller.orderManager.getDispensary().getId())) {
+                        AppContoller.orderManager.getProductses().add(product);
+                        AppContoller.orderManager.getDispensary().setId(dispensaryId);
+
+                        Intent intent = new Intent(MenuItemDetailsActivity.this, AddToCart.class);
+                        startActivity(intent);
+                    } else if (AppContoller.orderManager.getDispensary().getId().equalsIgnoreCase(dispensaryId)) {
+                        AppContoller.orderManager.getProductses().add(product);
+                        AppContoller.orderManager.getDispensary().setId(dispensaryId);
+
+                        Intent intent = new Intent(MenuItemDetailsActivity.this, AddToCart.class);
+                        startActivity(intent);
+                    } else
+                        changeDispensaryDialog();
+                } else
+                    CartAlertDialog();
+
+
+            }
+        });
     }
+
+    private void changeDispensaryDialog() {
+
+        final Dialog dialog = new Dialog(mContext);
+        dialog.setContentView(R.layout.custom_dialoge);
+        dialog.setTitle("Sorry!");
+
+        // set the custom dialog components - text, image and button
+        RegularTextView checkOutItems = (RegularTextView) dialog.findViewById(R.id.checkOutItems);
+        RegularTextView clearItems = (RegularTextView) dialog.findViewById(R.id.clearItems);
+        RegularTextView cancelDialoge = (RegularTextView) dialog.findViewById(R.id.cancelDialoge);
+
+        checkOutItems.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                dialog.dismiss();
+                Intent intent = new Intent(MenuItemDetailsActivity.this, AddToCart.class);
+                startActivity(intent);
+            }
+        });
+        clearItems.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                dialog.dismiss();
+                AppContoller.orderUserProducts = new OrderUserProducts();
+                AppContoller.orderManager = new OrderManager();
+
+            }
+        });
+        cancelDialoge.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+
+
+        dialog.show();
+    }
+
+    private void CartAlertDialog() {
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+                mContext);
+
+        // set title
+        alertDialogBuilder.setTitle("Sorry!");
+
+        // set dialog message
+        alertDialogBuilder
+                .setMessage("This Product already added in your cart")
+                .setCancelable(false)
+                .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+
+                        dialog.cancel();
+                    }
+                });
+        // create alert dialog
+        AlertDialog alertDialog = alertDialogBuilder.create();
+
+        // show it
+        alertDialog.show();
+
+    }
+
 
     private void SetValues() {
         progress.setVisibility(View.VISIBLE);
@@ -164,6 +277,7 @@ public class MenuItemDetailsActivity extends AppCompatActivity {
         mTitleLayout = (LinearLayout) findViewById(R.id.menu_item_details_title_bar_layout);
         mPrecentLayout = (LinearLayout) findViewById(R.id.menu_item_details_precent_bar_layout);
         mValueBarLayout = (LinearLayout) findViewById(R.id.menu_item_details_values_bar_layout);
+        BuyItem = (RegularTextView) findViewById(R.id.menu_detail_item_buy);
 
         mtxtTtile = (SFUITextBold) findViewById(R.id.menu_item_details_txt_name);
         mTxtSubTitle = (ThinTextView) findViewById(R.id.menu_item_details_txt_sub_name);

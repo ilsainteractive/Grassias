@@ -20,6 +20,7 @@ import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.google.android.gms.maps.model.LatLng;
 import com.ilsa.grassis.R;
+import com.ilsa.grassis.activites.AddToCart;
 import com.ilsa.grassis.activites.MenuActivity;
 import com.ilsa.grassis.activites.PointBalanceActivity;
 import com.ilsa.grassis.apivo.Dispensaries;
@@ -30,6 +31,7 @@ import com.ilsa.grassis.library.BoldSFTextView;
 import com.ilsa.grassis.library.RegularTextView;
 import com.ilsa.grassis.library.ThinTextView;
 import com.ilsa.grassis.rootvo.NearByVo;
+import com.ilsa.grassis.utils.CircularTextView;
 import com.ilsa.grassis.utils.Dailogs;
 
 import java.text.SimpleDateFormat;
@@ -289,6 +291,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MyViewHolder> 
 
         ImageView mDespensoryPhoto;
         ImageView mDespensoryCart;
+        CircularTextView total_added_item_in_cart;
         ImageView mDespensoryDetail;
         ImageView mDespensoryLogo;
         ImageView mOfferPhoto;
@@ -318,6 +321,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MyViewHolder> 
 
             mDespensoryPhoto = (ImageView) view.findViewById(R.id.home_lv_top_section_img);
             mDespensoryCart = (ImageView) view.findViewById(R.id.home_list_box_cart);
+            total_added_item_in_cart = (CircularTextView) view.findViewById(R.id.total_added_item_in_cart);
             mDespensoryDetail = (ImageView) view.findViewById(R.id.home_list_box_detail);
             mDespensoryLogo = (ImageView) view.findViewById(R.id.home_lv_bottom_section_2_img);
             mOfferPhoto = (ImageView) view.findViewById(R.id.home_lv_bottom_section_offer_img);
@@ -339,7 +343,16 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MyViewHolder> 
             mDespensoryCart.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent(mContext, PointBalanceActivity.class);
+                    Intent intent = new Intent(mContext, AddToCart.class);
+                    mContext.startActivity(intent);
+                }
+            });
+
+            total_added_item_in_cart.setSolidColor("#f0f0f0");
+            total_added_item_in_cart.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(mContext, AddToCart.class);
                     mContext.startActivity(intent);
                 }
             });

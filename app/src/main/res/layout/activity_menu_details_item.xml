@@ -91,6 +91,7 @@
                     android:orientation="vertical">
 
                     <com.ilsa.grassis.library.RegularTextView
+                        android:id="@+id/menu_detail_item_buy"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_marginBottom="@dimen/_8sdp"
@@ -161,8 +162,8 @@
                 <LinearLayout
                     android:id="@+id/my_prining"
                     android:layout_width="match_parent"
-                    android:layout_marginTop="@dimen/_5sdp"
                     android:layout_height="match_parent"
+                    android:layout_marginTop="@dimen/_5sdp"
                     android:orientation="horizontal"></LinearLayout>
             </HorizontalScrollView>
 
