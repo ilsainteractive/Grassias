@@ -135,6 +135,7 @@
                         android:layout_marginTop="@dimen/_10sdp"
                         android:text="0"
                         android:textColor="@color/black"
+                        android:visibility="invisible"
                         android:textSize="@dimen/_10sdp" />
                 </RelativeLayout>
 

@@ -101,4 +101,9 @@
     <style name="ToolbarColoredBackArrow" parent="AppTheme">
         <item name="android:textColorSecondary">@color/black</item>
     </style>
+
+    <!--AutoComplete Places-->
+    <style name="Widget.PlacesAutoCompleteTextView.Styled" parent="PACV.Widget.PlacesAutoCompleteTextView">
+        <item name="android:background">@drawable/my_edit_text_background</item>
+    </style>
 </resources>

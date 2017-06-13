@@ -34,17 +34,17 @@
             android:textColor="@color/black"
             android:textSize="@dimen/_16sdp" />
 
-        <ImageView
+        <com.ilsa.grassis.library.RoundedImageView
             android:id="@+id/addToCart_toolbar_Img"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="@dimen/_30sdp"
+            android:layout_height="@dimen/_30sdp"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_marginEnd="@dimen/_10sdp"
             android:layout_marginRight="@dimen/_10sdp"
-            android:scaleType="center"
-            android:src="@mipmap/mail_icon" />
+            android:scaleType="centerInside"
+            android:src="@mipmap/profile_img" />
 
     </RelativeLayout>
 

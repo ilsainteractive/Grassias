@@ -12,8 +12,18 @@ public class UserProducs {
     private String dispensary_id;
     private String quantity;
     private String price;
+    private String name;
 
     public UserProducs() {
+        this.quantity = "1";
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getProduct_id() {

@@ -39,6 +39,7 @@ import com.google.gson.GsonBuilder;
 import com.ilsa.grassis.R;
 import com.ilsa.grassis.adapters.HomeAdapter;
 import com.ilsa.grassis.adapters.ToggleDisAdapter;
+import com.ilsa.grassis.apivo.Dispensaries;
 import com.ilsa.grassis.apivo.Dispensary;
 import com.ilsa.grassis.library.AppContoller;
 import com.ilsa.grassis.library.BoldSFTextView;
@@ -621,6 +622,19 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         super.onResume();
         if (mGoogleApiClient != null)
             mGoogleApiClient.connect();
+
+        if (AppContoller.orderUserProducts.getUserProducs().size()>0) {
+
+            if (AppContoller.nearByVo != null) {
+                for (int i = 0; i < AppContoller.nearByVo.getDispensaries().size(); i++) {
+                    Dispensaries dispensaries = AppContoller.nearByVo.getDispensaries().get(i);
+                    if (AppContoller.orderUserProducts.getUserProducs().get(0).getDispensary_id().equalsIgnoreCase(dispensaries.getDispensary().getId())) {
+                        homeAdapter.notifyItemChanged(i);
+                        break;
+                    }
+                }
+            }
+        }
     }
 
     @Override
@@ -664,4 +678,6 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         currentLatitude = location.getLatitude();
         currentLongitude = location.getLongitude();
     }
+
+
 }

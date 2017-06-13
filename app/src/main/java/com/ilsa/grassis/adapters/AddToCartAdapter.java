@@ -53,9 +53,9 @@ public class AddToCartAdapter extends RecyclerView.Adapter<AddToCartAdapter.MyVi
 
     private Context mContext;
     private Dispensary dispensary;
-    private ArrayList<Products> productses;
+    private ArrayList<UserProducs> productses;
 
-    public AddToCartAdapter(Context mContext, Dispensary dispensary, ArrayList<Products> products) {
+    public AddToCartAdapter(Context mContext, Dispensary dispensary, ArrayList<UserProducs> products) {
 
         this.mContext = mContext;
         this.dispensary = dispensary;
@@ -70,19 +70,24 @@ public class AddToCartAdapter extends RecyclerView.Adapter<AddToCartAdapter.MyVi
         return new MyViewHolder(itemView);
     }
 
+    public void remove(int position) {
+        productses.remove(position);
+        notifyItemRemoved(position);
+    }
+
 
     @Override
     public void onBindViewHolder(final MyViewHolder holder, final int position) {
 
         // Glide.with(mContext).load(productses.get(position).getBackground().getBackground().getSmall()).into(holder.itmImg);
         holder.itemName.setText(productses.get(position).getName());
-       // holder.itemName.setText("zeehaf lkjsfkl lksjflk slkfjlksa lskdfjklsd sdlkfjslkdf kjflks sdkfjslk kfjsdlkf ksdjfkls");
-        holder.changeablePrice = Integer.parseInt(productses.get(position).getPricing().get(0).getValue_cents()) / 100;
+        // holder.itemName.setText("zeehaf lkjsfkl lksjflk slkfjlksa lskdfjklsd sdlkfjslkdf kjflks sdkfjslk kfjsdlkf ksdjfkls");
+        holder.changeablePrice = Integer.parseInt(productses.get(position).getPrice());
 
-        holder.price.setText("$" + holder.changeablePrice);
-        holder.quantity.setText(holder.quantityCounter + "");
-        holder.addcart_Txt_Price.setText(holder.changeablePrice+"");
-        holder.addcart_Txt_quantity.setText(holder.quantityCounter + "");
+        holder.price.setText("$" + Integer.parseInt(productses.get(position).getPrice()));
+        holder.quantity.setText(productses.get(position).getQuantity() + "");
+        holder.addcart_Txt_Price.setText(Integer.parseInt(productses.get(position).getPrice()) + "");
+        holder.addcart_Txt_quantity.setText(productses.get(position).getQuantity() + "");
 
         holder.quantity.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -98,7 +103,8 @@ public class AddToCartAdapter extends RecyclerView.Adapter<AddToCartAdapter.MyVi
             public void onClick(View v) {
                 holder.first_layout.setVisibility(View.VISIBLE);
                 holder.second_layout.setVisibility(View.GONE);
-                holder.quantity.setText(holder.quantityCounter + "");
+                holder.quantity.setText(productses.get(position).getQuantity() + "");
+
             }
         });
 
@@ -106,11 +112,12 @@ public class AddToCartAdapter extends RecyclerView.Adapter<AddToCartAdapter.MyVi
             @Override
             public void onClick(View v) {
 
-                holder.addcart_Txt_quantity.setText(++holder.quantityCounter + "");
-                holder.addcart_Txt_Price.setText((holder.changeablePrice * holder.quantityCounter)+"");
+                productses.get(position).setQuantity((Integer.parseInt(productses.get(position).getQuantity()) + 1) + "");
+                holder.addcart_Txt_quantity.setText(productses.get(position).getQuantity());
+                holder.addcart_Txt_Price.setText((Integer.parseInt(productses.get(position).getPrice()) * Integer.parseInt(productses.get(position).getQuantity())) + "");
 
-                AddToCart.SetTotalPriceFromAdapter(holder.changeablePrice, 1);
-                addProductsIn_UserProducts(productses.get(position).getId());
+                AddToCart.SetTotalPriceFromAdapter(Integer.parseInt(productses.get(position).getPrice()), 1);
+                // addProductsIn_UserProducts(productses.get(position).getId());
 
             }
         });
@@ -119,16 +126,18 @@ public class AddToCartAdapter extends RecyclerView.Adapter<AddToCartAdapter.MyVi
             @Override
             public void onClick(View v) {
 
-                if (holder.quantityCounter > 1) {
-                    holder.addcart_Txt_quantity.setText(--holder.quantityCounter + "");
-                    holder.addcart_Txt_Price.setText("$" + (holder.changeablePrice * holder.quantityCounter));
+                if (Integer.parseInt(productses.get(position).getQuantity()) > 1) {
+                    productses.get(position).setQuantity((Integer.parseInt(productses.get(position).getQuantity()) - 1) + "");
+                    holder.addcart_Txt_quantity.setText(productses.get(position).getQuantity());
+                    holder.addcart_Txt_Price.setText((Integer.parseInt(productses.get(position).getPrice()) * Integer.parseInt(productses.get(position).getQuantity())) + "");
 
-                    AddToCart.SetTotalPriceFromAdapter(holder.changeablePrice, 0);
-                    MinusProductsIn_UserProducts(productses.get(position).getId());
+                    AddToCart.SetTotalPriceFromAdapter(Integer.parseInt(productses.get(position).getPrice()), 0);
+                    // MinusProductsIn_UserProducts(productses.get(position).getId());
                 }
 
             }
         });
+
         //productses.get(position).getBackground().getBackground().getSmall();
         //holder.points.setText(productses.get(position).getPricing().);
     }

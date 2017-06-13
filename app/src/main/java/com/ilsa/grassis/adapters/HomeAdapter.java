@@ -18,27 +18,24 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
-import com.google.android.gms.maps.model.LatLng;
 import com.ilsa.grassis.R;
 import com.ilsa.grassis.activites.AddToCart;
 import com.ilsa.grassis.activites.MenuActivity;
-import com.ilsa.grassis.activites.PointBalanceActivity;
-import com.ilsa.grassis.apivo.Dispensaries;
 import com.ilsa.grassis.apivo.Dispensary;
 import com.ilsa.grassis.apivo.Features;
 import com.ilsa.grassis.apivo.Products;
+import com.ilsa.grassis.library.AppContoller;
 import com.ilsa.grassis.library.BoldSFTextView;
 import com.ilsa.grassis.library.RegularTextView;
 import com.ilsa.grassis.library.ThinTextView;
 import com.ilsa.grassis.rootvo.NearByVo;
 import com.ilsa.grassis.utils.CircularTextView;
 import com.ilsa.grassis.utils.Dailogs;
+import com.ilsa.grassis.vo.OrderManager;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.Date;
 
 import jp.wasabeef.glide.transformations.CropCircleTransformation;
@@ -65,13 +62,6 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MyViewHolder> 
         this.mContext = mContext;
         this.currentLatitude = currentLatitude;
         this.currentLongitude = currentLongitude;
-        //sorting
-       /* Collections.sort(dataList.getDispensaries(), new Comparator<Dispensaries>() {
-            @Override
-            public int compare(Dispensaries o1, Dispensaries o2) {
-                return o2.getDispensary().getId().compareTo(o1.getDispensary().getId());
-            }
-        });*/
     }
 
     @Override
@@ -89,6 +79,19 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MyViewHolder> 
         setTexts(holder, dispensary);
         AddListeners(holder, dispensary, dataList);
         initViews(holder, dataList, position);
+        totalProductsInCart(holder, dispensary);
+    }
+
+    private void totalProductsInCart(MyViewHolder myViewHolder, Dispensary dispensary) {
+
+
+        if (AppContoller.orderUserProducts.getUserProducs().size() > 0) {
+            if (dispensary.getId().equalsIgnoreCase(AppContoller.orderUserProducts.getUserProducs().get(0).getDispensary_id())) {
+                myViewHolder.total_added_item_in_cart.setVisibility(View.VISIBLE);
+                myViewHolder.total_added_item_in_cart.setText(AppContoller.orderUserProducts.getUserProducs().size() + "");
+            } else
+                myViewHolder.total_added_item_in_cart.setVisibility(View.INVISIBLE);
+        }
     }
 
     private void AddListeners(MyViewHolder mHolder, final Dispensary dispensary, final NearByVo nearByVo) {
@@ -255,12 +258,6 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MyViewHolder> 
 
     private void initViews(MyViewHolder mHolder, NearByVo nearByVo, int pos) {
 
-//        ArrayList<Products> list = new ArrayList<>();
-//        for (Products product : nearByVo.getProducts()) {
-//            if (nearByVo.getDispensaries().get(pos).getDispensary().getId().equalsIgnoreCase(product.getDispensary_id())) {
-//                list.add(product);
-//            }
-//        }
         ArrayList<Features> list = new ArrayList<>();
         list = dataList.getDispensaries().get(pos).getDispensary().getFeatures();
 
@@ -343,7 +340,10 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MyViewHolder> 
             mDespensoryCart.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+
+                    AppContoller.orderManager = new OrderManager();
                     Intent intent = new Intent(mContext, AddToCart.class);
+                    intent.putExtra("FALSE",false);
                     mContext.startActivity(intent);
                 }
             });
@@ -352,7 +352,9 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MyViewHolder> 
             total_added_item_in_cart.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    AppContoller.orderManager = new OrderManager();
                     Intent intent = new Intent(mContext, AddToCart.class);
+                    intent.putExtra("FALSE",false);
                     mContext.startActivity(intent);
                 }
             });

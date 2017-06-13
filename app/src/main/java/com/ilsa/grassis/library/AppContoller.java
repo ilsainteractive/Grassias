@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.support.multidex.MultiDex;
 import android.support.multidex.MultiDexApplication;
-
 import com.crashlytics.android.Crashlytics;
 import com.ilsa.grassis.apivo.Dispensary;
 import com.ilsa.grassis.rootvo.NearByVo;
@@ -39,6 +38,7 @@ public class AppContoller extends MultiDexApplication {
     public static ArrayList<MenuCategoriesVO> MenuCategories;
     public String[] CategoryName = {"", "Indica", "Sativa", "Hybrid", "Extract", "Edible", "Topicals", "Grow", "Gear"};
 
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -50,7 +50,9 @@ public class AppContoller extends MultiDexApplication {
         PopulateMenuCategories(MenuCategories);
         orderManager = new OrderManager();
         orderUserProducts = new OrderUserProducts();
+
     }
+
 
     private void PopulateMenuCategories(ArrayList<MenuCategoriesVO> menuCategories) {
 

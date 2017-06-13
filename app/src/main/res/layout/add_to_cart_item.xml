@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="@dimen/_90sdp"
-    android:background="@color/white"
+    android:background="@color/baseColor"
     android:orientation="horizontal">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginBottom="@dimen/_10sdp"
-        android:layout_marginEnd="@dimen/_10sdp"
-        android:layout_marginLeft="@dimen/_10sdp"
-        android:layout_marginRight="@dimen/_10sdp"
-        android:layout_marginStart="@dimen/_10sdp"
-        android:layout_marginTop="@dimen/_10sdp">
+        android:background="@color/white"
+        android:paddingBottom="@dimen/_10sdp"
+        android:paddingEnd="@dimen/_10sdp"
+        android:paddingRight="@dimen/_10sdp"
+        android:paddingStart="@dimen/_10sdp"
+        android:paddingTop="@dimen/_10sdp">
 
         <ImageView
             android:id="@+id/add_to_cart_Img_itmImg"
@@ -27,9 +27,11 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_toEndOf="@+id/add_to_cart_Img_itmImg"
-            android:layout_toRightOf="@+id/add_to_cart_Img_itmImg">
+            android:layout_toRightOf="@+id/add_to_cart_Img_itmImg"
+            android:background="@color/white">
 
             <LinearLayout
+                android:id="@+id/textLayout_In_firstLayout"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="@dimen/_10sdp"
@@ -43,7 +45,7 @@
                     android:layout_height="wrap_content"
                     android:ellipsize="end"
                     android:maxLines="2"
-                    android:text="Bloom Farhghjgjhgjhghjghjgjhgjhghjgjhghjghjgjhghghjghjgms Complete Set" />
+                    android:text="Complete Set" />
 
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -79,17 +81,17 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:orientation="horizontal">
+                android:layout_centerVertical="true">
 
                 <com.ilsa.grassis.utils.CircularTextView
                     android:id="@+id/circularTextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:padding="10dp"
-                    android:textSize="@dimen/_16sdp"
-                    android:textColor="@color/black" />
+                    android:padding="@dimen/_10sdp"
+                    android:text="1"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_16sdp" />
             </LinearLayout>
         </RelativeLayout>
 
@@ -99,6 +101,9 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_gravity="center_vertical"
+            android:layout_toEndOf="@+id/add_to_cart_Img_itmImg"
+            android:layout_toRightOf="@+id/add_to_cart_Img_itmImg"
+            android:background="@color/white"
             android:visibility="gone">
 
 
@@ -118,9 +123,9 @@
                     android:gravity="center"
                     android:padding="10dp"
                     android:text="-"
+                    android:textColor="@color/black"
                     android:textSize="@dimen/_16sdp"
-                    android:textStyle="bold"
-                    android:textColor="@color/black" />
+                    android:textStyle="bold" />
             </LinearLayout>
 
             <LinearLayout
@@ -198,10 +203,44 @@
                     android:gravity="center"
                     android:padding="10dp"
                     android:text="+"
+                    android:textColor="@color/black"
                     android:textSize="@dimen/_16sdp"
-                    android:textStyle="bold"
-                    android:textColor="@color/black" />
+                    android:textStyle="bold" />
             </LinearLayout>
         </RelativeLayout>
     </RelativeLayout>
-</LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/baseColor"
+        android:orientation="horizontal"
+        android:paddingEnd="@dimen/_10sdp"
+        android:paddingLeft="@dimen/_10sdp"
+        android:paddingRight="@dimen/_10sdp"
+        android:paddingStart="@dimen/_10sdp"
+        android:visibility="gone"
+        android:weightSum="3">
+
+        <com.ilsa.grassis.library.BoldSFTextView
+            android:id="@+id/txt_delete"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="2"
+            android:gravity="center_vertical"
+            android:hapticFeedbackEnabled="true"
+            android:text="Delete"
+            android:textColor="@android:color/white" />
+
+        <com.ilsa.grassis.library.BoldSFTextView
+            android:id="@+id/txt_undo"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="Undo"
+            android:textColor="@color/white" />
+
+    </LinearLayout>
+
+</FrameLayout>

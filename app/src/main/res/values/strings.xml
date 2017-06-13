@@ -58,4 +58,7 @@
     <string name="no_offer_ava">No offer available.</string>
     <string name="processing">Processing please wait....</string>
 
+    <!--Swipe deleted row-->
+
+    <string name="action_deleted">Deleted</string>
 </resources>

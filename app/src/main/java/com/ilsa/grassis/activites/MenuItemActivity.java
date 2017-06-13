@@ -294,25 +294,33 @@ public class MenuItemActivity extends AppCompatActivity implements View.OnClickL
 
                 //Toast.makeText(this, menuListVOs.get(mViewPager.getCurrentItem()).getId(), Toast.LENGTH_SHORT).show();
                 boolean added = true;
-                for (int i = 0; i < AppContoller.orderManager.getProductses().size(); i++) {
-                    if (AppContoller.orderManager.getProductses().get(i).getId().equalsIgnoreCase(menuListVOs.get(mViewPager.getCurrentItem()).getId())) {
+                for (int i = 0; i < AppContoller.orderUserProducts.getUserProducs().size(); i++) {
+                    if (AppContoller.orderUserProducts.getUserProducs().get(i).getProduct_id().equalsIgnoreCase(menuListVOs.get(mViewPager.getCurrentItem()).getId())) {
                         added = false;
                     }
                 }
 
                 if (added) {
 
-                    if (TextUtils.isEmpty(AppContoller.orderManager.getDispensary().getId())) {
+                    if ((AppContoller.orderUserProducts.getUserProducs().size()) < 1) {
+
+                        AppContoller.orderManager = new OrderManager();
+
                         AppContoller.orderManager.getProductses().add(menuListVOs.get(mViewPager.getCurrentItem()));
                         AppContoller.orderManager.getDispensary().setId(dispensaryId);
 
                         Intent intent = new Intent(MenuItemActivity.this, AddToCart.class);
+                        intent.putExtra("FALSE", true);
                         startActivity(intent);
-                    } else if (AppContoller.orderManager.getDispensary().getId().equalsIgnoreCase(dispensaryId)) {
+                    } else if (AppContoller.orderUserProducts.getUserProducs().get(0).getDispensary_id().equalsIgnoreCase(dispensaryId)) {
+
+                        AppContoller.orderManager = new OrderManager();
+
                         AppContoller.orderManager.getProductses().add(menuListVOs.get(mViewPager.getCurrentItem()));
                         AppContoller.orderManager.getDispensary().setId(dispensaryId);
 
                         Intent intent = new Intent(MenuItemActivity.this, AddToCart.class);
+                        intent.putExtra("FALSE", true);
                         startActivity(intent);
                     } else
                         changeDispensaryDialog();
@@ -339,6 +347,7 @@ public class MenuItemActivity extends AppCompatActivity implements View.OnClickL
 
                 dialog.dismiss();
                 Intent intent = new Intent(MenuItemActivity.this, AddToCart.class);
+                intent.putExtra("FALSE", false);
                 startActivity(intent);
             }
         });
@@ -375,13 +384,20 @@ public class MenuItemActivity extends AppCompatActivity implements View.OnClickL
         alertDialogBuilder
                 .setMessage("This Product already added in your cart")
                 .setCancelable(false)
-                .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                .setPositiveButton("Go to Cart", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
 
                         dialog.cancel();
+                        Intent intent = new Intent(MenuItemActivity.this, AddToCart.class);
+                        intent.putExtra("FALSE", false);
+                        startActivity(intent);
                     }
-                });
+                }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
 
+                dialog.cancel();
+            }
+        });
         AlertDialog alertDialog = alertDialogBuilder.create();
 
         // show it

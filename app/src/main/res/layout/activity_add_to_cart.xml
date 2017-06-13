@@ -6,23 +6,30 @@
     android:background="#f0f0f0"
     tools:context="com.ilsa.grassis.activites.AddToCart">
 
+    <com.ilsa.grassis.library.RegularTextView
+        android:id="@+id/empty_cart"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:text="Empty Cart"
+        android:textColor="@color/black"
+        android:textSize="@dimen/_16sdp" />
+
     <include
         android:id="@+id/add_toCart_toolbar"
         layout="@layout/toolbar_addto_cart"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recycler_view_AddToCart"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/add_toCart_toolbar"
+        android:layout_height="match_parent"
         android:layout_above="@+id/AddToCart_bottom_bar"
+        android:layout_below="@+id/add_toCart_toolbar"
         android:scrollbars="vertical" />
 
     <include
