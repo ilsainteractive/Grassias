@@ -21,7 +21,6 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -36,12 +35,8 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.ilsa.grassis.R;
-import com.ilsa.grassis.adapters.DiscovAdapter;
-import com.ilsa.grassis.adapters.HomeAdapter;
 import com.ilsa.grassis.adapters.MenuGalleryAdapter;
-import com.ilsa.grassis.adapters.MenuGalleryAdapterFeatures;
 import com.ilsa.grassis.apivo.Dispensary;
-import com.ilsa.grassis.apivo.Features;
 import com.ilsa.grassis.apivo.Products;
 import com.ilsa.grassis.library.AppContoller;
 import com.ilsa.grassis.library.Constants;
@@ -50,7 +45,6 @@ import com.ilsa.grassis.library.RegularTextView;
 import com.ilsa.grassis.library.SFUITextBold;
 import com.ilsa.grassis.library.ThinTextView;
 import com.ilsa.grassis.rootvo.FavToggleDespVO;
-import com.ilsa.grassis.rootvo.NearByVo;
 import com.ilsa.grassis.unknow.Dispensaries;
 import com.ilsa.grassis.utils.Dailogs;
 import com.ilsa.grassis.utils.Helper;
@@ -111,6 +105,9 @@ public class DispensaryInfoActivity extends AppCompatActivity implements OnMapRe
 
     @BindView(R.id.dispensary_info_toolbar_img_back)
     ImageView back;
+
+    @BindView(R.id.dispensary_info_toolbar_img_shareButton)
+    ImageView shareButton;
     /**
      * The Pager layout.
      */
@@ -164,10 +161,12 @@ public class DispensaryInfoActivity extends AppCompatActivity implements OnMapRe
     private String mDispensary_id;
     private Dispensary mDispensary;
 
+
     ViewPager pager;
     CircleIndicator pageIndicatorView;
     RelativeLayout mProductPagerLayout;
     LinearLayout mNoProductLayout;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -277,6 +276,18 @@ public class DispensaryInfoActivity extends AppCompatActivity implements OnMapRe
             @Override
             public void onClick(View v) {
                 onBackPressed();
+            }
+        });
+
+        shareButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent sendIntent = new Intent();
+                sendIntent.setAction(Intent.ACTION_SEND);
+                sendIntent.putExtra(Intent.EXTRA_TEXT, mDispensary.getLocation().getAddress());
+                sendIntent.setType("text/plain");
+                startActivity(sendIntent);
             }
         });
         mtxtToolbarTitle.setText(mDispensary.getName());
@@ -444,7 +455,7 @@ public class DispensaryInfoActivity extends AppCompatActivity implements OnMapRe
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_dispensory, menu);
+        // getMenuInflater().inflate(R.menu.menu_dispensory, menu);
         return true;
     }
 

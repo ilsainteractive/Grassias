@@ -374,34 +374,34 @@ public class MenuItemActivity extends AppCompatActivity implements View.OnClickL
 
 
     private void CartAlertDialog() {
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
-                mContext);
+    AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+            mContext);
 
-        // set title
-        alertDialogBuilder.setTitle("Sorry!");
+    // set title
+    alertDialogBuilder.setTitle("Sorry!");
 
-        // set dialog message
-        alertDialogBuilder
-                .setMessage("This Product already added in your cart")
-                .setCancelable(false)
-                .setPositiveButton("Go to Cart", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
+    // set dialog message
+    alertDialogBuilder
+            .setMessage("This Product already added in your cart")
+            .setCancelable(false)
+            .setPositiveButton("Go to Cart", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
 
-                        dialog.cancel();
-                        Intent intent = new Intent(MenuItemActivity.this, AddToCart.class);
-                        intent.putExtra("FALSE", false);
-                        startActivity(intent);
-                    }
-                }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
+                    dialog.cancel();
+                    Intent intent = new Intent(MenuItemActivity.this, AddToCart.class);
+                    intent.putExtra("FALSE", false);
+                    startActivity(intent);
+                }
+            }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+        public void onClick(DialogInterface dialog, int id) {
 
-                dialog.cancel();
-            }
-        });
-        AlertDialog alertDialog = alertDialogBuilder.create();
+            dialog.cancel();
+        }
+    });
+    AlertDialog alertDialog = alertDialogBuilder.create();
 
-        // show it
-        alertDialog.show();
+    // show it
+    alertDialog.show();
 
-    }
+}
 }

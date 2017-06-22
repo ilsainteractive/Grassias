@@ -40,7 +40,6 @@ import com.ilsa.grassis.R;
 import com.ilsa.grassis.adapters.HomeAdapter;
 import com.ilsa.grassis.adapters.ToggleDisAdapter;
 import com.ilsa.grassis.apivo.Dispensaries;
-import com.ilsa.grassis.apivo.Dispensary;
 import com.ilsa.grassis.library.AppContoller;
 import com.ilsa.grassis.library.BoldSFTextView;
 import com.ilsa.grassis.library.Constants;
@@ -75,7 +74,8 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         GoogleApiClient.OnConnectionFailedListener,
         LocationListener {
 
-    private Context mContext;
+
+    private static Context mContext;
     private Activity mActivity;
     private Toolbar toolbar;
     private SearchView mSearchView;
@@ -92,7 +92,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     private ProgressDialog pd;
     ToggleDisAdapter adapter;
 
-    RecyclerView mRecyclerView;
+    static RecyclerView mRecyclerView;
 
     @BindView(R.id.home_btn_dispensory)
     ImageView mDiscover;
@@ -198,13 +198,13 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void InitComponents() {
+
         mRecyclerView = (RecyclerView) findViewById(R.id.recycler_view_home);
 
         inflater = (LayoutInflater) mContext.getSystemService(LAYOUT_INFLATER_SERVICE);
         customView = inflater.inflate(R.layout.popupwindow_listview, null);
         switch_your_favorite_dis = (TextView) customView.findViewById(R.id.switch_your_favorite_dis);
         recyclerView = (ExpandedRecyclerView) customView.findViewById(R.id.recycler_viewId);
-
     }
 
     private void AddListener() {
@@ -294,7 +294,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
             @Override
             public void onClick(View view, int position) {
 
-                Toast.makeText(HomeActivity.this, AppContoller.FavDispensaries.get(position).getId(), Toast.LENGTH_SHORT).show();
+                //Toast.makeText(HomeActivity.this, AppContoller.FavDispensaries.get(position).getId(), Toast.LENGTH_SHORT).show();
                 switchDefaultDispensary(AppContoller.FavDispensaries.get(position).getId());
 
 
@@ -327,7 +327,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     private void switchDefaultDispensary(String dispensaryId) {
 
         final ProgressDialog pd = new ProgressDialog(HomeActivity.this);
-        pd.setMessage(getString(R.string.logging_in_msg));
+        pd.setMessage("Switching...");
         pd.setCancelable(false);
         pd.show();
 
@@ -623,7 +623,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         if (mGoogleApiClient != null)
             mGoogleApiClient.connect();
 
-        if (AppContoller.orderUserProducts.getUserProducs().size()>0) {
+        if (AppContoller.orderUserProducts.getUserProducs().size() > 0) {
 
             if (AppContoller.nearByVo != null) {
                 for (int i = 0; i < AppContoller.nearByVo.getDispensaries().size(); i++) {
@@ -634,7 +634,8 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                     }
                 }
             }
-        }
+        } else if ((AppContoller.orderUserProducts.getUserProducs().size()+1 > 0) && (AppContoller.nearByVo != null))
+            mRecyclerView.setAdapter(homeAdapter);
     }
 
     @Override
@@ -678,6 +679,4 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         currentLatitude = location.getLatitude();
         currentLongitude = location.getLongitude();
     }
-
-
 }

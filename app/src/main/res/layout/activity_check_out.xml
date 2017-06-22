@@ -94,7 +94,7 @@
                     android:visibility="gone"
                     app:pacv_resultType="no_type"
                     android:background="@drawable/my_edit_text_background"
-                    app:pacv_googleMapsApiKey="AIzaSyC1-jX179D1yi2ZVXC-7Hmi_0DbmrB44Go" />
+                    app:pacv_googleMapsApiKey="AIzaSyApEtH-q2lytxaMFR4nlIcvwldGgtNktK0"/>
 
                 <View
                     android:layout_width="match_parent"

@@ -16,30 +16,45 @@
         android:src="@mipmap/signup_back_arrow" />
 
     <LinearLayout
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
         android:layout_marginTop="8dp"
+        android:layout_gravity="center_horizontal"
         android:orientation="vertical">
 
         <com.ilsa.grassis.library.SFUITextBold
             android:id="@+id/dispensary_info_toolbar_title"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="@dimen/_14sdp"
-            android:gravity="center"
+            android:layout_gravity="center_horizontal"
             android:text="Malibu Community Collective"
-            android:textColor="@color/black" />
+            android:textColor="@color/black"
+            android:textSize="@dimen/_14sdp" />
 
         <com.ilsa.grassis.library.RegularTextView
             android:id="@+id/dispensary_info_toolbar_subtitle"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="@dimen/_10sdp"
             android:layout_marginTop="2dp"
-            android:gravity="center"
+            android:layout_gravity="center_horizontal"
             android:text="2.3m  |  Open till 8:00pm"
-            android:textColor="@color/black" />
+            android:textColor="@color/black"
+            android:textSize="@dimen/_10sdp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end">
+
+        <ImageView
+            android:id="@+id/dispensary_info_toolbar_img_shareButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingRight="@dimen/_10sdp"
+            android:paddingEnd="@dimen/_10sdp"
+            android:src="@mipmap/share_icon" />
     </LinearLayout>
 
 </android.support.v7.widget.Toolbar>

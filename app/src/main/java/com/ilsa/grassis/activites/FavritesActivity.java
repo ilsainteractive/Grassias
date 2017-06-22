@@ -3,6 +3,7 @@ package com.ilsa.grassis.activites;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -17,9 +18,12 @@ import android.view.View.OnClickListener;
 
 import com.ilsa.grassis.R;
 import com.ilsa.grassis.adapters.FavoriteAdapter;
+import com.ilsa.grassis.apivo.Dispensary;
 import com.ilsa.grassis.library.AppContoller;
 import com.ilsa.grassis.library.Constants;
 import com.ilsa.grassis.library.ExpandedRecyclerView;
+import com.ilsa.grassis.library.MenuItemClickListener;
+import com.ilsa.grassis.library.RecyclerTouchListener;
 import com.ilsa.grassis.utils.Dailogs;
 
 @SuppressLint("ResourceAsColor")
@@ -55,20 +59,16 @@ public class FavritesActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
-        if (AppContoller.FavDispensaries.size() > 0) {
 
-            favoriteAdapter = new FavoriteAdapter(mContext, AppContoller.FavDispensaries, mActivity);
-            recyclerView = (ExpandedRecyclerView) findViewById(R.id.recycler_view);
-            recyclerView.setHasFixedSize(true);
-            RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(mContext);
-            recyclerView.setLayoutManager(mLayoutManager);
-            recyclerView.addItemDecoration(new DividerItemDecoration(mContext, LinearLayoutManager.VERTICAL));
-            recyclerView.setItemAnimator(new DefaultItemAnimator());
-            recyclerView.setAdapter(favoriteAdapter);
-            recyclerView.setNestedScrollingEnabled(false);
-        } else {
-            Dailogs.ShowToast(this, getString(R.string.no_internet_msg), Constants.SHORT_TIME);
-        }
+        favoriteAdapter = new FavoriteAdapter(mContext, AppContoller.FavDispensaries, mActivity);
+        recyclerView = (ExpandedRecyclerView) findViewById(R.id.recycler_view);
+        recyclerView.setHasFixedSize(true);
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(mContext);
+        recyclerView.setLayoutManager(mLayoutManager);
+        recyclerView.addItemDecoration(new DividerItemDecoration(mContext, LinearLayoutManager.VERTICAL));
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        recyclerView.setAdapter(favoriteAdapter);
+        recyclerView.setNestedScrollingEnabled(false);
     }
 
     @Override

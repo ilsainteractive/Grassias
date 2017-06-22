@@ -10,7 +10,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -30,8 +29,6 @@ import com.ilsa.grassis.vo.UserProducs;
 
 import java.util.ArrayList;
 
-import static android.widget.Toast.LENGTH_SHORT;
-
 public class AddToCart extends AppCompatActivity implements View.OnClickListener {
 
     RecyclerView recyclerView;
@@ -39,6 +36,7 @@ public class AddToCart extends AppCompatActivity implements View.OnClickListener
     static BoldSFTextView totlaPrice;
     private RegularTextView add_to_cart_checkOut;
     private Toolbar toolbar;
+    private ImageView add_to_cart_Img_backArrow;
     private Boolean Empty;
     private RoundedImageView addToCart_toolbar_Img;
     private RegularTextView empty_cart;
@@ -58,6 +56,7 @@ public class AddToCart extends AppCompatActivity implements View.OnClickListener
 
     private void inItToolbar() {
         toolbar = (Toolbar) findViewById(R.id.add_toCart_toolbar);
+        add_to_cart_Img_backArrow = (ImageView) toolbar.findViewById(R.id.add_to_cart_Img_backArrow);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
@@ -149,6 +148,7 @@ public class AddToCart extends AppCompatActivity implements View.OnClickListener
 
     private void addListener() {
         add_to_cart_checkOut.setOnClickListener(this);
+        add_to_cart_Img_backArrow.setOnClickListener(this);
     }
 
     private static void loadDataIntoUserProducts(ArrayList<Products> products) {
@@ -198,6 +198,9 @@ public class AddToCart extends AppCompatActivity implements View.OnClickListener
                     startActivity(intent);
                 } else
                     Toast.makeText(this, "Empty Cart", Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.add_to_cart_Img_backArrow:
+                finish();
                 break;
         }
     }

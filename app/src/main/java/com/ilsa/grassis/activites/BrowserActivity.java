@@ -35,16 +35,18 @@ public class BrowserActivity extends AppCompatActivity {
         link = getIntent().getStringExtra("PATH");
         title = getIntent().getStringExtra("TITLE");
 
+
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
-        // Title and subtitle
+
         toolbar.setTitle(title);
         toolbar.setTitleTextColor(Color.BLACK);
         toolbar.setBackgroundColor(getResources().getColor(
                 R.color.white));
         //toolbar.setNavigationIcon(R.mipmap.backarrow);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
         toolbar.setNavigationOnClickListener(new OnClickListener() {
 
             @Override
@@ -53,7 +55,7 @@ public class BrowserActivity extends AppCompatActivity {
             }
         });
 
-        setSupportActionBar(toolbar);
+
 
         webView = (WebView) findViewById(R.id.webview);
         reload = (ImageView) findViewById(R.id.reload);

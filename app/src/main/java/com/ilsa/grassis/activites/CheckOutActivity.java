@@ -3,6 +3,7 @@ package com.ilsa.grassis.activites;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -10,6 +11,7 @@ import android.graphics.Typeface;
 import android.location.Location;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
@@ -65,6 +67,7 @@ public class CheckOutActivity extends AppCompatActivity implements View.OnClickL
     BoldSFTextView checkOut_totalPrie;
     private RegularTextView toolbarTitle;
     private Toolbar toolbar;
+    private ImageView add_to_cart_Img_backArrow;
     private Activity mActivity;
     private Context mContext;
     private Spinner spinner;
@@ -104,6 +107,7 @@ public class CheckOutActivity extends AppCompatActivity implements View.OnClickL
 
     private void inItToolbar() {
         toolbar = (Toolbar) findViewById(R.id.checkOut_toolbar);
+        add_to_cart_Img_backArrow = (ImageView) toolbar.findViewById(R.id.add_to_cart_Img_backArrow);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
@@ -161,6 +165,7 @@ public class CheckOutActivity extends AppCompatActivity implements View.OnClickL
         checkOut_Txt_pickUp.setOnClickListener(this);
         checkOut_Txt_delivery.setOnClickListener(this);
         placeOrder.setOnClickListener(this);
+        add_to_cart_Img_backArrow.setOnClickListener(this);
     }
 
 
@@ -236,8 +241,6 @@ public class CheckOutActivity extends AppCompatActivity implements View.OnClickL
 
     private void placeOrderWebService() {
 
-        OrderUserProducts orderUserProducts = AppContoller.orderUserProducts;
-        //
         final ProgressDialog pd = new ProgressDialog(CheckOutActivity.this);
         pd.setMessage("Wait...");
         pd.setCancelable(false);
@@ -308,13 +311,13 @@ public class CheckOutActivity extends AppCompatActivity implements View.OnClickL
                                 pd.dismiss();
                                 JSONObject jsonObject = new JSONObject(res);
                                 String success = jsonObject.get("message").toString();
-                                Dailogs.ShowToast(mContext, success, Constants.LONG_TIME);
+                               // Dailogs.ShowToast(mContext, success, Constants.LONG_TIME);
 
                                 AppContoller.orderUserProducts = new OrderUserProducts();
                                 AppContoller.orderManager = new OrderManager();
-                                Intent intent = new Intent(CheckOutActivity.this, HomeActivity.class);
-                                finish();
-                                startActivity(intent);
+
+                                OrderCreatedDialog(success);
+
 
                             } catch (Exception e) {
                             }
@@ -324,6 +327,31 @@ public class CheckOutActivity extends AppCompatActivity implements View.OnClickL
             }
         });
     }
+
+    private void OrderCreatedDialog(String message) {
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+                mContext);
+
+        // set title
+        alertDialogBuilder.setTitle("Thanks!");
+
+        // set dialog message
+        alertDialogBuilder
+                .setMessage(message)
+                .setCancelable(false)
+                .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+
+                        dialog.cancel();
+                        Intent intent = new Intent(CheckOutActivity.this, HomeActivity.class);
+                        finish();
+                        startActivity(intent);
+                    }
+                });
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        alertDialog.show();
+    }
+
 
     private void getUserInformation() {
         AppContoller.orderUserProducts.getOrder().setUser_id(AppContoller.userData.getUser().getId());
@@ -380,6 +408,10 @@ public class CheckOutActivity extends AppCompatActivity implements View.OnClickL
                 } else
                     Toast.makeText(this, "Pick Address", Toast.LENGTH_SHORT).show();
 
+                break;
+
+            case R.id.add_to_cart_Img_backArrow:
+                finish();
                 break;
         }
     }

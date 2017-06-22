@@ -20,6 +20,8 @@ import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.ilsa.grassis.R;
 import com.ilsa.grassis.activites.AddToCart;
+import com.ilsa.grassis.activites.DiscoverActivity;
+import com.ilsa.grassis.activites.HomeActivity;
 import com.ilsa.grassis.activites.MenuActivity;
 import com.ilsa.grassis.apivo.Dispensary;
 import com.ilsa.grassis.apivo.Features;
@@ -45,6 +47,7 @@ import me.relex.circleindicator.CircleIndicator;
  * The type Menu item adapter.
  */
 public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MyViewHolder> {
+
 
     private NearByVo dataList;
     private Context mContext;
@@ -73,13 +76,21 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MyViewHolder> 
 
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
-        Dispensary dispensary = dataList.getDispensaries().get(position).getDispensary();
+        final Dispensary dispensary = dataList.getDispensaries().get(position).getDispensary();
 
         LoadImages(holder, dispensary);
         setTexts(holder, dispensary);
         AddListeners(holder, dispensary, dataList);
         initViews(holder, dataList, position);
         totalProductsInCart(holder, dispensary);
+
+        holder.dispensary_mapIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                mContext.startActivity(new Intent(mContext, DiscoverActivity.class));
+            }
+        });
     }
 
     private void totalProductsInCart(MyViewHolder myViewHolder, Dispensary dispensary) {
@@ -293,6 +304,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MyViewHolder> 
         ImageView mDespensoryLogo;
         ImageView mOfferPhoto;
         ImageView mProductsDetail;
+        ImageView dispensary_mapIcon;
 
         RegularTextView mDespensoryTitle;
         RegularTextView mDespensoryAddresse;
@@ -337,13 +349,16 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MyViewHolder> 
             mOfferOff = (ThinTextView) view.findViewById(R.id.home_lv_bottom_section_2_txt_off);
             mOfferName = (ThinTextView) view.findViewById(R.id.home_lv_bottom_section_2_txt_products);
 
+            dispensary_mapIcon = (ImageView) view.findViewById(R.id.home_list_box_dispensary_map);
+
+
             mDespensoryCart.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
 
                     AppContoller.orderManager = new OrderManager();
                     Intent intent = new Intent(mContext, AddToCart.class);
-                    intent.putExtra("FALSE",false);
+                    intent.putExtra("FALSE", false);
                     mContext.startActivity(intent);
                 }
             });
@@ -354,7 +369,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MyViewHolder> 
                 public void onClick(View v) {
                     AppContoller.orderManager = new OrderManager();
                     Intent intent = new Intent(mContext, AddToCart.class);
-                    intent.putExtra("FALSE",false);
+                    intent.putExtra("FALSE", false);
                     mContext.startActivity(intent);
                 }
             });

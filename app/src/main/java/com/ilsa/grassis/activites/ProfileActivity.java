@@ -105,64 +105,6 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         Glide.with(mContext).load(AppContoller.userData.getUser().getAvatar().getSmall()).asBitmap().into(imgName);
     }
 
-    private void GetProfileInfo() {
-
-        final ProgressDialog pd = new ProgressDialog(ProfileActivity.this);
-        pd.setMessage(getString(R.string.processing));
-        pd.setCancelable(false);
-        pd.show();
-
-        OkHttpClient client = new OkHttpClient();
-
-        Request request = new Request.Builder()
-                .url("http://kushmarketing.herokuapp.com/api/users/me")
-                .get()
-                .addHeader("accept", "application/vnd.kush_marketing.com; version=1")
-                .addHeader("authorization", "Bearer ea71aa91e2d8c7c05254c8aea9211bc4dcbb945f72a187088f86cf4a3a45ef0b")
-                .addHeader("x-client-email", "zeeshan@gmail.com")
-                .addHeader("cache-control", "no-cache")
-                .addHeader("postman-token", "448e7c10-320d-0b72-899c-1adc5a8785fc")
-                .build();
-
-        //  Response response = client.newCall(request).execute();
-        client.newCall(request).enqueue(new Callback() {
-
-            @Override
-            public void onFailure(Call call, IOException e) {
-                e.printStackTrace();
-                pd.dismiss();
-            }
-
-            @Override
-            public void onResponse(Call call, final Response response) throws IOException {
-                pd.dismiss();
-                final String res = response.body().string().toString();
-                Log.i("response", res);
-                if (!response.isSuccessful()) {
-                    mActivity.runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            try {
-                                JSONObject jsonObject = new JSONObject(res);
-                                JSONObject error = jsonObject.getJSONObject("error");
-                                String message = error.get("message").toString();
-                                Dailogs.ShowToast(mContext, message, Constants.LONG_TIME);
-                            } catch (Exception e) {
-                            }
-                        }
-                    });
-                } else {
-                    Gson gson = new GsonBuilder().create();
-                    UserVo userVo = gson.fromJson(res, UserVo.class);
-
-                    if (userVo != null) {
-
-                    }
-                }
-            }
-        });
-    }
-
     private void InitComponents() {
     }
 
@@ -222,13 +164,13 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
                 break;
             case R.id.profile_txt_trem_condition:
                 Intent intent = new Intent(ProfileActivity.this, BrowserActivity.class);
-                intent.putExtra("PATH", "http://grassias.ilsainteractive.net/");
+                intent.putExtra("PATH", "http://grassias.ilsainteractive.net/terms");
                 intent.putExtra("TITLE", "Terms and Condition");
                 startActivity(intent);
                 break;
             case R.id.profile_txt_policy:
                 Intent intent2 = new Intent(ProfileActivity.this, BrowserActivity.class);
-                intent2.putExtra("PATH", "http://grassias.ilsainteractive.net/");
+                intent2.putExtra("PATH", "http://grassias.ilsainteractive.net/policy");
                 intent2.putExtra("TITLE", "Privacy Policy");
                 startActivity(intent2);
                 break;
